@@ -42,6 +42,9 @@ func TestRead(t *testing.T) {
 		t.Errorf(`ReadFile should return an OPML structure an nil error, %s`, err)
 		t.FailNow()
 	}
+	if o.Version != "1.0" {
+		t.Errorf(`Expected version 1.0, got %s`, o.Version)
+	}
 	if o.Head.Title != "johndoe@example.com subscriptions in Go Read" {
 		t.Errorf(`Expected "johndoe@example.com subscriptions in Go Read", found -> %s`, o.Head.Title)
 	}
