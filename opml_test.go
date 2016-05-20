@@ -13,6 +13,23 @@ import (
 )
 
 func TestBasic(t *testing.T) {
-	t.Errorf("No tests implemented")
-	t.FailNow()
+	o := New()
+	if o == nil {
+		t.Errorf("Can't create an opml structure")
+	}
+
+	head := o.Head
+	if head == nil {
+		t.Errorf("Can't find Head in opml structure")
+	}
+
+	body := o.Body
+	if body == nil {
+		t.Errorf("Can't find Body in opml structure")
+	}
+
+	s := o.String()
+	if s != `<opml version="2.0"><head></head><body><outline text=""></outline></body></opml>` {
+		t.Errorf("Expected a minimal OPML document [%s]", s)
+	}
 }
