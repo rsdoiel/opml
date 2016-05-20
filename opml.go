@@ -37,6 +37,9 @@ type Head struct {
 	WindowRight     int       `xml:"windowRight,omitempty" json:"windowRight,omitempty"`
 }
 
+type ExpansionList struct {
+}
+
 type Body struct {
 	XMLName xml.Name   `json:"-"`
 	Outline []*Outline `xml:"outline" json:"outline"`
