@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 )
 
+// OPML is the root structure for holding an OPML document
 type OPML struct {
 	XMLName xml.Name `xml:"opml" json:"-"`
 	Version string   `xml:"version,attr" json:"version"`
@@ -20,6 +21,7 @@ type OPML struct {
 	Body    *Body    `xml:"body" json:"body"`
 }
 
+// Head holds the metadata for an OPML document
 type Head struct {
 	XMLName         xml.Name `json:"-"`
 	Title           string   `xml:"title,omitempty" json:"title,omitempty"`
@@ -37,11 +39,13 @@ type Head struct {
 	WindowRight     int      `xml:"windowRight,omitempty" json:"windowRight,omitempty"`
 }
 
+// Body holds the outline for an OPML document
 type Body struct {
 	XMLName xml.Name  `json:"-"`
 	Outline []Outline `xml:"outline" json:"outline"`
 }
 
+// Outline is the primary element of an OPML document, may hold sub-Outlines
 type Outline struct {
 	XMLName      xml.Name  `json:"-"`
 	Text         string    `xml:"text,attr" json:"text"`
@@ -50,8 +54,8 @@ type Outline struct {
 	IsBreakpoint bool      `xml:"isBreakpoint,attr,omitempty" json:"isBreakpoint,omitempty"`
 	Created      string    `xml:"created,attr,omitempty" json:"created,omitempty"` // RFC 882 date and time
 	Category     string    `xml:"category,attr,omitempty" json:"category,omitempty"`
-	XmlURL       string    `xml:"xmlUrl,attr,omitempty" json:"xmlUrl,omitempty"`   // url
-	HtmlURL      string    `xml:"htmlUrl,attr,omitempty" json:"htmlUrl,omitempty"` // url
+	XMLURL       string    `xml:"xmlUrl,attr,omitempty" json:"xmlUrl,omitempty"`   // url
+	HTMLURL      string    `xml:"htmlUrl,attr,omitempty" json:"htmlUrl,omitempty"` // url
 	Language     string    `xml:"langauge,attr,omitempty" json:"language,omitempty"`
 	Description  string    `xml:"description,attr,omitempty" json:"description,omitempty"`
 	Version      string    `xml:"version,attr,omitempty" json:"version,omitempty"`
@@ -59,6 +63,7 @@ type Outline struct {
 	Outline      []Outline `xml:"outline,omitempty" json:"outline,omitempty"`
 }
 
+// New creates an empty OPML structure
 func New() *OPML {
 	o := new(OPML)
 	o.Version = "2.0"
@@ -93,6 +98,7 @@ func (o *OPML) String() string {
 	return string(s)
 }
 
+// ReadFile reads an OPML file and populates the OPML object appropriately
 func (o *OPML) ReadFile(s string) error {
 	src, err := ioutil.ReadFile(s)
 	if err != nil {

@@ -57,4 +57,14 @@ func TestRead(t *testing.T) {
 		t.Errorf("an empty outline is included in string: %s", s)
 	}
 	//fmt.Printf("o: %s\n", o)
+	o = New()
+	err = o.ReadFile("testdata/example2.opml")
+	if err != nil {
+		t.Errorf(`ReadFile should return an OPML structure and a nil error, %s`, err)
+		t.FailNow()
+	}
+	if o.Version != "2.0" {
+		t.Errorf(`Expected version 2.0, got %s`, o.Version)
+	}
+
 }
