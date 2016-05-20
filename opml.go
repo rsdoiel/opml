@@ -10,6 +10,7 @@ package opml
 
 import (
 	"encoding/xml"
+	"io/ioutil"
 )
 
 type OPML struct {
@@ -64,9 +65,6 @@ func New() *OPML {
 
 	o.Head = new(Head)
 	o.Body = new(Body)
-	o.Body.Outline = append(o.Body.Outline, Outline{
-		Text: "",
-	})
 	return o
 }
 
@@ -86,6 +84,19 @@ func (ol *Outline) String() string {
 }
 
 func (o *OPML) String() string {
+	if len(o.Body.Outline) == 0 {
+		o.Body.Outline = append(o.Body.Outline, Outline{
+			Text: "",
+		})
+	}
 	s, _ := xml.Marshal(o)
 	return string(s)
+}
+
+func (o *OPML) ReadFile(s string) error {
+	src, err := ioutil.ReadFile(s)
+	if err != nil {
+		return err
+	}
+	return xml.Unmarshal(src, &o)
 }
