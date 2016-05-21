@@ -106,3 +106,14 @@ func (o *OPML) ReadFile(s string) error {
 	}
 	return xml.Unmarshal(src, &o)
 }
+
+// WriteFile writes the contents of a OPML struct to a file
+func (o *OPML) WriteFile(s string) error {
+	if len(o.Body.Outline) == 0 {
+		o.Body.Outline = append(o.Body.Outline, Outline{
+			Text: "",
+		})
+	}
+	b, _ := xml.Marshal(o)
+	return ioutil.WriteFile(s, b, 0664)
+}

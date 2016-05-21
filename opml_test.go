@@ -1,5 +1,6 @@
 //
-// Package opml provides basic utility functions for working with OPML files.
+// Package opml provides basic utility functions for working with
+// OPML files.
 //
 // @author R. S. Doiel, <rsdoiel@gmail.com>
 // copyright (c) 2016 all rights reserved.
@@ -9,6 +10,9 @@
 package opml
 
 import (
+	"bytes"
+	"io/ioutil"
+	"path"
 	"strings"
 	"testing"
 )
@@ -67,4 +71,21 @@ func TestRead(t *testing.T) {
 		t.Errorf(`Expected version 2.0, got %s`, o.Version)
 	}
 
+}
+
+func TestWrite(t *testing.T) {
+	fname := path.Join("testdata", "test1.opml")
+	o := New()
+	err := o.WriteFile(fname)
+	if err != nil {
+		t.Errorf("%s", err)
+	}
+	s := []byte(o.String())
+	src, err := ioutil.ReadFile(fname)
+	if err != nil {
+		t.Errorf("%s", err)
+	}
+	if bytes.Equal(s, src) != true {
+		t.Errorf(`%s != %s`, s, src)
+	}
 }
