@@ -12,6 +12,7 @@ package opml
 import (
 	"bytes"
 	"io/ioutil"
+	"os"
 	"path"
 	"strings"
 	"testing"
@@ -88,4 +89,6 @@ func TestWrite(t *testing.T) {
 	if bytes.Equal(s, src) != true {
 		t.Errorf(`%s != %s`, s, src)
 	}
+	// cleanup the temp file
+	os.Remove(fname)
 }
