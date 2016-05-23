@@ -65,6 +65,7 @@ type Outline struct {
 }
 
 type ByText []Outline
+type ByType []Outline
 
 // New creates an empty OPML structure
 func New() *OPML {
@@ -114,6 +115,21 @@ func (a ByText) Swap(i, j int) {
 // Less for ByText sort of Outline
 func (a ByText) Less(i, j int) bool {
 	return strings.Compare(a[i].Text, a[j].Text) == -1
+}
+
+// Len for ByType sort of Outline
+func (a ByType) Len() int {
+	return len(a)
+}
+
+// Swap for ByType sort of Outline
+func (a ByType) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+// Less for ByType sort of Outline
+func (a ByType) Less(i, j int) bool {
+	return strings.Compare(a[i].Type, a[j].Type) == -1
 }
 
 // ReadFile reads an OPML file and populates the OPML object appropriately
