@@ -11,6 +11,7 @@ package opml
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
@@ -91,4 +92,25 @@ func TestWrite(t *testing.T) {
 	}
 	// cleanup the temp file
 	os.Remove(fname)
+}
+
+func TestSort(t *testing.T) {
+	fname := path.Join("testdata", "example3.opml")
+	o := New()
+	err := o.ReadFile(fname)
+	if err != nil {
+		t.Errorf("can't read %s, %s", fname, err)
+		t.FailNow()
+	}
+	fmt.Printf("DEBUG o: %s\n", o.String())
+	// FIXME: Sort the list here.
+	err = o.Sort()
+	if err != nil {
+		t.Errorf("o.Sort() error, %s", err)
+	}
+	expected := `<opml version="2.0"><head><title>Unsorted list</title><dateCreated>Mon, 23 May 2016 08:33:00 GMT</dateCreated></head><body><outline text="Alexandrina"/><outline text="Tomasa"/><outline text="Zachary"/></body></opml>`
+	result := o.String()
+	if strings.Compare(expected, result) != 0 {
+		t.Errorf("\n%s\n!=\n%s\n", expected, result)
+	}
 }

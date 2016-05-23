@@ -10,6 +10,7 @@ package opml
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io/ioutil"
 )
 
@@ -96,6 +97,12 @@ func (o *OPML) String() string {
 	}
 	s, _ := xml.Marshal(o)
 	return string(s)
+}
+
+// Sort reads an OPML struct and sorts the Outline found in the body
+// by the text attribute.
+func (o *OPML) Sort() error {
+	return fmt.Errorf("Sort() not implemented")
 }
 
 // ReadFile reads an OPML file and populates the OPML object appropriately
