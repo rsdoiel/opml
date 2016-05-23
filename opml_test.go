@@ -11,10 +11,10 @@ package opml
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -102,13 +102,8 @@ func TestSort(t *testing.T) {
 		t.Errorf("can't read %s, %s", fname, err)
 		t.FailNow()
 	}
-	fmt.Printf("DEBUG o: %s\n", o.String())
-	// FIXME: Sort the list here.
-	err = o.Sort()
-	if err != nil {
-		t.Errorf("o.Sort() error, %s", err)
-	}
-	expected := `<opml version="2.0"><head><title>Unsorted list</title><dateCreated>Mon, 23 May 2016 08:33:00 GMT</dateCreated></head><body><outline text="Alexandrina"/><outline text="Tomasa"/><outline text="Zachary"/></body></opml>`
+	sort.Sort(ByText(o.Body.Outline))
+	expected := `<opml version="2.0"><head><title>Unsorted list</title><dateCreated>Mon, 23 May 2016 08:33:00 GMT</dateCreated></head><body><outline text="Alexandrina"></outline><outline text="Tomasa"></outline><outline text="Zachary"></outline></body></opml>`
 	result := o.String()
 	if strings.Compare(expected, result) != 0 {
 		t.Errorf("\n%s\n!=\n%s\n", expected, result)

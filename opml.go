@@ -10,8 +10,8 @@ package opml
 
 import (
 	"encoding/xml"
-	"fmt"
 	"io/ioutil"
+	"strings"
 )
 
 // OPML is the root structure for holding an OPML document
@@ -64,6 +64,8 @@ type Outline struct {
 	Outline      []Outline `xml:"outline,omitempty" json:"outline,omitempty"`
 }
 
+type ByText []Outline
+
 // New creates an empty OPML structure
 func New() *OPML {
 	o := new(OPML)
@@ -99,10 +101,19 @@ func (o *OPML) String() string {
 	return string(s)
 }
 
-// Sort reads an OPML struct and sorts the Outline found in the body
-// by the text attribute.
-func (o *OPML) Sort() error {
-	return fmt.Errorf("Sort() not implemented")
+// Len for ByText sort of Outline
+func (a ByText) Len() int {
+	return len(a)
+}
+
+// Swap for ByText sort of Outline
+func (a ByText) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+// Less for ByText sort of Outline
+func (a ByText) Less(i, j int) bool {
+	return strings.Compare(a[i].Text, a[j].Text) == -1
 }
 
 // ReadFile reads an OPML file and populates the OPML object appropriately
