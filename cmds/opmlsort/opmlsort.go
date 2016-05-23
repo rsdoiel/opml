@@ -58,7 +58,6 @@ func main() {
 	)
 
 	args := flag.Args()
-	fmt.Printf("DEBUG args: %+v\n", args)
 	if len(args) > 0 {
 		iFName = args[0]
 	}
