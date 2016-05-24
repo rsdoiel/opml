@@ -10,6 +10,7 @@ package opml
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io/ioutil"
 	"sort"
 	"strings"
@@ -47,28 +48,29 @@ type Head struct {
 
 // Body holds the outline for an OPML document
 type Body struct {
-	XMLName xml.Name  `json:"-"`
-	Outline []Outline `xml:"outline" json:"outline"`
+	XMLName xml.Name    `json:"-"`
+	Outline OutlineList `xml:"outline" json:"outline"`
 }
 
 // Outline is the primary element of an OPML document, may hold sub-Outlines
 type Outline struct {
-	XMLName      xml.Name  `json:"-"`
-	Text         string    `xml:"text,attr" json:"text"`
-	Type         string    `xml:"type,attr,omitempty" json:"type,omitempty"`
-	IsComment    bool      `xml:"isComment,attr,omitempty" json:"isComment,omitempty"`
-	IsBreakpoint bool      `xml:"isBreakpoint,attr,omitempty" json:"isBreakpoint,omitempty"`
-	Created      string    `xml:"created,attr,omitempty" json:"created,omitempty"` // RFC 882 date and time
-	Category     string    `xml:"category,attr,omitempty" json:"category,omitempty"`
-	XMLURL       string    `xml:"xmlUrl,attr,omitempty" json:"xmlUrl,omitempty"`   // url
-	HTMLURL      string    `xml:"htmlUrl,attr,omitempty" json:"htmlUrl,omitempty"` // url
-	Language     string    `xml:"langauge,attr,omitempty" json:"language,omitempty"`
-	Description  string    `xml:"description,attr,omitempty" json:"description,omitempty"`
-	Version      string    `xml:"version,attr,omitempty" json:"version,omitempty"`
-	URL          string    `xml:"url,attr,omitempty" json:"url,omitempty"` // url
-	Outline      []Outline `xml:"outline,omitempty" json:"outline,omitempty"`
+	XMLName      xml.Name    `json:"-"`
+	Text         string      `xml:"text,attr" json:"text"`
+	Type         string      `xml:"type,attr,omitempty" json:"type,omitempty"`
+	IsComment    bool        `xml:"isComment,attr,omitempty" json:"isComment,omitempty"`
+	IsBreakpoint bool        `xml:"isBreakpoint,attr,omitempty" json:"isBreakpoint,omitempty"`
+	Created      string      `xml:"created,attr,omitempty" json:"created,omitempty"` // RFC 882 date and time
+	Category     string      `xml:"category,attr,omitempty" json:"category,omitempty"`
+	XMLURL       string      `xml:"xmlUrl,attr,omitempty" json:"xmlUrl,omitempty"`   // url
+	HTMLURL      string      `xml:"htmlUrl,attr,omitempty" json:"htmlUrl,omitempty"` // url
+	Language     string      `xml:"langauge,attr,omitempty" json:"language,omitempty"`
+	Description  string      `xml:"description,attr,omitempty" json:"description,omitempty"`
+	Version      string      `xml:"version,attr,omitempty" json:"version,omitempty"`
+	URL          string      `xml:"url,attr,omitempty" json:"url,omitempty"` // url
+	Outline      OutlineList `xml:"outline,omitempty" json:"outline,omitempty"`
 }
 
+type OutlineList []Outline
 type ByText []Outline
 type ByType []Outline
 
@@ -97,11 +99,39 @@ func (ol *Outline) String() string {
 	return string(s)
 }
 
+// HasChildren return true if the outline element has a populated child outline
+func (ol *Outline) HasChildren() bool {
+	if len(ol.Outline) > 0 {
+		return true
+	}
+	return false
+}
+
+func (ol OutlineList) Append(elem *Outline) error {
+	i := len(ol)
+	ol = append(ol, *elem)
+	if len(ol) != (i+1) || ol[i].Text != elem.Text {
+		return fmt.Errorf("failed to append element")
+	}
+	return nil
+}
+
+func (ol *Outline) AppendChild(elem *Outline) error {
+	return ol.Outline.Append(elem)
+}
+
 func (o *OPML) String() string {
-	if len(o.Body.Outline) == 0 {
-		o.Body.Outline = append(o.Body.Outline, Outline{
-			Text: "",
-		})
+	if o.Body != nil {
+		if o.Body.Outline == nil {
+			o.Body.Outline = make(OutlineList, 1)
+			o.Body.Outline.Append(&Outline{
+				Text: "",
+			})
+		} else if len(o.Body.Outline) == 0 {
+			o.Body.Outline.Append(&Outline{
+				Text: "",
+			})
+		}
 	}
 	s, _ := xml.Marshal(o)
 	return string(s)
