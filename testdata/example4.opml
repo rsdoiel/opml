@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<opml version="2.0">
+	<head>
+		<title>test sort</title>
+		</head>
+	<body>
+		<outline text="Places of interest">
+			<outline text="Victoria, BC"></outline>
+            <outline text="New York">
+                <outline text="Upper Eastside"/>
+                <outline text="Midtown"/>
+                </outline>
+			<outline text="Boston">
+				<outline text="Cambridge"/>
+				<outline text="West Newton"/>
+				</outline>
+			<outline text="Bay Area">
+				<outline text="Mountain View"/>
+				<outline text="Los Gatos"/>
+				<outline text="Palo Alto"/>
+				<outline text="Woodside"/>
+				</outline>
+			<outline text="New Orleans">
+				<outline text="Uptown"/>
+				<outline text="Metairie"/>
+                <outline text="Congo Square"/>
+				</outline>
+		    </outline>
+		</body>
+	</opml>

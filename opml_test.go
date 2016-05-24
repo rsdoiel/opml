@@ -95,6 +95,7 @@ func TestWrite(t *testing.T) {
 }
 
 func TestSort(t *testing.T) {
+	// Simple unnested list
 	fname := path.Join("testdata", "example3.opml")
 	o := New()
 	err := o.ReadFile(fname)
@@ -108,4 +109,20 @@ func TestSort(t *testing.T) {
 	if strings.Compare(expected, result) != 0 {
 		t.Errorf("\n%s\n!=\n%s\n", expected, result)
 	}
+
+	// List with two levels of nesting
+	fname = path.Join("testdata", "example4.opml")
+	o = New()
+	err = o.ReadFile(fname)
+	if err != nil {
+		t.Errorf("can't read %s, %s", fname, err)
+		t.FailNow()
+	}
+	o.Sort()
+	expected = `<opml version="2.0"><head><title>test sort</title></head><body><outline text="Places of interest"><outline text="Bay Area"><outline text="Los Gatos"></outline><outline text="Mountain View"></outline><outline text="Palo Alto"></outline><outline text="Woodside"></outline></outline><outline text="Boston"><outline text="Cambridge"></outline><outline text="West Newton"></outline></outline><outline text="New Orleans"><outline text="Congo Square"></outline><outline text="Metairie"></outline><outline text="Uptown"></outline></outline><outline text="New York"><outline text="Midtown"></outline><outline text="Upper Eastside"></outline></outline><outline text="Victoria, BC"></outline></outline></body></opml>`
+	result = o.String()
+	if strings.Compare(expected, result) != 0 {
+		t.Errorf("\n%s\n!=\n%s\n", expected, result)
+	}
+
 }

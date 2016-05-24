@@ -19,8 +19,6 @@ import (
 	"github.com/rsdoiel/opml"
 )
 
-const Version = "0.0.0"
-
 var (
 	showHelp    bool
 	showVersion bool
@@ -44,11 +42,11 @@ func main() {
 			fmt.Printf("\t-%s\t(defaults to %s) %s\n", f.Name, f.Value, f.Usage)
 		})
 
-		fmt.Printf("\nVersion %s\n", Version)
+		fmt.Printf("\nVersion %s\n", opml.Version)
 		os.Exit(0)
 	}
 	if showVersion == true {
-		fmt.Printf("Version %s\n", Version)
+		fmt.Printf("Version %s\n", opml.Version)
 		os.Exit(0)
 	}
 

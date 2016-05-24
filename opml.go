@@ -11,7 +11,12 @@ package opml
 import (
 	"encoding/xml"
 	"io/ioutil"
+	"sort"
 	"strings"
+)
+
+const (
+	Version = "0.0.1"
 )
 
 // OPML is the root structure for holding an OPML document
@@ -117,6 +122,27 @@ func (a ByText) Less(i, j int) bool {
 	return strings.Compare(a[i].Text, a[j].Text) == -1
 }
 
+// Sort do a recursive sort over an outline
+func (a ByText) Sort() {
+	if len(a) > 0 {
+		for _, item := range a {
+			if len(item.Outline) > 0 {
+				ol := ByText(item.Outline)
+				ol.Sort()
+			}
+		}
+		sort.Sort(ByText(a))
+	}
+}
+
+// Sort do a recursive ByText sort of outline elements starting at the OPML struct.
+func (o *OPML) Sort() {
+	if o.Body != nil && len(o.Body.Outline) > 0 {
+		ol := ByText(o.Body.Outline)
+		ol.Sort()
+	}
+}
+
 // Len for ByType sort of Outline
 func (a ByType) Len() int {
 	return len(a)
@@ -130,6 +156,27 @@ func (a ByType) Swap(i, j int) {
 // Less for ByType sort of Outline
 func (a ByType) Less(i, j int) bool {
 	return strings.Compare(a[i].Type, a[j].Type) == -1
+}
+
+// Sort do a recursive sort over an outline
+func (a ByType) Sort() {
+	if len(a) > 0 {
+		for _, item := range a {
+			if len(item.Outline) > 0 {
+				ol := ByType(item.Outline)
+				ol.Sort()
+			}
+		}
+		sort.Sort(ByType(a))
+	}
+}
+
+// SortTypes do a recursive ByText sort of outline elements starting at the OPML struct.
+func (o *OPML) SortTypes() {
+	if o.Body != nil && len(o.Body.Outline) > 0 {
+		ol := ByType(o.Body.Outline)
+		ol.Sort()
+	}
 }
 
 // ReadFile reads an OPML file and populates the OPML object appropriately
