@@ -66,15 +66,31 @@ func main() {
 		oFName = args[1]
 	}
 
-	if iFName == "" {
-		fmt.Println("Missing input opml filename")
-		os.Exit(1)
-	}
+	/*
+		if iFName == "" {
+			fmt.Println("Missing input opml filename")
+			os.Exit(1)
+		}
+	*/
+
 	o := opml.New()
-	err := o.ReadFile(iFName)
-	if err != nil {
-		fmt.Printf("%s, %s\n", iFName, err)
-		os.Exit(1)
+	if iFName == "" {
+		buf, err := ioutil.ReadAll(os.Stdin)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			os.Exit(1)
+		}
+		err = xml.Unmarshal(buf, &o)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			os.Exit(1)
+		}
+	} else {
+		err := o.ReadFile(iFName)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s, %s\n", iFName, err)
+			os.Exit(1)
+		}
 	}
 	o.Sort()
 
