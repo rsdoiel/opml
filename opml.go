@@ -12,12 +12,13 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"sort"
 	"strings"
 )
 
 const (
-	Version = "0.0.1"
+	Version = "0.0.2"
 )
 
 // OPML is the root structure for holding an OPML document
@@ -219,12 +220,12 @@ func (o *OPML) ReadFile(s string) error {
 }
 
 // WriteFile writes the contents of a OPML struct to a file
-func (o *OPML) WriteFile(s string) error {
+func (o *OPML) WriteFile(s string, perm os.FileMode) error {
 	if len(o.Body.Outline) == 0 {
 		o.Body.Outline = append(o.Body.Outline, Outline{
 			Text: "",
 		})
 	}
 	b, _ := xml.Marshal(o)
-	return ioutil.WriteFile(s, b, 0664)
+	return ioutil.WriteFile(s, b, perm)
 }

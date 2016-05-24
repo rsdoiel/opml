@@ -78,7 +78,7 @@ func TestRead(t *testing.T) {
 func TestWrite(t *testing.T) {
 	fname := path.Join("testdata", "test1.opml")
 	o := New()
-	err := o.WriteFile(fname)
+	err := o.WriteFile(fname, 0664)
 	if err != nil {
 		t.Errorf("%s", err)
 	}

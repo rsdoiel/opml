@@ -10,8 +10,10 @@
 package main
 
 import (
+	"encoding/xml"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 
@@ -21,9 +23,11 @@ import (
 var (
 	showHelp    bool
 	showVersion bool
+	prettyPrint bool
 )
 
 func init() {
+	flag.BoolVar(&prettyPrint, "p", false, "pretty print XML output")
 	flag.BoolVar(&showHelp, "h", false, "display help")
 	flag.BoolVar(&showVersion, "v", false, "display version")
 }
@@ -74,9 +78,18 @@ func main() {
 	}
 	o.Sort()
 
-	if oFName == "" {
-		fmt.Println(o.String())
+	if prettyPrint == true {
+		src, _ := xml.MarshalIndent(o, "  ", "    ")
+		if oFName == "" {
+			fmt.Printf("%s\n", src)
+		} else {
+			ioutil.WriteFile(oFName, src, 0664)
+		}
 	} else {
-		o.WriteFile(oFName)
+		if oFName == "" {
+			fmt.Println(o.String())
+		} else {
+			o.WriteFile(oFName, 0664)
+		}
 	}
 }
