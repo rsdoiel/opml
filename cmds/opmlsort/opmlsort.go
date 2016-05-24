@@ -14,7 +14,6 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"sort"
 
 	"github.com/rsdoiel/opml"
 )
@@ -73,7 +72,7 @@ func main() {
 		fmt.Printf("%s, %s\n", iFName, err)
 		os.Exit(1)
 	}
-	sort.Sort(opml.ByText(o.Body.Outline))
+	o.Sort()
 
 	if oFName == "" {
 		fmt.Println(o.String())
