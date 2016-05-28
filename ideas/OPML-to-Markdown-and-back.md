@@ -73,14 +73,14 @@ To me that should look like
     + [Scripting News Sites](http://hosting.opml.org/dave/mySites.opml)
 ```
 
-What about the _created_ attribute? Could we render it as a sub list of anchors with data uri?
+What about the _created_ attribute? Could we render this case as an additional set of anchors using data uri?
 
-This suggest a rule struct like
+This suggest a rule like
 
 + if the _text_ attribute contains HTML markup
     + URL decode into HTML
     + Convert HTML to Markdown
-+ else render additional attributes as sub-lists with data URI
++ else render attributes as additional anchors using data URI
 
 This might work as follows. 
 
@@ -94,20 +94,15 @@ This might work as follows.
 Would become 
 
 ```Markdown
-    + [Scripting News Sites](http://hosting.opml.org/dave/mySites.opml) 
-        + [type](data:text/plain;link)
-        + [created](data:text/date;Sun, 16 Oct 2005 05:56:10 GMT)
+    + [Scripting News Sites](http://hosting.opml.org/dave/mySites.opml) [type](data:text/plain;link) [created](data:text/date;Sun, 16 Oct 2005 05:56:10 GMT)
 ```
 
 In HTML this would look like
 
 ```HTML
     <li><a href="http://histing.opml.org/dave/mySites.opml">Scripting News Sites</a>
-        <ul>
-            <li><a href="data:text/plain;link">type></a></li>
-            <li><a href="data:text/date;Sun, 16 Oct 2005 05:56:10 GMT">created</a></li>
-        </ul></li>
-        
+        <a href="data:text/plain;link">type</a>
+        <a href="data:text/date;Sun, 16 Oct 2005 05:56:10 GMT">created</a></li>
 ```
 
 ### Markdown to OPML
@@ -115,11 +110,9 @@ In HTML this would look like
 Coming back to OPML from Markdown then becomes
 
 + Convert Markdown to HTML
-+ For each _li_ element inspect for _type_ 
-    + if _li_ contains a _anchor_ and _ul_ then convert to _outline_ element and attributes
-    + else 
-        + URL encode
-        + save in _text_ attribute of _outline_ element
++ For each _li_ element inspect anchors, 
+    + if anchors contain data URI then map _outline_ elemnt
+    + else URL encode and embed in _outline_ _text_ attribute
 
 Is this viable? Does it have any advantages?
 
