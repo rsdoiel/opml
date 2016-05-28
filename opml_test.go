@@ -126,3 +126,34 @@ func TestSort(t *testing.T) {
 	}
 
 }
+
+func TestToMarkdown() {
+	o := New()
+
+	source := `
+<opml version="2.0">
+<head>
+<title>n4</title>
+<ownerProfile>http://rsdoiel.github.io</ownerProfile>
+<ownerName>R. S. Doiel</ownerName>
+<ownerEmail>rsdoiel@gmail.com</ownerEmail>
+<dateModified>Sat, 28 May 2016 15:50:19 GMT</dateModified>
+<expansionState></expansionState>
+<lastCursor>2</lastCursor>
+</head>
+<body>
+<outline text="&lt;a href=&quot;http://jane-doe.example.org&quot;&gt;Jane Doe&lt;/a&gt;"/>
+<outline text="&lt;a href=&quot;http://example.org/jordan-doe&quot;&gt;Jordan Doe&lt;/a&gt;" created="Sat, 28 May 2016 15:48:19 GMT"/>
+<outline text="Spancer Wallace" created="Sat, 28 May 2016 15:50:13 GMT"/>
+</body>
+</opml>
+`
+	expected := `
+# Test List Names
+
++ [Jane Doe](http://jane-doe.example.org)
++ [Jordan Doe](http://example.org/jordan-doe)
++ Spancer Wallace
+`
+
+}
