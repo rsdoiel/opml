@@ -73,7 +73,7 @@ To me that should look like
     + [Scripting News Sites](http://hosting.opml.org/dave/mySites.opml)
 ```
 
-What about the _created_ attribute? We could render it as a sub list of anchors with data uri?
+What about the _created_ attribute? Could we render it as a sub list of anchors with data uri?
 
 This suggest a rule struct like
 
