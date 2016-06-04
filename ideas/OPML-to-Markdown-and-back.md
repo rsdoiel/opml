@@ -1,5 +1,5 @@
 
-# OPML to Markdown round trip
+# OPML to Markdown and back
 
 ## Overview
 
