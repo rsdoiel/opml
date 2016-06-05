@@ -69,11 +69,12 @@ type Outline struct {
 	Version      string      `xml:"version,attr,omitempty" json:"version,omitempty"`
 	URL          string      `xml:"url,attr,omitempty" json:"url,omitempty"` // url
 	Outline      OutlineList `xml:"outline,omitempty" json:"outline,omitempty"`
+	//FIXME: How do I handle custom attributes?
 }
 
-type OutlineList []Outline
-type ByText []Outline
-type ByType []Outline
+type OutlineList []*Outline
+type ByText []*Outline
+type ByType []*Outline
 
 // New creates an empty OPML structure
 func New() *OPML {
@@ -95,14 +96,14 @@ func (b *Body) String() string {
 	return string(s)
 }
 
-func (ol *Outline) String() string {
-	s, _ := xml.Marshal(ol)
+func (o *Outline) String() string {
+	s, _ := xml.Marshal(o)
 	return string(s)
 }
 
 // HasChildren return true if the outline element has a populated child outline
-func (ol *Outline) HasChildren() bool {
-	if len(ol.Outline) > 0 {
+func (o *Outline) HasChildren() bool {
+	if len(o.Outline) > 0 {
 		return true
 	}
 	return false
@@ -110,30 +111,18 @@ func (ol *Outline) HasChildren() bool {
 
 func (ol OutlineList) Append(elem *Outline) error {
 	i := len(ol)
-	ol = append(ol, *elem)
+	ol = append(ol, elem)
 	if len(ol) != (i+1) || ol[i].Text != elem.Text {
 		return fmt.Errorf("failed to append element")
 	}
 	return nil
 }
 
-func (ol *Outline) AppendChild(elem *Outline) error {
-	return ol.Outline.Append(elem)
+func (o *Outline) AppendChild(elem *Outline) error {
+	return o.Outline.Append(elem)
 }
 
 func (o *OPML) String() string {
-	if o.Body != nil {
-		if o.Body.Outline == nil {
-			o.Body.Outline = make(OutlineList, 1)
-			o.Body.Outline.Append(&Outline{
-				Text: "",
-			})
-		} else if len(o.Body.Outline) == 0 {
-			o.Body.Outline.Append(&Outline{
-				Text: "",
-			})
-		}
-	}
 	s, _ := xml.Marshal(o)
 	return string(s)
 }
@@ -202,6 +191,8 @@ func (a ByType) Sort() {
 	}
 }
 
+//FIXME: I really need some sort of sort by attribute name
+
 // SortTypes do a recursive ByText sort of outline elements starting at the OPML struct.
 func (o *OPML) SortTypes() {
 	if o.Body != nil && len(o.Body.Outline) > 0 {
@@ -210,9 +201,25 @@ func (o *OPML) SortTypes() {
 	}
 }
 
+// Parse OPML source code into a new OPML structure
+func Parse(src []byte) (*OPML, error) {
+	o := New()
+	err := xml.Unmarshal(src, &o)
+	return o, err
+}
+
+// Parse an OPML file into a new OPML structure
+func ParseFile(fname string) (*OPML, error) {
+	src, err := ioutil.ReadFile(fname)
+	if err != nil {
+		return nil, err
+	}
+	return Parse(src)
+}
+
 // ReadFile reads an OPML file and populates the OPML object appropriately
-func (o *OPML) ReadFile(s string) error {
-	src, err := ioutil.ReadFile(s)
+func (o *OPML) ReadFile(fname string) error {
+	src, err := ioutil.ReadFile(fname)
 	if err != nil {
 		return err
 	}
@@ -220,12 +227,40 @@ func (o *OPML) ReadFile(s string) error {
 }
 
 // WriteFile writes the contents of a OPML struct to a file
-func (o *OPML) WriteFile(s string, perm os.FileMode) error {
+func (o *OPML) WriteFile(fname string, perm os.FileMode) error {
 	if len(o.Body.Outline) == 0 {
-		o.Body.Outline = append(o.Body.Outline, Outline{
+		o.Body.Outline = append(o.Body.Outline, &Outline{
 			Text: "",
 		})
 	}
-	b, _ := xml.Marshal(o)
-	return ioutil.WriteFile(s, b, perm)
+	src, _ := xml.Marshal(o)
+	return ioutil.WriteFile(fname, src, perm)
+}
+
+// Select return a element from the OPML outline
+func (ol OutlineList) Select(p []int) (*Outline, bool) {
+	var (
+		i    int
+		rest []int
+	)
+
+	// Don't run off the end of the list
+	if len(p) == 0 {
+		return nil, false
+	}
+	if i < 0 || len(p) <= i {
+		return nil, false
+	}
+
+	// See which part of the list we need to fetch next
+	// or return the result
+	if len(p) == 1 {
+		i = p[0]
+	} else {
+		i, rest = p[0], p[1:]
+	}
+	if len(rest) > 0 {
+		return ol[i].Outline.Select(rest)
+	}
+	return ol[i], true
 }

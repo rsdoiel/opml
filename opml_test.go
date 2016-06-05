@@ -36,7 +36,7 @@ func TestNewAndString(t *testing.T) {
 	}
 
 	s := o.String()
-	if s != `<opml version="2.0"><head></head><body><outline text=""></outline></body></opml>` {
+	if s != `<opml version="2.0"><head></head><body></body></opml>` {
 		t.Errorf("Expected a minimal OPML document [%s]", s)
 	}
 }
@@ -127,6 +127,7 @@ func TestSort(t *testing.T) {
 
 }
 
+/*
 func TestToMarkdown() {
 	o := New()
 
@@ -157,3 +158,104 @@ func TestToMarkdown() {
 `
 
 }
+*/
+
+func TestParse(t *testing.T) {
+	sources := []string{
+		`<opml version="2.0">
+<head>
+	<title>no-children</title>
+</head>
+<body>
+	<outline text="root zero"/>
+	<outline text="root one"/>
+	<outline text="root two"/>
+	<outline text="root three"/>
+</body>
+</opml>
+`,
+		`<opml version="2.0">
+<head>
+	<title>children</title>
+</head>
+<body>
+	<outline text="root zero">
+		<outline text="child zero, root zero"/>
+		<outline text="child one, root zero"/>
+		<outline text="child two, root zero"/>
+	</outline>
+	<outline text="root one">
+		<outline text="child zero, root one"/>
+		<outline text="child one, root one"/>
+		<outline text="child two, root one"/>
+	</outline>
+	<outline text="root two">
+		<outline text="child zero, root two"/>
+		<outline text="child one, root two"/>
+		<outline text="child two, root two"/>
+	</outline>
+	<outline text="root three">
+		<outline text="child zero, root three"/>
+		<outline text="child one, root three"/>
+		<outline text="child two, root three"/>
+	</outline>
+</body>
+</opml>
+`,
+		`<opml version="2.0">
+<head>
+	<title>some grand children</title>
+</head>
+<body>
+	<outline text="root zero">
+		<outline text="child zero, root zero">
+			<outline text="granchild zero, child zero, root zero"/>
+		</outline>
+		<outline text="child one, root zero"/>
+		<outline text="child two, root zero"/>
+	</outline>
+	<outline text="root one">
+		<outline text="child zero, root one"/>
+		<outline text="child one, root one">
+			<outline text="granchild zero, child one, root one"/>
+			<outline text="granchild one, child one, root one"/>
+			<outline text="granchild two, child one, root one"/>
+		</outline>
+		<outline text="child two, root one"/>
+	</outline>
+	<outline text="root two">
+		<outline text="child zero, root two"/>
+		<outline text="child one, root two"/>
+		<outline text="child two, root two"/>
+	</outline>
+	<outline text="root three">
+		<outline text="child zero, root three"/>
+		<outline text="child one, root three"/>
+		<outline text="child two, root three">
+			<outline text="granchild zero, child two, root three"/>
+			<outline text="granchild one, child two, root three"/>
+			<outline text="granchild two, child two, root three"/>
+			<outline text="granchild three, child two, root three"/>
+			<outline text="granchild four, child two, root three"/>
+		</outline>
+	</outline>
+</body>
+</opml>
+`,
+	}
+
+	for i, src := range sources {
+		//fmt.Printf("DEBUG Parsing %d, %s\n", i, src)
+		_, err := Parse([]byte(src))
+		if err != nil {
+			t.Errorf("%d %s", i, err)
+			t.FailNow()
+		}
+	}
+}
+
+/*
+func TestSelect(t *testing.T) {
+	t.Errorf("TestSelect() not implemented")
+}
+*/
