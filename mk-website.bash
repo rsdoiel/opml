@@ -26,7 +26,7 @@ function MakePage () {
 
     echo "Rendering $html from $content and $nav"
     $APP -m \
-	"title=string:opml: A OPML parser package" \
+	"title=string:opml: A OPML parser package and opml sort utility" \
         "nav=$nav" \
         "content=$content" \
 	    "sitebuilt=string:Updated $(date)" \
