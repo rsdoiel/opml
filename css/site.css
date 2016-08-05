@@ -1,0 +1,51 @@
+body {
+    font-size: 16px;
+    font-family: 'Noto Sans', sans-serif;
+    padding: 0.24em;
+    padding: 0.12em;
+    color: black;
+    background-color: white;
+}
+
+header {
+    display: block;
+    margin: 0.25em;
+    border-bottom: 1px solid red;
+    text-align: center;
+    min-width: 100%;
+}
+
+header > h1 {
+    display: inline-block;
+    font-size: 1.24em;
+    text-transform: uppercase;
+}
+
+section {
+    position: relative;
+    margin: 1em;
+    display: inline-block;
+    max-width: 80%;
+}
+
+section > h1 {
+    font-size: 1em;
+    text-transform: uppercase;
+}
+
+nav {
+    position: absolute;
+    display: inline-block;
+    border-left: 1px solid red;
+    text-align: top;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+footer {
+    padding-top: 1em;
+    border-top: 1px solid red;
+    min-width: 100%;
+}
