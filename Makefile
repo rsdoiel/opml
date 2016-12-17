@@ -38,7 +38,7 @@ save:
 clean:
 	if [ -d bin ]; then /bin/rm -fR bin; fi
 	if [ -d dist ]; then /bin/rm -fR dist; fi
-	if [ -f opml-binary-release.zip ]; then /bin/rm opml-binary-release.zip; fi
+	if [ -f *-release.zip ]; then /bin/rm *-release.zip; fi
 
 release:
 	./mk-release.bash	
