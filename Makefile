@@ -3,14 +3,29 @@
 # as well as Raspberry Pi Zero, 1, 2, and 3.
 #
 
-build:
-	go build -o bin/opmlsort cmds/opmlsort/opmlsort.go
+PROJECT = opml
+
+CLI_NAMES = opmlsort opmlcat
+
+build: $(CLI_NAMES)
+
+opmlsort: bin/opmlsort
+
+opmlcat: bin/opmlcat
+
+bin/opmlsort: opml.go cmds/opmlsort/opmlsort.go
+	env CGO_ENABLED=0 go build -o bin/opmlsort cmds/opmlsort/opmlsort.go
+
+
+bin/opmlcat: opml.go cmds/opmlcat/opmlcat.go
+	env CGO_ENABLED=0 go build -o bin/opmlcat cmds/opmlcat/opmlcat.go
 
 test:
 	go test
 
 install:
-	env GOBIN=$(HOME)/bin go install cmds/opmlsort/opmlsort.go
+	env CGO_ENABLED=0 GOBIN=$(HOME)/bin go install cmds/opmlsort/opmlsort.go
+	env CGO_ENABLES=0 GOBIN=$(HOME)/bin go install cmds/opmlcat/opmlcat.go
 
 status:
 	git status

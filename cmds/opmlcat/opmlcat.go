@@ -1,6 +1,6 @@
 //
-// opmlsort is a command line utility that can read in a OPML file, sort the outline
-// and return the results.
+// opmlcat is a command line utility that reads in one or more OMPL files, concatenates them
+// at their roots and returns a single file as a result.
 //
 // @author R. S. Doiel, <rsdoiel@gmail.com>
 // copyright (c) 2016 all rights reserved.
@@ -23,18 +23,21 @@ import (
 )
 
 var (
-	usage = `USAGE: %s [OPTIONS] INPUT_OPML_FILENAME [OUTPUT_OPML_FILENAME]`
+	usage = `USAGE: %s [OPTIONS] OPML_FILE [OPML_FILE ...]`
 
 	description = `
 SYNOPSIS
 
-%s is a program that sorts the outline in an OPML document.
+%s concatenates one or more opml files as siblings to standard out.
 `
 
 	examples = `
 EXAMPLES
 
-    %s myfeeds.opml sorted-feeds.opml
+This is an example of using %s and opmlsort together to 
+create a combined sorted opml file.
+
+    %s file1.opml file1.opml | opmlsort -o combined-sorted.opml
 `
 
 	// Standard options
@@ -71,7 +74,7 @@ func main() {
 	cfg.UsageText = fmt.Sprintf(usage, appName)
 	cfg.DescriptionText = fmt.Sprintf(description, appName)
 	cfg.OptionsText = "OPTIONS\n"
-	cfg.ExampleText = fmt.Sprintf(examples, appName)
+	cfg.ExampleText = fmt.Sprintf(examples, appName, appName)
 
 	if showHelp == true {
 		fmt.Println(cfg.Usage())
@@ -86,46 +89,35 @@ func main() {
 		os.Exit(0)
 	}
 
-	var (
-		iFName string
-		oFName string
-	)
-	if len(args) > 0 {
-		iFName = args[0]
-	}
-	if len(args) > 1 {
-		oFName = args[1]
-	}
-
 	o := opml.New()
-	if len(iFName) > 0 {
-		err := o.ReadFile(iFName)
-		if err != nil {
-			fmt.Printf("%s, %s\n", iFName, err)
-			os.Exit(1)
-		}
-	} else {
+	if len(args) == 0 {
 		src, err := ioutil.ReadAll(os.Stdin)
 		if err != nil {
-			fmt.Fprintf(os.Stdout, "Missing OPML input, %s", err)
+			fmt.Fprintf(os.Stderr, "Missing input, %s", err)
 			os.Exit(1)
 		}
 		o, err = opml.Parse(src)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Parse error on stdin, %s", err)
+			os.Exit(1)
+		}
 	}
-	o.Sort()
 
+	for _, iFName := range args {
+		next := opml.New()
+		err := next.ReadFile(iFName)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Can't read %s, %s\n", iFName, err)
+			os.Exit(1)
+		}
+		for _, elem := range next.Body.Outline {
+			o.Body.Outline = append(o.Body.Outline, elem)
+		}
+	}
 	if prettyPrint == true {
 		src, _ := xml.MarshalIndent(o, "  ", "    ")
-		if oFName == "" {
-			fmt.Printf("%s\n", src)
-		} else {
-			ioutil.WriteFile(oFName, src, 0664)
-		}
+		fmt.Printf("%s", src)
 	} else {
-		if oFName == "" {
-			fmt.Println(o.String())
-		} else {
-			o.WriteFile(oFName, 0664)
-		}
+		fmt.Println(o.String())
 	}
 }
