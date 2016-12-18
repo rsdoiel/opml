@@ -133,13 +133,13 @@ func TestAppend(t *testing.T) {
 		t.Errorf("%s", err)
 		t.FailNow()
 	}
-	o2, err := ReadFile("testdata/simple2.ompl")
+	o2, err := ReadFile("testdata/simple2.opml")
 	if err != nil {
 		t.Errorf("%s", err)
 		t.FailNow()
 	}
 	o3 := New()
-	err = o3.Join(o1, o2)
+	err = o3.Append(o1, o2)
 	if err != nil {
 		t.Errorf("%s", err)
 		t.FailNow()

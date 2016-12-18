@@ -276,6 +276,13 @@ func Parse(src []byte) (*OPML, error) {
 	return o, err
 }
 
+// ReadFile reads a OPML file and returns a new OPML structure and error
+func ReadFile(fname string) (*OPML, error) {
+	o := New()
+	err := o.ReadFile(fname)
+	return o, err
+}
+
 // ReadFile reads an OPML file and populates the OPML object appropriately
 func (o *OPML) ReadFile(s string) error {
 	src, err := ioutil.ReadFile(s)
