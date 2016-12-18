@@ -7,6 +7,8 @@ PROJECT = opml
 
 CLI_NAMES = opmlsort opmlcat
 
+ACTIVE_BRANCH = $(git branch | grep '*' | cut -d \  -f 2)
+
 build: $(CLI_NAMES)
 
 opmlsort: bin/opmlsort
@@ -31,9 +33,8 @@ status:
 	git status
 
 save:
-	./mk-website.bash
 	git commit -am "quick save"
-	git push origin master
+	git push origin $(ACTIVE_BRANCH)
 
 clean:
 	if [ -d bin ]; then /bin/rm -fR bin; fi

@@ -19,7 +19,7 @@ import (
 
 const (
 	// Version of the ompl package, useful for display in cli tools
-	Version = "v0.0.3"
+	Version = "v0.0.4-dev"
 
 	// The license for the ompl package, useful for display in cli tools
 	LicenseText = `
@@ -154,8 +154,30 @@ func (ol OutlineList) Append(elems ...*Outline) error {
 	return nil
 }
 
-func (ol *Outline) AppendChild(elem *Outline) error {
-	return ol.Outline.Append(elem)
+// Adds one or more children to outline element
+func (ol *Outline) AppendChild(elems ...*Outline) error {
+	for _, elem := range elems {
+		err := ol.Outline.Append(elem)
+		if err != nil {
+			return fmt.Errorf("failed to add child, %s", err)
+		}
+	}
+	return nil
+}
+
+// Append one or more Body.Outline lists to the current OPML structure
+func (o *OPML) Append(outlines ...*OPML) error {
+	i := len(o.Body.Outline)
+	for _, next := range outlines {
+		for _, elem := range next.Body.Outline {
+			o.Body.Outline = append(o.Body.Outline, elem)
+			i += 1
+		}
+	}
+	if len(o.Body.Outline) != i {
+		return fmt.Errorf("Failed to add all outline elements, exlected %d, have %d", i, len(o.Body.Outline))
+	}
+	return nil
 }
 
 func (o *OPML) String() string {

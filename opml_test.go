@@ -126,3 +126,31 @@ func TestSort(t *testing.T) {
 	}
 
 }
+
+func TestAppend(t *testing.T) {
+	o1, err := ReadFile("testdata/simple1.opml")
+	if err != nil {
+		t.Errorf("%s", err)
+		t.FailNow()
+	}
+	o2, err := ReadFile("testdata/simple2.ompl")
+	if err != nil {
+		t.Errorf("%s", err)
+		t.FailNow()
+	}
+	o3 := New()
+	err = o3.Join(o1, o2)
+	if err != nil {
+		t.Errorf("%s", err)
+		t.FailNow()
+	}
+	i := len(o1.Body.Outline) + len(o2.Body.Outline)
+	if len(o3.Body.Outline) != i {
+		t.Errorf("Count wrong o1 %d, o2 %d, o3 %d", len(o1.Body.Outline), len(o2.Body.Outline), len(o3.Body.Outline))
+	}
+}
+
+func TestFilterForTypes(t *testing.T) {
+	t.Errorf("Filter for types not implemented")
+	t.FailNow()
+}

@@ -110,8 +110,10 @@ func main() {
 			fmt.Fprintf(os.Stderr, "Can't read %s, %s\n", iFName, err)
 			os.Exit(1)
 		}
-		for _, elem := range next.Body.Outline {
-			o.Body.Outline = append(o.Body.Outline, elem)
+		err = o.Append(next)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s", err)
+			os.Exit(1)
 		}
 	}
 	if prettyPrint == true {
