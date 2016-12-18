@@ -2,7 +2,7 @@
 #
 # Make releases for Linux/amd64, Linux/ARM6 and Linux/ARM7 (Raspberry Pi), Windows, and Mac OX X (darwin)
 #
-RELEASE_NAME=opml-v0.0.3
+RELEASE_NAME=opml-v0.0.4-dev
 
 for PROGNAME in opmlsort opmlcat; do
   env GOOS=linux GOARCH=amd64 go build -o dist/linux-amd64/$PROGNAME cmds/$PROGNAME/$PROGNAME.go
