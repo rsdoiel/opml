@@ -2,8 +2,10 @@
 #
 # Make releases for Linux/amd64, Linux/ARM6 and Linux/ARM7 (Raspberry Pi), Windows, and Mac OX X (darwin)
 #
-RELEASE_NAME=opml-v0.0.4-dev
-
+PROJECT=opml
+VERSION=$(grep 'Version =' opml.go | cut -d\"  -f 2)
+RELEASE_NAME=$PROJECT-$VERSION
+echo "Preparing $RELEASE_NAME"
 for PROGNAME in opmlsort opmlcat; do
   env GOOS=linux GOARCH=amd64 go build -o dist/linux-amd64/$PROGNAME cmds/$PROGNAME/$PROGNAME.go
   env GOOS=darwin GOARCH=amd64 go build -o dist/macosx-amd64/$PROGNAME cmds/$PROGNAME/$PROGNAME.go

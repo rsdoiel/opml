@@ -5,9 +5,11 @@
 
 PROJECT = opml
 
+VERSION = $(shell grep 'Version =' opml.go | cut -d\"  -f 2)
+
 CLI_NAMES = opmlsort opmlcat
 
-ACTIVE_BRANCH = $(git branch | grep '*' | cut -d \  -f 2)
+ACTIVE_BRANCH = $(shell git branch | grep '*' | cut -d \  -f 2)
 
 build: $(CLI_NAMES)
 
@@ -39,7 +41,7 @@ save:
 clean:
 	if [ -d bin ]; then /bin/rm -fR bin; fi
 	if [ -d dist ]; then /bin/rm -fR dist; fi
-	if [ -f *-release.zip ]; then /bin/rm *-release.zip; fi
+	if [ -f $(PROG)-$(VERSION)-release.zip ]; then /bin/rm $(PROG)-$(VERSION)-release.zip; fi
 
 release:
 	./mk-release.bash	
