@@ -7,9 +7,9 @@ PROJECT = opml
 
 VERSION = $(shell grep 'Version =' opml.go | cut -d\"  -f 2)
 
-CLI_NAMES = opmlsort opmlcat
+BRANCH = $(shell git branch | grep '*' | cut -d \  -f 2)
 
-ACTIVE_BRANCH = $(shell git branch | grep '*' | cut -d \  -f 2)
+CLI_NAMES = opmlsort opmlcat
 
 build: $(CLI_NAMES)
 
@@ -36,7 +36,7 @@ status:
 
 save:
 	git commit -am "quick save"
-	git push origin $(ACTIVE_BRANCH)
+	git push origin $(BRANCH)
 
 clean:
 	if [ -d bin ]; then /bin/rm -fR bin; fi
