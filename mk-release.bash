@@ -3,7 +3,7 @@
 # Make releases for Linux/amd64, Linux/ARM6 and Linux/ARM7 (Raspberry Pi), Windows, and Mac OX X (darwin)
 #
 PROJECT=opml
-VERSION=$(grep 'Version =' opml.go | cut -d\"  -f 2)
+VERSION=$(grep -m 1 'Version =' opml.go | cut -d\"  -f 2)
 RELEASE_NAME=$PROJECT-$VERSION
 echo "Preparing $RELEASE_NAME"
 for PROGNAME in opmlsort opmlcat; do
