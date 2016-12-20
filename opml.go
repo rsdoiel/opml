@@ -112,7 +112,8 @@ type ByType []Outline
 // New creates an empty OPML structure
 func New() *OPML {
 	o := new(OPML)
-	o.Version = "2.0"
+	// OPML spec support
+	o.Version = `2.0`
 
 	o.Head = new(Head)
 	o.Body = new(Body)

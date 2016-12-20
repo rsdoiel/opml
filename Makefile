@@ -5,9 +5,9 @@
 
 PROJECT = opml
 
-VERSION = $(shell grep 'Version =' opml.go | cut -d\"  -f 2)
+VERSION = $(shell grep -m 1 'Version =' opml.go | cut -d\" -f 2)
 
-BRANCH = $(shell git branch | grep '*' | cut -d \  -f 2)
+BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
 
 CLI_NAMES = opmlsort opmlcat
 
