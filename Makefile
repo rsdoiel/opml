@@ -35,7 +35,7 @@ status:
 	git status
 
 save:
-	git commit -am "quick save"
+	git commit -am "Quick Save"
 	git push origin $(BRANCH)
 
 clean:
