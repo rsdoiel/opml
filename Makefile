@@ -43,8 +43,35 @@ clean:
 	if [ -d dist ]; then /bin/rm -fR dist; fi
 	if [ -f $(PROG)-$(VERSION)-release.zip ]; then /bin/rm $(PROG)-$(VERSION)-release.zip; fi
 
-release:
-	./mk-release.bash	
-	
+website:
+	./mk-website.bash
+
 publish:
 	./publish.bash
+
+dist/linux-amd64:
+	env GOOS=linux GOARCH=amd64 go build -o dist/linux-amd64/omplsort cmds/opmlsort/opmlsort.go
+	env GOOS=linux GOARCH=amd64 go build -o dist/linux-amd64/omplcat cmds/opmlcat/opmlcat.go
+
+dist/windows-amd64:
+	env GOOS=windows GOARCH=amd64 go build -o dist/windows-amd64/opmlsort.exe cmds/opmlsort/opmlsort.go
+	env GOOS=windows GOARCH=amd64 go build -o dist/windows-amd64/opmlcat.exe cmds/opmlcat/opmlcat.go
+
+dist/macosx-amd64:
+	env GOOS=darwin GOARCH=amd64 go build -o dist/macosx-amd64/opmlsort cmds/opmlsort/opmlsort.go
+	env GOOS=darwin GOARCH=amd64 go build -o dist/macosx-amd64/opmlcat cmds/opmlcat/opmlcat.go
+
+dist/raspbian-arm7:
+	env GOOS=linux GOARCH=arm GOARM=7 go build -o dist/raspberrypi-arm7/opmlsort cmds/opmlsort/opmlsort.go
+	env GOOS=linux GOARCH=arm GOARM=7 go build -o dist/raspberrypi-arm7/opmlcat cmds/opmlcat/opmlcat.go
+
+dist/raspbian-arm6:
+	env GOOS=linux GOARCH=arm GOARM=6 go build -o dist/raspberrypi-arm6/opmlsort cmds/opmlsort/opmlsort.go
+	env GOOS=linux GOARCH=arm GOARM=6 go build -o dist/raspberrypi-arm6/opmlcat cmds/opmlcat/opmlcat.go
+
+release: dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7 dist/raspbian-arm6
+	cp -v README.md dist/
+	cp -v INSTALL.md dist/
+	cp -v LICENSE dist/
+	zip -r $(PROJECT)-$(VERSION)-release.zip dist/*
+	

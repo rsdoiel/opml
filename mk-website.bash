@@ -1,5 +1,11 @@
 #!/bin/bash
 
+PROJECT=opml
+
+VERSION=$(grep -m 1 'Version =' opml.go | cut -d\" -f 2)
+
+MOTTO="$PROJECT: A OPML parser package and opml sort utility"
+
 function checkApp() {
     APP_NAME=$(which $1)
     if [ "$APP_NAME" = "" ] && [ ! -f "./bin/$1" ]; then
@@ -15,29 +21,31 @@ function softwareCheck() {
 }
 
 function MakePage () {
-    nav="$1"
-    content="$2"
-    html="$3"
+    motto="$1"
+    version="$2"
+    nav="$3"
+    content="$4"
+    html="$5"
     # Always use the latest compiled mkpage
     APP=$(which mkpage)
     if [ -f ./bin/mkpage ]; then
         APP="./bin/mkpage"
     fi
 
-    echo "Rendering $html from $content and $nav"
-    $APP -m \
-	"title=string:opml: A OPML parser package and opml sort utility" \
+    echo "Rendering $html"
+    $APP \
+	    "title=text:$motto" \
+        "version=text:$version" \
         "nav=$nav" \
         "content=$content" \
-	    "sitebuilt=string:Updated $(date)" \
-        "copyright=copyright.md" \
         page.tmpl > $html
 }
 
 echo "Checking necessary software is installed"
-softwareCheck mkpage
-echo "Generating website index.html with mkpage"
-MakePage nav.md README.md index.html
-echo "Generating install.html with mkpage"
-MakePage nav.md INSTALL.md install.html
-
+softwareCheck mkpage grep cut
+echo "Generating website index.html"
+MakePage "$MOTTO" "$PROJECT $VERSION" nav.md README.md index.html
+echo "Generating install.html"
+MakePage "$MOTTO" "$PROJECT $VERSION" nav.md INSTALL.md install.html
+echo "Generating license.html"
+MakePage "$MOTTO" "$PROJECT $VERSISON" nav.md "markdown:$(cat LICENSE)" license.html

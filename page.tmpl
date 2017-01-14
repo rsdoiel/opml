@@ -8,6 +8,7 @@
 <body>
     <header>
         <h1>{{.title}}</h1>
+        {{ with .version}}{{ . }}{{ end }}
     </header>
     <section>{{.content}}</section>
     <nav>{{.nav}}</nav>
