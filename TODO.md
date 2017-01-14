@@ -1,11 +1,10 @@
 
 ## Next
 
-+ Accept input from stdin (pipe or just plain old stdin)
++ Add a opml.Walk() function to package
 
 ## Someday, maybe
 
-+ opmlcat
 + omplfilter
     + might function something like Unix find command
 + ompledit - CRUD operations to individual Outline elements and element lists
