@@ -1,10 +1,10 @@
 #!/bin/bash
 
-PROJECT=opml
+PROJECT="$1"
 
-VERSION=$(grep -m 1 'Version =' opml.go | cut -d\" -f 2)
+MOTTO="$2"
 
-MOTTO="$PROJECT: A OPML parser package and opml sort utility"
+VERSION="$3"
 
 function checkApp() {
     APP_NAME=$(which $1)
@@ -41,6 +41,10 @@ function MakePage () {
         page.tmpl > $html
 }
 
+if [ "$PROJECT" = "" ] || [ "$MOTTO" = "" ] || [ "$VERSION" = "" ]; then
+    echo "USAGE: mk-website.absh PROJECT MOTTO VERSION"
+    exit 1
+fi
 echo "Checking necessary software is installed"
 softwareCheck mkpage grep cut
 echo "Generating website index.html"

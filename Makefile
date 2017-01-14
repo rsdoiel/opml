@@ -5,6 +5,8 @@
 
 PROJECT = opml
 
+MOTTO = "An OPML parser package plus opml cat and sort utilities"
+
 VERSION = $(shell grep -m 1 'Version =' opml.go | cut -d\" -f 2)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
@@ -44,7 +46,7 @@ clean:
 	if [ -f $(PROG)-$(VERSION)-release.zip ]; then /bin/rm $(PROG)-$(VERSION)-release.zip; fi
 
 website:
-	./mk-website.bash
+	./mk-website.bash $(PROJECT) $(MOTTO) $(VERSION)
 
 publish:
 	./publish.bash
