@@ -6,7 +6,7 @@ if [ "$WORKING_BRANCH" = "gh-pages" ]; then
     git commit -am "publishing to gh-pages branch"
     git push origin gh-pages
 else
-    echo "You're in $WORKING_BANCH branch"
+    echo "You're in $WORKING_BRANCH branch"
     echo "You need to pull in changes to the gh-pages branch to publish"
     read -p "Pull into gh-pages and publish? Y/N " YES_NO
     if [ "$YES_NO" = "Y" ] || [ "$YES_NO" = "y" ]; then
