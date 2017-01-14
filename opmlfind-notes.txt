@@ -1,5 +1,4 @@
-This pseudo documentation to think through how a _opmlfind_ might work. It is inspired by Unix
-_find_ command.
+This pseudo documentation to think through how a _opmlfind_ might work. It is inspired by Unix _find_ command. Should also consider how [jq](https://github.com/stedolan/jq) and [jid](https://github.com/simeji/jid) work with JSON data.
 
 # OPMLFIND
 
