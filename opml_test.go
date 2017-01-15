@@ -154,3 +154,8 @@ func TestFilterForTypes(t *testing.T) {
 	t.Errorf("Filter for types not implemented")
 	t.FailNow()
 }
+
+func TestWalk(t *testing.T) {
+	t.Errorf("Walk not implemented")
+	t.FailNow()
+}
