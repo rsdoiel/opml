@@ -303,38 +303,3 @@ func (o *OPML) WriteFile(s string, perm os.FileMode) error {
 	b, _ := xml.Marshal(o)
 	return ioutil.WriteFile(s, b, perm)
 }
-
-/*
-// WalkFunc is the interface for processing the outline
-type WalkFunc func(parent *Outline, children *Outline, err error) error
-
-// walk recursively descends into o, walling with ol
-func walk(parent *Outline, children *Outline, walkFn WalkFunc) error {
-	//FIXME: write decent and return code.
-	err := walkFn(parent, children, nil)
-	if err != nil {
-		return err
-	}
-	if ol.HasChildren() == true {
-		// For each child descend and apply walk function
-		for _, oChild := range ol {
-			//FIXME: descend
-			return fmt.Errorf("DEBUG Descent not implemented")
-		}
-	}
-	return nil
-}
-
-// Walk performs a depth first traversal of the OPML outline
-func Walk(o *OPML, walkFn WalkFunc) error {
-	//FIXME: Setup from root node then descend using walk
-	if o.Body == nil {
-		return fmt.Errorf("Body is nil")
-	}
-	parent := o.Body.Outline
-	if parent.HasChildren() == true {
-		return walk(parent, parent.OutlineList, walkFn)
-	}
-	return walk(parent, nil, walkFn)
-}
-*/
