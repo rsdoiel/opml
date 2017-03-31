@@ -1,6 +1,3 @@
-[![Go Report Card](http://goreportcard.com/badge/rsdoiel/opml)](http://goreportcard.com/report/rsdoiel/opml)
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-
 
 # opml
 
