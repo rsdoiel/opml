@@ -5,6 +5,7 @@
 
 ## Someday, maybe
 
++ opmlviewer - a cli/terminal based opml viewer
 + omplfilter
     + might function something like Unix find command
 + ompledit - CRUD operations to individual Outline elements and element lists

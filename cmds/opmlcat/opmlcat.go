@@ -18,8 +18,10 @@ import (
 	"path"
 
 	// My Packages
-	"github.com/rsdoiel/cli"
 	"github.com/rsdoiel/opml"
+
+	// Caltech Library packages
+	"github.com/caltechlibrary/cli"
 )
 
 var (
