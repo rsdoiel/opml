@@ -2,7 +2,7 @@
 ## Next
 
 + [ ] Add a opml.Walk() function to package
-+ [ ] Add support to process Frontier's OPML
++ [ ] Add support to process Frontier's fttb into OPML
 
 ## Someday, maybe
 
