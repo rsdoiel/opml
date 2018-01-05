@@ -18,7 +18,7 @@ opml
 <p>This is generalized instructions for a release.</p>
 
 <p>Compiled versions are available for Mac OS X (amd64 processor, macosx-amd64), Linux (amd64 process, linux-amd64),
-Windows (amd64 processor, windows-amd64) and Rapsberry Pi (arm7 processor, raspbian-arm7 or arm3 processor, raspbian-arm6)</p>
+Windows (amd64 processor, windows-amd64), Rapsberry Pi (arm7 processor, raspbian-arm7 or arm6 processor, raspbian-arm6) and Pine64 (arm64, linux-arm64)</p>
 
 <p>VERSION_NUMBER is a <a href="http://semver.org/">symantic version number</a> (e.g. v0.1.2)</p>
 
@@ -60,6 +60,11 @@ Windows (amd64 processor, windows-amd64) and Rapsberry Pi (arm7 processor, raspb
 <tr>
 <td>Raspbery Pi</td>
 <td>opml-VERSION_NUMBER-raspbian-arm6.zip</td>
+</tr>
+
+<tr>
+<td>Pine64</td>
+<td>opml-VERSION_NUMBER-linux-arm64.zip</td>
 </tr>
 </tbody>
 </table>
@@ -133,6 +138,8 @@ downloading the zip file.</p>
 
 <h3>Linux</h3>
 
+<p>(including linux-amd64 as well as linux-arm64)</p>
+
 <ol>
 <li>Download the zip file</li>
 <li>Unzip the zip file</li>
@@ -144,7 +151,7 @@ downloading the zip file.</p>
 downloading the zip file.</p>
 
 <pre><code class="language-shell">    cd Downloads/
-    unzip opml-*-linux-amd64.zip
+    unzip opml-*-linux-???64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
@@ -155,7 +162,7 @@ downloading the zip file.</p>
 
 <h3>Raspberry Pi</h3>
 
-<p>Released version is for a Raspberry Pi 2 or later use (i.e. requires ARM 7 support).</p>
+<p>Released version is for a Raspberry Pi 2 or later use (e.g. ARM 6 on Pi Zero or ARM 7 on the 3B).</p>
 
 <ol>
 <li>Download the zip file</li>
@@ -168,7 +175,7 @@ downloading the zip file.</p>
 downloading the zip file.</p>
 
 <pre><code class="language-shell">    cd Downloads/
-    unzip opml-*-raspbian-arm7.zip
+    unzip opml-*-raspbian-arm?.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH

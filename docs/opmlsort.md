@@ -31,4 +31,4 @@ opmlsort is a program that sorts the outline in an OPML document.
     opmlsort myfeeds.opml sorted-feeds.opml
 
 
-opmlsort v0.0.5-dev
+opmlsort v0.0.4

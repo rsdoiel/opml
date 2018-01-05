@@ -8,7 +8,7 @@
 This is generalized instructions for a release. 
 
 Compiled versions are available for Mac OS X (amd64 processor, macosx-amd64), Linux (amd64 process, linux-amd64), 
-Windows (amd64 processor, windows-amd64) and Rapsberry Pi (arm7 processor, raspbian-arm7 or arm3 processor, raspbian-arm6)
+Windows (amd64 processor, windows-amd64), Rapsberry Pi (arm7 processor, raspbian-arm7 or arm6 processor, raspbian-arm6) and Pine64 (arm64, linux-arm64)
 
 VERSION_NUMBER is a [symantic version number](http://semver.org/) (e.g. v0.1.2)
 
@@ -25,6 +25,7 @@ For all the released version go to the project page on Github and click latest r
 | Linux/Intel | opml-VERSION_NUMBER-linux-amd64.zip   |
 | Raspbery Pi | opml-VERSION_NUMBER-raspbian-arm7.zip |
 | Raspbery Pi | opml-VERSION_NUMBER-raspbian-arm6.zip |
+| Pine64      | opml-VERSION_NUMBER-linux-arm64.zip |
 
 
 ## The basic recipe
@@ -85,6 +86,8 @@ downloading the zip file.
 
 ### Linux 
 
+(including linux-amd64 as well as linux-arm64)
+
 1. Download the zip file
 2. Unzip the zip file
 3. Copy the executables to $HOME/bin (or a folder in your path)
@@ -95,7 +98,7 @@ downloading the zip file.
 
 ```shell
     cd Downloads/
-    unzip opml-*-linux-amd64.zip
+    unzip opml-*-linux-???64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH
@@ -107,7 +110,7 @@ downloading the zip file.
 
 ### Raspberry Pi
 
-Released version is for a Raspberry Pi 2 or later use (i.e. requires ARM 7 support).
+Released version is for a Raspberry Pi 2 or later use (e.g. ARM 6 on Pi Zero or ARM 7 on the 3B).
 
 1. Download the zip file
 2. Unzip the zip file
@@ -119,7 +122,7 @@ downloading the zip file.
 
 ```shell
     cd Downloads/
-    unzip opml-*-raspbian-arm7.zip
+    unzip opml-*-raspbian-arm?.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH

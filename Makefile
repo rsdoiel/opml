@@ -66,7 +66,7 @@ dist/linux-amd64:
 	env GOOS=linux GOARCH=amd64 go build -o dist/bin/omplsort cmd/opmlsort/opmlsort.go
 	env GOOS=linux GOARCH=amd64 go build -o dist/bin/omplcat cmd/opmlcat/opmlcat.go
 	env GOOS=linux GOARCH=amd64 go build -o dist/bin/ompl2json cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md docs bin
+	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md docs/* bin/*
 	rm -fR dist/bin
 
 dist/windows-amd64:
@@ -74,7 +74,7 @@ dist/windows-amd64:
 	env GOOS=windows GOARCH=amd64 go build -o dist/bin/opmlsort.exe cmd/opmlsort/opmlsort.go
 	env GOOS=windows GOARCH=amd64 go build -o dist/bin/opmlcat.exe cmd/opmlcat/opmlcat.go
 	env GOOS=windows GOARCH=amd64 go build -o dist/bin/opml2json.exe cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md docs bin
+	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md docs/* bin/*
 	rm -fR dist/bin
 
 dist/macosx-amd64:
