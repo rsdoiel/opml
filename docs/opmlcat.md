@@ -34,4 +34,4 @@ create a combined sorted opml file.
     opmlcat file1.opml file1.opml | opmlsort -o combined-sorted.opml
 
 
-opmlcat v0.0.5-dev
+opmlcat v0.0.4

@@ -56,7 +56,6 @@ save:
 clean:
 	if [ -d bin ]; then rm -fR bin; fi
 	if [ -d dist ]; then rm -fR dist; fi
-	if [ -f $(PROJECT)-$(VERSION)-release.zip ]; then rm $(PROJECT)-$(VERSION)-release.zip; fi
 
 website:
 	bash mk-website.bash $(PROJECT) $(MOTTO) $(VERSION)
@@ -109,16 +108,20 @@ dist/linux-arm64:
 	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-arm64.zip README.md LICENSE INSTSALL.md docs/* bin/*
 	rm -fR dist/bin
 
+generate_usage_pages: opmlsort opmlcat opml2json
+	bash gen-usage-pages.bash
+
 distribute_docs:
 	mkdir -p dist/docs
 	cp -v README.md dist/
 	cp -v LICENSE dist/
 	cp -v INSTALL.md dist/
+	bash gen-usage-pages.bash
 	cp -v docs/opmlsort.md dist/docs/
 	cp -v docs/opmlcat.md dist/docs/
 	cp -v docs/opml2json.md dist/docs/
 
-release: distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7 dist/raspbian-arm6 dist/linux-arm64
+release: generate_usage_pages distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7 dist/raspbian-arm6 dist/linux-arm64
 
 publish:
 	bash mk-website.bash
