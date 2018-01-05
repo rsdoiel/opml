@@ -12,18 +12,32 @@ Example using the ",any,attr" xml dsl
     	"fmt"
     )
     
+    type CustomAttrs []xml.Attr
+    
+    func (cattr CustomAttrs) MarshalJSON() ([]byte, error) {
+    	m := map[string]string{}
+    	for _, attr := range cattr {
+    		k := attr.Name.Local
+    		v := attr.Value
+    		if k != "" {
+    			m[k] = v
+    		}
+    	}
+    
+    	return json.Marshal(m)
+    }
+    
     func main() {
     	type Email struct {
-    		XMLName xml.Name
-    		Where   string `xml:"where,attr"`
-    		Addr    string
-    		Attrs   []xml.Attr `xml:",any,attr"`
+    		Where string `xml:"where,attr"`
+    		Addr  string
+    		Attrs CustomAttrs `xml:",any,attr" json:"custom_attrs,omitempty"`
     	}
     	type Address struct {
     		City, State string
     	}
     	type Result struct {
-    		XMLName xml.Name `xml:"Person"`
+    		XMLName xml.Name `xml:"Person" json:"-"`
     		Name    string   `xml:"FullName"`
     		Phone   string
     		Email   []Email
@@ -54,6 +68,12 @@ Example using the ",any,attr" xml dsl
     		fmt.Printf("error: %v", err)
     		return
     	}
+    	fmt.Printf("XMLName: %#v\n", v.XMLName)
+    	fmt.Printf("Name: %q\n", v.Name)
+    	fmt.Printf("Phone: %q\n", v.Phone)
+    	fmt.Printf("Email: %v\n", v.Email)
+    	fmt.Printf("Groups: %v\n", v.Groups)
+    	fmt.Printf("Address: %v\n", v.Address)
     	src, _ := json.MarshalIndent(v, "", " ")
     	fmt.Printf("json: %s", src)
     }
