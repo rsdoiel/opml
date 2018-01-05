@@ -66,7 +66,7 @@ dist/linux-amd64:
 	env GOOS=linux GOARCH=amd64 go build -o dist/bin/omplsort cmd/opmlsort/opmlsort.go
 	env GOOS=linux GOARCH=amd64 go build -o dist/bin/omplcat cmd/opmlcat/opmlcat.go
 	env GOOS=linux GOARCH=amd64 go build -o dist/bin/ompl2json cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md docs
+	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md docs bin
 	rm -fR dist/bin
 
 dist/windows-amd64:
@@ -74,7 +74,7 @@ dist/windows-amd64:
 	env GOOS=windows GOARCH=amd64 go build -o dist/bin/opmlsort.exe cmd/opmlsort/opmlsort.go
 	env GOOS=windows GOARCH=amd64 go build -o dist/bin/opmlcat.exe cmd/opmlcat/opmlcat.go
 	env GOOS=windows GOARCH=amd64 go build -o dist/bin/opml2json.exe cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md docs
+	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md docs bin
 	rm -fR dist/bin
 
 dist/macosx-amd64:
@@ -82,7 +82,7 @@ dist/macosx-amd64:
 	env GOOS=darwin GOARCH=amd64 go build -o dist/bin/opmlsort cmd/opmlsort/opmlsort.go
 	env GOOS=darwin GOARCH=amd64 go build -o dist/bin/opmlcat cmd/opmlcat/opmlcat.go
 	env GOOS=darwin GOARCH=amd64 go build -o dist/bin/opml2json cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-macosx-amd64.zip README.md LICENSE INSTALL.md docs
+	cd dist && zip -r $(PROJECT)-$(VERSION)-macosx-amd64.zip README.md LICENSE INSTALL.md docs/* bin/*
 	rm -fR dist/bin
 
 dist/raspbian-arm7:
@@ -90,7 +90,7 @@ dist/raspbian-arm7:
 	env GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/opmlsort cmd/opmlsort/opmlsort.go
 	env GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/opmlcat cmd/opmlcat/opmlcat.go
 	env GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/opml2json cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-raspbian-arm7.zip README.md LICENSE INSTALL.md docs
+	cd dist && zip -r $(PROJECT)-$(VERSION)-raspbian-arm7.zip README.md LICENSE INSTALL.md docs/* bin/*
 	rm -fR dist/bin
 
 dist/raspbian-arm6:
@@ -98,19 +98,27 @@ dist/raspbian-arm6:
 	env GOOS=linux GOARCH=arm GOARM=6 go build -o dist/bin/opmlsort cmd/opmlsort/opmlsort.go
 	env GOOS=linux GOARCH=arm GOARM=6 go build -o dist/bin/opmlcat cmd/opmlcat/opmlcat.go
 	env GOOS=linux GOARCH=arm GOARM=6 go build -o dist/bin/opml2json cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-raspbian-arm6.zip README.md LICENSE INSTALL.md docs
+	cd dist && zip -r $(PROJECT)-$(VERSION)-raspbian-arm6.zip README.md LICENSE INSTALL.md docs/* bin/*
+	rm -fR dist/bin
+
+dist/linux-arm64:
+	mkdir -p dist/bin
+	env GOOS=linux GOARCH=arm64 GOARM=6 go build -o dist/bin/opmlsort cmd/opmlsort/opmlsort.go
+	env GOOS=linux GOARCH=arm64 GOARM=6 go build -o dist/bin/opmlcat cmd/opmlcat/opmlcat.go
+	env GOOS=linux GOARCH=arm64 GOARM=6 go build -o dist/bin/opml2json cmd/opml2json/opml2json.go
+	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-arm64.zip README.md LICENSE INSTSALL.md docs/* bin/*
 	rm -fR dist/bin
 
 distribute_docs:
-	mkdir -p dist
+	mkdir -p dist/docs
 	cp -v README.md dist/
 	cp -v LICENSE dist/
 	cp -v INSTALL.md dist/
-	cp -v docs/opmlsort.md dist/
-	cp -v docs/opmlcat.md dist/
-	cp -v docs/opml2json.md dist/
+	cp -v docs/opmlsort.md dist/docs/
+	cp -v docs/opmlcat.md dist/docs/
+	cp -v docs/opml2json.md dist/docs/
 
-release: distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7 dist/linux-arm64
+release: distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7 dist/raspbian-arm6 dist/linux-arm64
 
 publish:
 	bash mk-website.bash
