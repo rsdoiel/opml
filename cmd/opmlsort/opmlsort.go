@@ -75,6 +75,13 @@ func main() {
 	app.Parse()
 	args := app.Args()
 
+	if len(args) > 0 {
+		inputFName = args[0]
+	}
+	if len(args) > 1 {
+		outputFName = args[1]
+	}
+
 	// Setup I/O
 	var err error
 

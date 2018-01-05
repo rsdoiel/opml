@@ -1,7 +1,7 @@
 
-+ [home](/)
++ [HOME](/)
 + [README](../)
-+ [LICENSE](../LICENSE)
++ [LICENSE](../license.html)
 + [Install](../install.html)
 + [Documentation](./)
 + [Github](https://github.com/rsdoiel/opml)

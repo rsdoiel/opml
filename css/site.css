@@ -80,16 +80,6 @@ nav ul li {
     margin: 0;
 }
 
-section, article {
-    display: block;
-    width: 90%;
-    height: auto;
-    padding: 1.24em;
-    margin-top: 1.24em;
-    margin-bottom: 0.24em;
-}
-
-
 img.rss-valid {
     display: inline;
     width: auto;
@@ -184,12 +174,178 @@ footer img {
 
 footer a, footer a:link, footer a:visited {
     font-weight: lighter;
-    /* caltech orange */
-    color: #FF6E1E; 
+    /* caltech orange * color: #FF6E1E; */
+    color: orange; /*forestgreen;*/
 }
 
 footer a:active, footer a:focus, footer a:hover {
     font-weight: lighter;
-    color: lightgreen;
+    color: forestgreen;
+}
+
+section, article {
+    display: block;
+    width: 90%;
+    height: auto;
+    padding: 1.24em;
+    margin-top: 1.24em;
+    margin-bottom: 0.24em;
+}
+
+/** CUT AND MERGE BELOW **/
+
+section p, article p {
+    width: 85%;
+    height: auto;
+}
+
+section h1, article h1 {
+    font-size: 1.32em;
+}
+
+section h2, article h2 {
+    font-size: 1.12em;
+    font-weight: italic;
+}
+
+section h3, article h3 {
+    font-size: 1em;
+    text-transform: uppercase;
+}
+
+section ul, article ul {
+    display: block;
+    list-style: inside;
+    list-style-type: circle;
+    margin: 0;
+    padding-left: 1.24em;
+}
+
+section ul ul, article ul ul {
+    list-style-type: disc;
+}
+
+section ul ul ul, article ul ul ul {
+    list-style-type: square;
+}
+
+section ul ul ul ul, article ul ul ul ul {
+    list-style-type: circle;
+}
+
+section ul ul ul ul ul, article ul ul ul ul ul {
+    list-style-type: disc;
+}
+
+section ul ul ul ul ul ul, article ul ul ul ul ul ul {
+    list-style-type: square;
+}
+
+
+section a:link, section a:visited, article a:link, article a:visited {
+    font-style: italic;
+    font-weight: normal;
+    color: forestgreen;
+}
+
+section a:active, section a:hover, section a:focus, article a:active, article a:hover, article a:focus,  {    
+    color: maroon;
+}
+
+table {
+    table-layout: fixed;
+    max-width: 60%;
+    border-collapse: collapse;
+    border: 2px solid black;
+    padding: 0;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    margin-left: 5em;
+    margin-right: 5em;
+}
+
+thead th:nth-child(1) {
+    width: auto;
+}
+
+thead th:nth-child(2) {
+    width: auto;
+}
+
+thead th:nth-child(3) {
+    width: auto;
+}
+
+thead th:nth-child(4) {
+    width: auto;
+}
+
+th, td {
+    padding-top: 0.24em;
+    padding-bottom: 0;
+    padding-left: 1em;
+    padding-right: 0;
+    text-align: center;
+}
+
+th {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 1em;
+    padding-right: 1em;
+    font-size: 0.9em;
+    text-align: center
+}
+
+td {
+    font-size: 0.8em;
+    text-align: left;
+}
+
+thead tr:nth-child(1) {
+    background-color: lightgrey;
+    border-bottom: 1px solid black;
+}
+
+tr {
+    border-bottom: 1px groove black;
+}
+
+tr:nth-child(even) {
+    background-color: lightgreen;
+}
+
+aside {
+     margin: 0;
+     border: 0;
+     padding-left: 1em;
+     position: relative;
+     display: inline-block;
+     text-align: right;
+}
+
+aside h2 {
+     font-size: 1em;
+     text-transform: uppercase;
+}
+
+aside h2 > a {
+     font-style: normal;
+}
+
+aside ul {
+     margin: 0;
+     padding: 0;
+     display: block;
+     list-style-type: none;
+}
+
+aside ul li {
+     font-size: 0.82em;
+}
+
+aside ul > ul {
+     padding-left: 1em;
+     font-size: 0.72em;
 }
 

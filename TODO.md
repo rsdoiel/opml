@@ -1,7 +1,6 @@
 
 ## Next
 
-+ [ ] Add support for custom attributes
 + [ ] Add a opml.Walk() function to package
 + [ ] Add support to process Frontier's fttb into OPML
     + See http://scripting.com/fatpages/about.html, http://scripting.com/fatpages/faq.html and http://scripting.com/fatpages/outline.html
@@ -17,4 +16,6 @@
 
 ## Completed
 
++ [x] Add opml2json 
++ [x] Add support for custom attributes
 + [x] Add Bash script to fetch Dave Winer's userland samples at http://scripting.com/misc/userlandSamples.zip

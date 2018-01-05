@@ -1,55 +1,55 @@
 #!/bin/bash
 
-PROJECT="$1"
-
-MOTTO="$2"
-
-VERSION="$3"
-
-function checkApp() {
-    APP_NAME=$(which $1)
-    if [ "$APP_NAME" = "" ] && [ ! -f "./bin/$1" ]; then
-        echo "Missing $APP_NAME"
-        exit 1
-    fi
+function cleanUpHTML() {
+	findfile -s ".html" . | while read P; do
+		rm "$P"
+	done
 }
 
-function softwareCheck() {
-    for APP_NAME in $@; do
-        checkApp $APP_NAME
-    done
+function FindNavMD() {
+	DNAME="$1"
+	if [ -f "${DNAME}/nav.md" ]; then
+		echo "${DNAME}/nav.md"
+		return
+	fi
+	DNAME=$(dirname "${DNAME}")
+	FindNavMD "${DNAME}"
 }
 
-function MakePage () {
-    motto="$1"
-    version="$2"
-    nav="$3"
-    content="$4"
-    html="$5"
-    # Always use the latest compiled mkpage
-    APP=$(which mkpage)
-    if [ -f ./bin/mkpage ]; then
-        APP="./bin/mkpage"
-    fi
+# Cleanup stale HTML files
+cleanUpHTML
 
-    echo "Rendering $html"
-    $APP \
-	    "title=text:$motto" \
-        "version=text:$version" \
-        "nav=$nav" \
-        "content=$content" \
-        page.tmpl > $html
-}
-
-if [ "$PROJECT" = "" ] || [ "$MOTTO" = "" ] || [ "$VERSION" = "" ]; then
-    echo "USAGE: mk-website.absh PROJECT MOTTO VERSION"
-    exit 1
+# Look through files and build new site
+TITLE=""
+if [[ "${1}" != "" ]]; then
+	TITLE="${1}"
 fi
-echo "Checking necessary software is installed"
-softwareCheck mkpage grep cut
-echo "Generating website index.html"
-MakePage "$MOTTO" "$PROJECT $VERSION" nav.md README.md index.html
-echo "Generating install.html"
-MakePage "$MOTTO" "$PROJECT $VERSION" nav.md INSTALL.md install.html
-echo "Generating license.html"
-MakePage "$MOTTO" "$PROJECT $VERSISON" nav.md "markdown:$(cat LICENSE)" license.html
+mkpage "nav=nav.md" "content=markdown:$(cat LICENSE)" page.tmpl >license.html
+git add license.html
+findfile -s ".md" . | while read P; do
+	DNAME=$(dirname "$P")
+	FNAME=$(basename "$P")
+	case "$FNAME" in
+	"INSTALL.md")
+		HTML_NAME="${DNAME}/install.html"
+		;;
+	"README.md")
+		if [ ! -f "${DNAME}/index.md" ]; then
+			HTML_NAME="${DNAME}/index.html"
+		else
+			HTML_NAME="${DNAME}/README.html"
+		fi
+		;;
+	*)
+		HTML_NAME=$(echo "$P" | sed -E 's/.md$/.html/g')
+		;;
+	esac
+	if [[ "${DNAME:0:4}" != "dist" && "${DNAME:0:4}" != "test" && "${FNAME}" != "nav.md" ]]; then
+		NAV=$(FindNavMD "$DNAME")
+		echo "Building $HTML_NAME from $DNAME/$FNAME and $NAV"
+		mkpage "title=text:${TITLE}" "nav=${NAV}" "content=${DNAME}/${FNAME}" page.tmpl >"${HTML_NAME}"
+		git add "${HTML_NAME}"
+	else
+		echo "Skipping $P"
+	fi
+done
