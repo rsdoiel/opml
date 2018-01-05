@@ -54,12 +54,12 @@ save:
 	git push origin $(BRANCH)
 
 clean:
-	if [ -d bin ]; then /bin/rm -fR bin; fi
-	if [ -d dist ]; then /bin/rm -fR dist; fi
-	if [ -f $(PROG)-$(VERSION)-release.zip ]; then /bin/rm $(PROG)-$(VERSION)-release.zip; fi
+	if [ -d bin ]; then rm -fR bin; fi
+	if [ -d dist ]; then rm -fR dist; fi
+	if [ -f $(PROJECT)-$(VERSION)-release.zip ]; then rm $(PROJECT)-$(VERSION)-release.zip; fi
 
 website:
-	./mk-website.bash $(PROJECT) $(MOTTO) $(VERSION)
+	bash mk-website.bash $(PROJECT) $(MOTTO) $(VERSION)
 
 dist/linux-amd64:
 	mkdir -p dist/bin
@@ -113,6 +113,6 @@ distribute_docs:
 release: distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7 dist/linux-arm64
 
 publish:
-	./mk-website.bash
-	./publish.bash
+	bash mk-website.bash
+	bash publish.bash
 

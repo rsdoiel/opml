@@ -20,7 +20,7 @@ import (
 
 const (
 	// Version of the ompl package, useful for display in cli tools
-	Version = "v0.0.4-dev"
+	Version = "v0.0.5-dev"
 
 	// The license for the ompl package, useful for display in cli tools
 	LicenseText = `
