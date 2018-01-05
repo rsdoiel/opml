@@ -19,7 +19,7 @@ ifeq ($(OS), Windows)
 endif
 
 
-CLI_NAMES = opmlsort opmlcat ompl2json
+CLI_NAMES = opmlsort opmlcat opml2json
 
 build: $(CLI_NAMES)
 

@@ -128,7 +128,7 @@ func main() {
 		src, err = json.MarshalIndent(o, "", "    ")
 		cli.ExitOnError(app.Eout, err, quiet)
 	} else {
-		src, err = json.Marshal(o, "", "    ")
+		src, err = json.Marshal(o)
 		cli.ExitOnError(app.Eout, err, quiet)
 	}
 
