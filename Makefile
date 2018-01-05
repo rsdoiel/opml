@@ -62,9 +62,9 @@ website:
 
 dist/linux-amd64:
 	mkdir -p dist/bin
-	env GOOS=linux GOARCH=amd64 go build -o dist/bin/omplsort cmd/opmlsort/opmlsort.go
-	env GOOS=linux GOARCH=amd64 go build -o dist/bin/omplcat cmd/opmlcat/opmlcat.go
-	env GOOS=linux GOARCH=amd64 go build -o dist/bin/ompl2json cmd/opml2json/opml2json.go
+	env GOOS=linux GOARCH=amd64 go build -o dist/bin/opmlsort cmd/opmlsort/opmlsort.go
+	env GOOS=linux GOARCH=amd64 go build -o dist/bin/opmlcat cmd/opmlcat/opmlcat.go
+	env GOOS=linux GOARCH=amd64 go build -o dist/bin/opml2json cmd/opml2json/opml2json.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md docs/* bin/*
 	rm -fR dist/bin
 
