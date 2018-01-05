@@ -11,11 +11,9 @@ package main
 
 import (
 	"encoding/xml"
-	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
-	"path"
 
 	// My Packages
 	"github.com/rsdoiel/opml"
@@ -25,17 +23,11 @@ import (
 )
 
 var (
-	usage = `USAGE: %s [OPTIONS] OPML_FILE [OPML_FILE ...]`
-
 	description = `
-SYNOPSIS
-
 %s concatenates one or more opml files as siblings to standard out.
 `
 
 	examples = `
-EXAMPLES
-
 This is an example of using %s and opmlsort together to 
 create a combined sorted opml file.
 
@@ -43,85 +35,113 @@ create a combined sorted opml file.
 `
 
 	// Standard options
-	showHelp    bool
-	showVersion bool
-	showLicense bool
+	showHelp             bool
+	showVersion          bool
+	showLicense          bool
+	showExamples         bool
+	inputFName           string
+	outputFName          string
+	quiet                bool
+	newLine              bool
+	generateMarkdownDocs bool
 
 	// Application options
 	prettyPrint bool
 )
 
-func init() {
+func main() {
+	app := cli.NewCli(opml.Version)
+	appName := app.AppName()
+
+	// Add non-option parameter docs
+	app.AddParams("OPML_FILE", "[OPML_FILE ...]")
+
+	// Add Help docs
+	app.AddHelp("description", []byte(fmt.Sprintf(description, appName)))
+	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName, appName)))
+
 	// Standard Options
-	flag.BoolVar(&showHelp, "h", false, "display help")
-	flag.BoolVar(&showHelp, "help", false, "display help")
-	flag.BoolVar(&showLicense, "l", false, "display license")
-	flag.BoolVar(&showLicense, "license", false, "display license")
-	flag.BoolVar(&showVersion, "v", false, "display version")
-	flag.BoolVar(&showVersion, "version", false, "display version")
+	app.BoolVar(&showHelp, "h,help", false, "display help")
+	app.BoolVar(&showLicense, "l,license", false, "display license")
+	app.BoolVar(&showVersion, "v,version", false, "display version")
+	app.BoolVar(&showExamples, "examples", false, "display examples")
+	app.BoolVar(&quiet, "quiet", false, "suppress error messages")
+	app.BoolVar(&newLine, "nl,newline", false, "add a trailing newline")
+	app.StringVar(&inputFName, "i,input", "", "set input filename")
+	app.StringVar(&outputFName, "o,output", "", "set output filename")
+	app.BoolVar(&generateMarkdownDocs, "generate-markdown-docs", false, "generate Markdown documentation")
 
 	// Application Options
-	flag.BoolVar(&prettyPrint, "p", false, "pretty print XML output")
-	flag.BoolVar(&prettyPrint, "pretty", false, "pretty print XML output")
-}
+	app.BoolVar(&prettyPrint, "p,pretty", false, "pretty print XML output")
 
-func main() {
-	appName := path.Base(os.Args[0])
-	flag.Parse()
-	args := flag.Args()
+	// Process environment and options
+	app.Parse()
+	args := app.Args()
 
-	cfg := cli.New(appName, "OPML",
-		fmt.Sprintf(opml.LicenseText, appName, opml.Version),
-		opml.Version)
-	cfg.UsageText = fmt.Sprintf(usage, appName)
-	cfg.DescriptionText = fmt.Sprintf(description, appName)
-	cfg.OptionsText = "OPTIONS\n"
-	cfg.ExampleText = fmt.Sprintf(examples, appName, appName)
+	// Setup I/O
+	var err error
 
-	if showHelp == true {
-		fmt.Println(cfg.Usage())
+	app.Eout = os.Stderr
+	app.In, err = cli.Open(inputFName, os.Stdin)
+	cli.ExitOnError(app.Eout, err, quiet)
+	defer cli.CloseFile(inputFName, app.In)
+
+	app.Out, err = cli.Create(outputFName, os.Stdout)
+	cli.ExitOnError(app.Eout, err, quiet)
+	defer cli.CloseFile(outputFName, app.Out)
+
+	// Handle options
+	if generateMarkdownDocs {
+		app.GenerateMarkdownDocs(os.Stdout)
 		os.Exit(0)
 	}
-	if showLicense == true {
-		fmt.Println(cfg.License())
+	if showHelp || showExamples {
+		if len(args) > 0 {
+			fmt.Fprintln(app.Out, app.Help(args...))
+		} else {
+			app.Usage(app.Out)
+		}
 		os.Exit(0)
 	}
-	if showVersion == true {
-		fmt.Println(cfg.Version())
+	if showLicense {
+		fmt.Fprintln(app.Out, app.License())
+		os.Exit(0)
+	}
+	if showVersion {
+		fmt.Fprintln(app.Out, app.Version())
 		os.Exit(0)
 	}
 
 	o := opml.New()
 	if len(args) == 0 {
-		src, err := ioutil.ReadAll(os.Stdin)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Missing input, %s", err)
-			os.Exit(1)
-		}
+		src, err := ioutil.ReadAll(app.In)
+		cli.ExitOnError(app.Eout, err, quiet)
+
 		o, err = opml.Parse(src)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Parse error on stdin, %s", err)
-			os.Exit(1)
-		}
+		cli.ExitOnError(app.Eout, err, quiet)
 	}
 
-	for _, iFName := range args {
+	for _, inputFName := range args {
 		next := opml.New()
-		err := next.ReadFile(iFName)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Can't read %s, %s\n", iFName, err)
-			os.Exit(1)
-		}
+		err := next.ReadFile(inputFName)
+		cli.ExitOnError(app.Eout, err, quiet)
+
 		err = o.Append(next)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "%s", err)
-			os.Exit(1)
-		}
+		cli.ExitOnError(app.Eout, err, quiet)
 	}
+
+	var src []byte
+
 	if prettyPrint == true {
-		src, _ := xml.MarshalIndent(o, "  ", "    ")
-		fmt.Printf("%s", src)
+		src, err = xml.MarshalIndent(o, "", "    ")
+		cli.ExitOnError(app.Eout, err, quiet)
 	} else {
-		fmt.Println(o.String())
+		src = []byte(o.String())
+	}
+
+	if newLine {
+		fmt.Fprintf(app.Out, "%s\n", src)
+	} else {
+		fmt.Fprintf(app.Out, "%s", src)
 	}
 }

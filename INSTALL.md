@@ -1,51 +1,152 @@
 
 # Installation
 
-*opmlsort* and *omplcat* are a command line programs run from a shell like Bash. You can find compiled
-version in the [releases](https://github.com/rsdoiel/opml/releases/latest) 
-in the Github repository in a zip file named like *opml-v0.0.3-release.zip*. Inside
-the zip file look for the directory that matches your computer and copy that someplace
-defined in your path (e.g. $HOME/bin). 
+*opml* is a collection of command line programs run from a shell like Bash. 
 
-Compiled versions are available for Mac OS X (amd64 processor), Linux (amd64), Windows
-(amd64) and Rapsberry Pi (both ARM6 and ARM7)
+## Compiled version
 
-## Mac OS X
+This is generalized instructions for a release. 
 
-1. Go to [github.com/rsdoiel/opml/releases/latest](https://github.com/rsdoiel/opml/releases/latest)
-2. Click on the green release zip file link and download
-3. Open a finder window and find the downloaded file and unzip
-4. Look in the unziped folder and find dist/macosx-amd64/opmlsort and dist/macosx-amd64/opmlcat
-5. Drag (or copy) the *opmlsort* and *opmlcat* to a "bin" directory in your path
-6. Open and "Terminal" and run `opmlsort -h` and `opmlcat -h`
+Compiled versions are available for Mac OS X (amd64 processor, macosx-amd64), Linux (amd64 process, linux-amd64), 
+Windows (amd64 processor, windows-amd64) and Rapsberry Pi (arm7 processor, raspbian-arm7 or arm3 processor, raspbian-arm6)
 
-## Windows
+VERSION_NUMBER is a [symantic version number](http://semver.org/) (e.g. v0.1.2)
 
-1. Go to [github.com/rsdoiel/opml/releases/latest](https://github.com/rsdoiel/opml/releases/latest)
-2. Click on the green zip file link and download
-3. Open the file manager find the downloaded file and unzip
-4. Look in the unziped folder and find dist/windows-amd64/opmlsort.exe and dist/windows-amd64/opmlcat.exe
-5. Drag (or copy) the *opmlsort.exe* *opmlcat.exe* to a "bin" directory in your path
-6. Open Bash and and run `opmlsort -h` and `opmlcat -h`
 
-## Linux
+For all the released version go to the project page on Github and click latest release
 
-1. Go to [github.com/rsdoiel/opml/releases/latest](https://github.com/rsdoiel/opml/releases/latest)
-2. Click on the green zip file link and download
-3. find the downloaded zip file and unzip
-4. In the unziped directory and find for dist/linux-amd64/opmlsort and dist/linux-amd64/opmlcat
-5. copy the *opmlsort* and *opmlcat* to a "bin" directory (e.g. cp ~/Downloads/opml-binary-release/dist/linux-amd64/opml* ~/bin/)
-6. From the shell prompt run `opmlsort -h` and `opmlcat -h`
+>    https://github.com/rsdoiel/opml/releases/latest
 
-## Raspberry Pi
 
-If you are using a Raspberry Pi 2 or later use the ARM7 binary, ARM6 is only for the first generaiton Raspberry Pi.
+| Platform    | Zip Filename                               |
+|-------------|--------------------------------------------|
+| Windows     | opml-VERSION_NUMBER-windows-amd64.zip |
+| Mac OS X    | opml-VERSION_NUMBER-macosx-amd64.zip  |
+| Linux/Intel | opml-VERSION_NUMBER-linux-amd64.zip   |
+| Raspbery Pi | opml-VERSION_NUMBER-raspbian-arm7.zip |
+| Raspbery Pi | opml-VERSION_NUMBER-raspbian-arm6.zip |
 
-1. Go to [github.com/rsdoiel/opml/releases/latest](https://github.com/rsdoiel/opml/releases/latest)
-2. Click on the green zip file link and download
-3. find the downloaded zip file and unzip
-4. In the unziped directory and find for dist/raspberrypi-arm7/opmlsort and dist/raspberrypi-arm7/opmlcat
-5. copy the *opmlsort* and *opmlcat* to a "bin" directory (e.g. cp ~/Downloads/opml-binary-release/dist/raspberrypi-arm7/opml* ~/bin/)
-    + if you are using an original Raspberry Pi you should copy the ARM6 version instead
-6. From the shell prompt run `opmlsort -h` and `opmlcat -h`
+
+## The basic recipe
+
++ Find the Zip file listed matching the architecture you're running and download it
+    + (e.g. if you're on a Windows 10 laptop/Surface with a amd64 style CPU you'd choose the Zip file with "windows-amd64" in the name).
++ Download the zip file and unzip the file.  
++ Copy the contents of the folder named "bin" to a folder that is in your path 
+    + (e.g. "$HOME/bin" is common).
++ Adjust your PATH if needed
+    + (e.g. `export PATH="$HOME/bin:$PATH"`)
++ Test
+
+
+### Mac OS X
+
+1. Download the zip file
+2. Unzip the zip file
+3. Copy the executables (per the general recipe above) to $HOME/bin (or a folder in your path)
+4. Make sure the new location in in our path
+5. Test
+
+Here's an example of the commands run in the Terminal App after downloading the 
+zip file.
+
+```shell
+    cd Downloads/
+    unzip opml-*-macosx-amd64.zip
+    mkdir -p $HOME/bin
+    cp -v bin/* $HOME/bin/
+    export PATH=$HOME/bin:$PATH
+    opmlsort -version
+    opmlcat -version
+    opml2json -version
+```
+
+### Windows
+
+1. Download the zip file
+2. Unzip the zip file
+3. Copy the executables (per the general recipe above) to $HOME/bin (or a folder in your path)
+4. Test
+
+Here's an example of the commands run in from the Bash shell on Windows 10 after
+downloading the zip file.
+
+```shell
+    cd Downloads/
+    unzip opml-*-windows-amd64.zip
+    mkdir -p $HOME/bin
+    cp -v bin/* $HOME/bin/
+    export PATH=$HOME/bin:$PATH
+    omplsort -version
+    omplcat -version
+    ompl2json -version
+```
+
+
+### Linux 
+
+1. Download the zip file
+2. Unzip the zip file
+3. Copy the executables to $HOME/bin (or a folder in your path)
+4. Test
+
+Here's an example of the commands run in from the Bash shell after
+downloading the zip file.
+
+```shell
+    cd Downloads/
+    unzip opml-*-linux-amd64.zip
+    mkdir -p $HOME/bin
+    cp -v bin/* $HOME/bin/
+    export PATH=$HOME/bin:$PATH
+    omplsort -version
+    omplcat -version
+    ompl2json -version
+```
+
+
+### Raspberry Pi
+
+Released version is for a Raspberry Pi 2 or later use (i.e. requires ARM 7 support).
+
+1. Download the zip file
+2. Unzip the zip file
+3. Copy the executables to $HOME/bin (or a folder in your path)
+4. Test
+
+Here's an example of the commands run in from the Bash shell after
+downloading the zip file.
+
+```shell
+    cd Downloads/
+    unzip opml-*-raspbian-arm7.zip
+    mkdir -p $HOME/bin
+    cp -v bin/* $HOME/bin/
+    export PATH=$HOME/bin:$PATH
+    omplsort -version
+    omplcat -version
+    ompl2json -version
+```
+
+
+## Compiling from source
+
+_opml_ is "go gettable".  Use the "go get" command to download the dependant packages
+as well as _opml_'s source code.
+
+```shell
+    go get -u github.com/rsdoiel/opml/...
+```
+
+Or clone the repstory and then compile
+
+```shell
+    cd
+    git clone https://github.com/caltechlibrary/cli src/github.com/caltechlibrary/cli
+    git clone https://github.com/rsdoiel/opml src/github.com/rsdoiel/opml
+    cd src/github.com/rsdoiel/opml
+    make
+    make test
+    make install
+```
 

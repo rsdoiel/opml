@@ -1,6 +1,6 @@
 //
-// opmlsort is a command line utility that can read in a OPML file, sort the outline
-// and return the results.
+// opml2json is a command line utility that can read in a OPML file and
+// return it in JSON format.
 //
 // @author R. S. Doiel, <rsdoiel@gmail.com>
 // copyright (c) 2016 all rights reserved.
@@ -10,7 +10,7 @@
 package main
 
 import (
-	"encoding/xml"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -24,11 +24,13 @@ import (
 
 var (
 	description = `
-%s is a program that sorts the outline in an OPML document.
+%s is a program that converts OPML's XML to JSON.
 `
 
 	examples = `
-    %s myfeeds.opml sorted-feeds.opml
+Convert *myfeeds.ompl* to *myfeeds.json*.
+
+    %s myfeeds.opml myfeeds.json
 `
 
 	// Standard options
@@ -123,10 +125,11 @@ func main() {
 
 	var src []byte
 	if prettyPrint {
-		src, err = xml.MarshalIndent(o, "", "    ")
+		src, err = json.MarshalIndent(o, "", "    ")
 		cli.ExitOnError(app.Eout, err, quiet)
 	} else {
-		src = []byte(o.String())
+		src, err = json.Marshal(o, "", "    ")
+		cli.ExitOnError(app.Eout, err, quiet)
 	}
 
 	if newLine {

@@ -9,6 +9,7 @@
 package opml
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -55,36 +56,54 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 `
 )
 
+type CustomAttrs []xml.Attr
+
+func (cattr CustomAttrs) MarshalJSON() ([]byte, error) {
+	m := map[string]string{}
+	for _, attr := range cattr {
+		k := attr.Name.Local
+		v := attr.Value
+		if k != "" {
+			m[k] = v
+		}
+	}
+
+	return json.Marshal(m)
+}
+
 // OPML is the root structure for holding an OPML document
 type OPML struct {
-	XMLName xml.Name `xml:"opml" json:"-"`
-	Version string   `xml:"version,attr" json:"version"`
-	Head    *Head    `xml:"head" json:"head"`
-	Body    *Body    `xml:"body" json:"body"`
+	XMLName   xml.Name    `xml:"opml" json:"-"`
+	Version   string      `xml:"version,attr" json:"version"`
+	Head      *Head       `xml:"head" json:"head"`
+	Body      *Body       `xml:"body" json:"body"`
+	OtherAttr CustomAttrs `xml:",any,attr" json:"other_attrs,omitempty"`
 }
 
 // Head holds the metadata for an OPML document
 type Head struct {
-	XMLName         xml.Name `json:"-"`
-	Title           string   `xml:"title,omitempty" json:"title,omitempty"`
-	Created         string   `xml:"dateCreated,omitempty" json:"dateCreated,omitempty"`   // RFC 882 date and time
-	Modified        string   `xml:"dateModified,omitempty" json:"dataModified,omitempty"` // RFC 882 date and time
-	OwnerName       string   `xml:"ownerName,omitempty" json:"ownerName,omitempty"`
-	OwnerEmail      string   `xml:"ownerEmail,omitempty" json:"ownerEmail,omitempty"`
-	OwnerID         string   `xml:"OwnerId,omitempty" json:"OwnerId,omitempty"`               // url
-	Docs            string   `xml:"docs,omitempty" json:"docs,omitempty"`                     // url
-	ExpansionState  string   `xml:"expansionState,omitempty" json:"expansionState,omitempty"` // array of numbers
-	VertScrollState int      `xml:"vertScrollState,omitempty" json:"vertScrollState,omitempty"`
-	WindowTop       int      `xml:"windowTop,omitempty" json:"windowTop,omitempty"`
-	WindowLeft      int      `xml:"windowLeft,omitempty" json:"windowLeft,omitempty"`
-	WindowBottom    int      `xml:"windowBottom,omitempty" json:"windowBottom,omitempty"`
-	WindowRight     int      `xml:"windowRight,omitempty" json:"windowRight,omitempty"`
+	XMLName         xml.Name    `json:"-"`
+	Title           string      `xml:"title,omitempty" json:"title,omitempty"`
+	Created         string      `xml:"dateCreated,omitempty" json:"dateCreated,omitempty"`   // RFC 882 date and time
+	Modified        string      `xml:"dateModified,omitempty" json:"dataModified,omitempty"` // RFC 882 date and time
+	OwnerName       string      `xml:"ownerName,omitempty" json:"ownerName,omitempty"`
+	OwnerEmail      string      `xml:"ownerEmail,omitempty" json:"ownerEmail,omitempty"`
+	OwnerID         string      `xml:"OwnerId,omitempty" json:"OwnerId,omitempty"`               // url
+	Docs            string      `xml:"docs,omitempty" json:"docs,omitempty"`                     // url
+	ExpansionState  string      `xml:"expansionState,omitempty" json:"expansionState,omitempty"` // array of numbers
+	VertScrollState int         `xml:"vertScrollState,omitempty" json:"vertScrollState,omitempty"`
+	WindowTop       int         `xml:"windowTop,omitempty" json:"windowTop,omitempty"`
+	WindowLeft      int         `xml:"windowLeft,omitempty" json:"windowLeft,omitempty"`
+	WindowBottom    int         `xml:"windowBottom,omitempty" json:"windowBottom,omitempty"`
+	WindowRight     int         `xml:"windowRight,omitempty" json:"windowRight,omitempty"`
+	OtherAttr       CustomAttrs `xml:",any,attr" json:"other_attrs,omitempty"`
 }
 
 // Body holds the outline for an OPML document
 type Body struct {
-	XMLName xml.Name    `json:"-"`
-	Outline OutlineList `xml:"outline" json:"outline"`
+	XMLName   xml.Name    `json:"-"`
+	Outline   OutlineList `xml:"outline" json:"outline"`
+	OtherAttr CustomAttrs `xml:",any,attr" json:"other_attrs,omitempty"`
 }
 
 // Outline is the primary element of an OPML document, may hold sub-Outlines
@@ -103,6 +122,7 @@ type Outline struct {
 	Version      string      `xml:"version,attr,omitempty" json:"version,omitempty"`
 	URL          string      `xml:"url,attr,omitempty" json:"url,omitempty"` // url
 	Outline      OutlineList `xml:"outline,omitempty" json:"outline,omitempty"`
+	OtherAttr    CustomAttrs `xml:",any,attr" json:"other_attrs,omitempty"`
 }
 
 type OutlineList []Outline
