@@ -30,7 +30,7 @@ import (
 
 const (
 	// Version of the ompl package, useful for display in cli tools
-	Version = "v0.0.5"
+	Version = "v0.0.6"
 
 	// The license for the ompl package, useful for display in cli tools
 	LicenseText = `
@@ -444,4 +444,14 @@ func (o *OPML) WriteFile(s string, perm os.FileMode) error {
 	}
 	b, _ := xml.Marshal(o)
 	return ioutil.WriteFile(s, b, perm)
+}
+
+// Marshal takes an *OPML struct and returns a byte array of source and error
+func Marshal(o *OPML) ([]byte, error) {
+	return xml.Marshal(o)
+}
+
+// Unmarshal takes an OPML XML representation and populates an OPML struct
+func Unmarshal(src []byte, o *OPML) error {
+	return xml.Unmarshal(src, &o)
 }
