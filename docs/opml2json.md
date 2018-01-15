@@ -33,4 +33,4 @@ Convert *myfeeds.ompl* to *myfeeds.json*.
     opml2json myfeeds.opml myfeeds.json
 
 
-opml2json v0.0.4
+opml2json v0.0.5

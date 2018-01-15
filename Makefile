@@ -11,6 +11,8 @@ VERSION = $(shell grep -m 1 'Version =' opml.go | cut -d\" -f 2)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
 
+PKGASSETS = $(shell which pkgassets)
+
 OS = $(shell uname)
 
 EXT = 

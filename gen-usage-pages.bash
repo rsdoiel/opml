@@ -7,4 +7,5 @@ fi
 ls -1 bin/ | while read ITEM; do
    D=$(basename "${ITEM}")
    "bin/${ITEM}" -generate-markdown-docs > "docs/${D}.md"
+   git add "docs/${D}.md"
 done

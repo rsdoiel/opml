@@ -2,7 +2,7 @@
 + [HOME](/)
 + [README](../)
 + [LICENSE](../license.html)
-+ [Install](../install.html)
-+ [Documentation](./)
++ [DOCUMENTATION](./)
++ [INSTALL](../install.html)
 + [Github](https://github.com/rsdoiel/opml)
 

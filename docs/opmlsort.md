@@ -12,6 +12,8 @@ opmlsort is a program that sorts the outline in an OPML document.
 ## OPTIONS
 
 ```
+    -T, -title                sort by title
+    -ci, -case-insensitive    case insensitive sort
     -examples                 display examples
     -generate-markdown-docs   generate Markdown documentation
     -h, -help                 display help
@@ -31,4 +33,4 @@ opmlsort is a program that sorts the outline in an OPML document.
     opmlsort myfeeds.opml sorted-feeds.opml
 
 
-opmlsort v0.0.4
+opmlsort v0.0.5
