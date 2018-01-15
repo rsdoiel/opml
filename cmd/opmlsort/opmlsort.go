@@ -43,7 +43,9 @@ var (
 	generateMarkdownDocs bool
 
 	// Application options
-	prettyPrint bool
+	prettyPrint     bool
+	caseInsensitive bool
+	byTitle         bool
 )
 
 func main() {
@@ -70,6 +72,8 @@ func main() {
 
 	// Application Options
 	app.BoolVar(&prettyPrint, "p,pretty", false, "pretty print XML output")
+	app.BoolVar(&caseInsensitive, "ci,case-insensitive", false, "case insensitive sort")
+	app.BoolVar(&byTitle, "T,title", true, "sort by title")
 
 	// Process environment and options
 	app.Parse()
@@ -126,7 +130,19 @@ func main() {
 		o, err = opml.Parse(src)
 		cli.ExitOnError(app.Eout, err, quiet)
 	}
-	o.Sort()
+	if byTitle {
+		if caseInsensitive {
+			o.SortTitleCaseInsensitive()
+		} else {
+			o.SortTitle()
+		}
+	} else {
+		if caseInsensitive {
+			o.SortCaseInsensitive()
+		} else {
+			o.Sort()
+		}
+	}
 
 	var src []byte
 	if prettyPrint {
@@ -136,6 +152,7 @@ func main() {
 		src = []byte(o.String())
 	}
 
+	fmt.Fprintln(app.Out, `<?xml version="1.0" encoding="UTF-8"?>`)
 	if newLine {
 		fmt.Fprintf(app.Out, "%s\n", src)
 	} else {

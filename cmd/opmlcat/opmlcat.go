@@ -139,6 +139,7 @@ func main() {
 		src = []byte(o.String())
 	}
 
+	fmt.Fprintln(app.Out, `<?xml version="1.0" encoding="UTF-8"?>`)
 	if newLine {
 		fmt.Fprintf(app.Out, "%s\n", src)
 	} else {

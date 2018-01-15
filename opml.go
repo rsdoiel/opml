@@ -20,7 +20,7 @@ import (
 
 const (
 	// Version of the ompl package, useful for display in cli tools
-	Version = "v0.0.4"
+	Version = "v0.0.5"
 
 	// The license for the ompl package, useful for display in cli tools
 	LicenseText = `
@@ -111,6 +111,7 @@ type Outline struct {
 	XMLName      xml.Name    `json:"-"`
 	Text         string      `xml:"text,attr" json:"text"`
 	Type         string      `xml:"type,attr,omitempty" json:"type,omitempty"`
+	Title        string      `xml:"title,attr,omitempty" json:"title,omitempty"`
 	IsComment    bool        `xml:"isComment,attr,omitempty" json:"isComment,omitempty"`
 	IsBreakpoint bool        `xml:"isBreakpoint,attr,omitempty" json:"isBreakpoint,omitempty"`
 	Created      string      `xml:"created,attr,omitempty" json:"created,omitempty"` // RFC 882 date and time
@@ -127,7 +128,10 @@ type Outline struct {
 
 type OutlineList []Outline
 type ByText []Outline
+type ByTextCaseInsensitive []Outline
 type ByType []Outline
+type ByTitle []Outline
+type ByTitleCaseInsensitive []Outline
 
 // New creates an empty OPML structure
 func New() *OPML {
@@ -246,10 +250,118 @@ func (a ByText) Sort() {
 	}
 }
 
+// Len for ByTextCaseInsensitive sort of Outline
+func (a ByTextCaseInsensitive) Len() int {
+	return len(a)
+}
+
+// Swap for ByTextCaseInsensitive sort of Outline
+func (a ByTextCaseInsensitive) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+// Less for ByTextCaseInsensitive sort of Outline
+func (a ByTextCaseInsensitive) Less(i, j int) bool {
+	return strings.Compare(strings.ToUpper(a[i].Text), strings.ToUpper(a[j].Text)) == -1
+}
+
+// Sort do a recursive sort over an outline
+func (a ByTextCaseInsensitive) Sort() {
+	if len(a) > 0 {
+		for _, item := range a {
+			if len(item.Outline) > 0 {
+				ol := ByTextCaseInsensitive(item.Outline)
+				ol.Sort()
+			}
+		}
+		sort.Sort(ByTextCaseInsensitive(a))
+	}
+}
+
+// Len for ByTitle sort of Outline
+func (a ByTitle) Len() int {
+	return len(a)
+}
+
+// Swap for ByTitle sort of Outline
+func (a ByTitle) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+// Less for ByTitle sort of Outline
+func (a ByTitle) Less(i, j int) bool {
+	return strings.Compare(a[i].Title, a[j].Title) == -1
+}
+
+// Sort do a recursive sort over an outline
+func (a ByTitle) Sort() {
+	if len(a) > 0 {
+		for _, item := range a {
+			if len(item.Outline) > 0 {
+				ol := ByTitle(item.Outline)
+				ol.Sort()
+			}
+		}
+		sort.Sort(ByTitle(a))
+	}
+}
+
+// Len for ByTitleCaseInsensitive sort of Outline
+func (a ByTitleCaseInsensitive) Len() int {
+	return len(a)
+}
+
+// Swap for ByTitleCaseInsensitive sort of Outline
+func (a ByTitleCaseInsensitive) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+// Less for ByTitleCaseInsensitive sort of Outline
+func (a ByTitleCaseInsensitive) Less(i, j int) bool {
+	return strings.Compare(strings.ToUpper(a[i].Title), strings.ToUpper(a[j].Title)) == -1
+}
+
+// Sort do a recursive sort over an outline
+func (a ByTitleCaseInsensitive) Sort() {
+	if len(a) > 0 {
+		for _, item := range a {
+			if len(item.Outline) > 0 {
+				ol := ByTitleCaseInsensitive(item.Outline)
+				ol.Sort()
+			}
+		}
+		sort.Sort(ByTitleCaseInsensitive(a))
+	}
+}
+
 // Sort do a recursive ByText sort of outline elements starting at the OPML struct.
 func (o *OPML) Sort() {
 	if o.Body != nil && len(o.Body.Outline) > 0 {
 		ol := ByText(o.Body.Outline)
+		ol.Sort()
+	}
+}
+
+// SortCaseInsensitive do a recursive ByTextCaseInsensitive sort of outline elements starting at the OPML struct.
+func (o *OPML) SortCaseInsensitive() {
+	if o.Body != nil && len(o.Body.Outline) > 0 {
+		ol := ByTextCaseInsensitive(o.Body.Outline)
+		ol.Sort()
+	}
+}
+
+// SortTitle do a recusive ByTitle sort of outline elements starting at the OMPL struct
+func (o *OPML) SortTitle() {
+	if o.Body != nil && len(o.Body.Outline) > 0 {
+		ol := ByTitle(o.Body.Outline)
+		ol.Sort()
+	}
+}
+
+// SortTitleCaseInsensitive do a recusive ByTitleCaseInsensitive sort of outline elements starting at the OMPL struct
+func (o *OPML) SortTitleCaseInsensitive() {
+	if o.Body != nil && len(o.Body.Outline) > 0 {
+		ol := ByTitleCaseInsensitive(o.Body.Outline)
 		ol.Sort()
 	}
 }
