@@ -45,6 +45,7 @@ test:
 install:
 	env CGO_ENABLED=0 GOBIN=$(HOME)/bin go install cmd/opmlsort/opmlsort.go
 	env CGO_ENABLES=0 GOBIN=$(HOME)/bin go install cmd/opmlcat/opmlcat.go
+	env CGO_ENABLES=0 GOBIN=$(HOME)/bin go install cmd/opml2json/opml2json.go
 
 status:
 	git status
