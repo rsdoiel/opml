@@ -59,15 +59,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 `
 
 	// Standard options
-	showHelp             bool
-	showVersion          bool
-	showLicense          bool
-	showExamples         bool
-	inputFName           string
-	outputFName          string
-	quiet                bool
-	newLine              bool
-	generateMarkdownDocs bool
+	showHelp         bool
+	showVersion      bool
+	showLicense      bool
+	showExamples     bool
+	inputFName       string
+	outputFName      string
+	quiet            bool
+	newLine          bool
+	generateMarkdown bool
+	generateManPage  bool
 
 	// Application options
 	prettyPrint     bool
@@ -96,7 +97,8 @@ func main() {
 	app.BoolVar(&newLine, "nl,newline", false, "add trailing newline")
 	app.StringVar(&inputFName, "i,input", "", "set input filename")
 	app.StringVar(&outputFName, "o,output", "", "set output filename")
-	app.BoolVar(&generateMarkdownDocs, "generate-markdown-docs", false, "generate Markdown documentation")
+	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate Markdown documentation")
+	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
 
 	// Application Options
 	app.BoolVar(&prettyPrint, "p,pretty", false, "pretty print XML output")
@@ -127,8 +129,12 @@ func main() {
 	defer cli.CloseFile(outputFName, app.Out)
 
 	// Handle options
-	if generateMarkdownDocs {
-		app.GenerateMarkdownDocs(os.Stdout)
+	if generateMarkdown {
+		app.GenerateMarkdown(os.Stdout)
+		os.Exit(0)
+	}
+	if generateManPage {
+		app.GenerateManPage(os.Stdout)
 		os.Exit(0)
 	}
 	if showHelp || showExamples {
