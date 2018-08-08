@@ -44,6 +44,13 @@ bin/opml2json$(EXT): opml.go cmd/opml2json/opml2json.go
 test:
 	go test
 
+man: build
+	mkdir -p man/man1
+	bin/opmlsort -generate-manpage | nroff -Tutf8 -man > man/man1/opmlsort.1
+	bin/opmlcat -generate-manpage | nroff -Tutf8 -man > man/man1/opmlcat.1
+	bin/opml2json -generate-manpage | nroff -Tutf8 -man > man/man1/opml2json.1
+
+
 install:
 	env CGO_ENABLED=0 GOBIN=$(HOME)/bin go install cmd/opmlsort/opmlsort.go
 	env CGO_ENABLES=0 GOBIN=$(HOME)/bin go install cmd/opmlcat/opmlcat.go
@@ -59,6 +66,7 @@ save:
 clean:
 	if [ -d bin ]; then rm -fR bin; fi
 	if [ -d dist ]; then rm -fR dist; fi
+	if [ -d man ]; then rm -fR man; fi
 
 website:
 	bash mk-website.bash $(PROJECT) $(MOTTO) $(VERSION)
