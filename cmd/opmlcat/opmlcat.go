@@ -82,7 +82,7 @@ func main() {
 	appName := app.AppName()
 
 	// Add non-option parameter docs
-	app.AddParams("OPML_FILE", "[OPML_FILE ...]")
+	app.SetParams("OPML_FILE", "[OPML_FILE ...]")
 
 	// Add Help docs
 	app.AddHelp("description", []byte(fmt.Sprintf(description, appName)))
