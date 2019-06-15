@@ -36,7 +36,7 @@ const (
 	LicenseText = `
 %s %s
 
-Copyright (c) 2016, R. S. Doiel
+Copyright (c) 2019, R. S. Doiel
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
