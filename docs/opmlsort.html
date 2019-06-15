@@ -1,14 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>opml</title>
+    <title></title>
     <link href="/css/site.css" rel="stylesheet" />
 </head>
 <body>
 <header>
-opml
+
 </header>
 <section>
+<h1>USAGE</h1>
+
+<pre><code>opmlsort [OPTIONS] INPUT_OPML_FILENAME [OUTPUT_OPML_FILENAME]
+</code></pre>
+
+<h2>DESCRIPTION</h2>
+
+<p>opmlsort is a program that sorts the outline in an OPML document.</p>
+
+<h2>OPTIONS</h2>
+
+<p>Below are a set of options available.</p>
+
+<pre><code>    -T, -title               sort by title
+    -ci, -case-insensitive   case insensitive sort
+    -examples                display examples
+    -generate-manpage        generate man page
+    -generate-markdown       generate Markdown documentation
+    -h, -help                display help
+    -i, -input               set input filename
+    -l, -license             display license
+    -nl, -newline            add trailing newline
+    -o, -output              set output filename
+    -p, -pretty              pretty print XML output
+    -quiet                   suppress error messages
+    -v, -version             display version
+</code></pre>
+
+<h2>EXAMPLES</h2>
+
+<pre><code>opmlsort myfeeds.opml sorted-feeds.opml
+</code></pre>
+
+<p>opmlsort v0.0.6</p>
 
 </section>
 <nav>
