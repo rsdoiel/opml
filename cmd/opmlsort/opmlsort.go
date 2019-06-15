@@ -4,7 +4,7 @@
 //
 // @author R. S. Doiel, <rsdoiel@gmail.com>
 //
-// Copyright (c) 2018, R. S. Doiel
+// Copyright (c) 2019, R. S. Doiel
 // All rights not granted herein are expressly reserved by R. S. Doiel.
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -44,7 +44,7 @@ var (
 	license = `
 %s %s
 
-Copyright (c) 2018, R. S. Doiel
+Copyright (c) 2019, R. S. Doiel
 All rights not granted herein are expressly reserved by R. S. Doiel.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

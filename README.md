@@ -9,7 +9,7 @@ It includes a demonstration command line utilities _opmlsort_ which sorts an OPM
 
 ## Copying
 
-The opml package is copyright (c) 2016 by R. S. Doiel and [released](https://github.com/rsdoiel/opml/releases/latest) under the [BSD 3-Clause license](license.html).
+The opml package is copyright (c) 2019 by R. S. Doiel and [released](https://github.com/rsdoiel/opml/releases/latest) under the [BSD 3-Clause license](license.html).
 
 ## References
 
