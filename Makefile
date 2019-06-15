@@ -7,7 +7,7 @@ PROJECT = opml
 
 MOTTO = "An OPML parser package plus opml cat and sort utilities"
 
-VERSION = $(shell grep -m 1 'Version =' opml.go | cut -d\` -f 2)
+VERSION = $(shell grep -m 1 'Version = `' opml.go | cut -d\` -f 2)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
 
@@ -32,14 +32,14 @@ opmlcat: bin/opmlcat$(EXT)
 opml2json: bin/opml2json$(EXT)
 
 bin/opmlsort$(EXT): opml.go cmd/opmlsort/opmlsort.go
-	env CGO_ENABLED=0 go build -o bin/opmlsort$(EXT) cmd/opmlsort/opmlsort.go
+	env go build -o bin/opmlsort$(EXT) cmd/opmlsort/opmlsort.go
 
 
 bin/opmlcat$(EXT): opml.go cmd/opmlcat/opmlcat.go
-	env CGO_ENABLED=0 go build -o bin/opmlcat$(EXT) cmd/opmlcat/opmlcat.go
+	env go build -o bin/opmlcat$(EXT) cmd/opmlcat/opmlcat.go
 
 bin/opml2json$(EXT): opml.go cmd/opml2json/opml2json.go
-	env CGO_ENABLED=0 go build -o bin/opml2json$(EXT) cmd/opml2json/opml2json.go
+	env go build -o bin/opml2json$(EXT) cmd/opml2json/opml2json.go
 
 test:
 	go test
