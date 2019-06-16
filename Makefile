@@ -5,8 +5,6 @@
 
 PROJECT = opml
 
-MOTTO = "An OPML parser package plus opml cat and sort utilities"
-
 VERSION = $(shell grep -m 1 'Version = `' opml.go | cut -d\` -f 2)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
@@ -69,7 +67,7 @@ clean:
 	if [ -d man ]; then rm -fR man; fi
 
 website:
-	bash mk-website.bash $(PROJECT) $(MOTTO) $(VERSION)
+	./mk-website.py
 
 dist/linux-amd64:
 	mkdir -p dist/bin
@@ -135,6 +133,6 @@ distribute_docs:
 release: generate_usage_pages distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7 dist/raspbian-arm6 dist/linux-arm64
 
 publish:
-	bash mk-website.bash
+	bash mk-website.py
 	bash publish.bash
 

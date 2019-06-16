@@ -1,3 +1,6 @@
+{
+    "title": "OPML, a Go package and cli"
+}
 
 # Installation
 
