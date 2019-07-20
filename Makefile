@@ -67,7 +67,7 @@ clean:
 	if [ -d man ]; then rm -fR man; fi
 
 website:
-	./mk-website.py
+	./mk_website.py
 
 dist/linux-amd64:
 	mkdir -p dist/bin
@@ -133,6 +133,6 @@ distribute_docs:
 release: generate_usage_pages distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macosx-amd64 dist/raspbian-arm7 dist/raspbian-arm6 dist/linux-arm64
 
 publish:
-	bash mk-website.py
+	bash mk_website.py
 	bash publish.bash
 
