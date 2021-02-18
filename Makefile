@@ -141,6 +141,6 @@ distribute_docs:
 release: generate_usage_pages distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macos-amd64 dist/macos-arm64 dist/raspbian-arm7 dist/raspbian-arm6 dist/linux-arm64
 
 publish:
-	bash mk_website.py
-	bash publish.bash
+	pyhthon3 mk_website.py
+	./publish.bash
 
