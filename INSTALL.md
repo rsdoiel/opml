@@ -2,15 +2,17 @@
     "title": "OPML, a Go package and cli"
 }
 
-# Installation
+Installation
+============
 
 *opml* is a collection of command line programs run from a shell like Bash. 
 
-## Compiled version
+Compiled version
+----------------
 
 This is generalized instructions for a release. 
 
-Compiled versions are available for Mac OS X (amd64 processor, macosx-amd64), Linux (amd64 process, linux-amd64), 
+Compiled versions are available for Mac OS X (amd64 and M1 processor, macos-amd64, macos-arm64), Linux (amd64 process, linux-amd64), 
 Windows (amd64 processor, windows-amd64), Rapsberry Pi (arm7 processor, raspbian-arm7 or arm6 processor, raspbian-arm6) and Pine64 (arm64, linux-arm64)
 
 VERSION_NUMBER is a [symantic version number](http://semver.org/) (e.g. v0.1.2)
@@ -24,7 +26,8 @@ For all the released version go to the project page on Github and click latest r
 | Platform    | Zip Filename                               |
 |-------------|--------------------------------------------|
 | Windows     | opml-VERSION_NUMBER-windows-amd64.zip |
-| Mac OS X    | opml-VERSION_NUMBER-macosx-amd64.zip  |
+| Mac OS X    | opml-VERSION_NUMBER-macos-amd64.zip  |
+| Mac OS X    | opml-VERSION_NUMBER-macos-arm64.zip  |
 | Linux/Intel | opml-VERSION_NUMBER-linux-amd64.zip   |
 | Raspbery Pi | opml-VERSION_NUMBER-raspbian-arm7.zip |
 | Raspbery Pi | opml-VERSION_NUMBER-raspbian-arm6.zip |
@@ -39,7 +42,7 @@ For all the released version go to the project page on Github and click latest r
 + Copy the contents of the folder named "bin" to a folder that is in your path 
     + (e.g. "$HOME/bin" is common).
 + Adjust your PATH if needed
-    + (e.g. `export PATH="$HOME/bin:$PATH"`)
+    + (e.g. export PATH="$HOME/bin:$PATH")
 + Test
 
 
@@ -56,7 +59,7 @@ zip file.
 
 ```shell
     cd Downloads/
-    unzip opml-*-macosx-amd64.zip
+    unzip opml-*-macos-amd64.zip
     mkdir -p $HOME/bin
     cp -v bin/* $HOME/bin/
     export PATH=$HOME/bin:$PATH

@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>…</title>
     <link href="/css/site.css" rel="stylesheet" />
 </head>
 <body>
+<header>
+…
+</header>
 <section>
-<h1>USAGE</h1>
-
-<pre><code>opmlcat [OPTIONS] OPML_FILE [OPML_FILE ...]
-</code></pre>
-
-<h2>DESCRIPTION</h2>
-
-<p>opmlcat concatenates one or more opml files as siblings to standard out.</p>
-
-<h2>OPTIONS</h2>
-
-<p>Below are a set of options available.</p>
-
+<h1 id="usage">
+USAGE
+</h1>
+<pre><code>opmlcat [OPTIONS] OPML_FILE [OPML_FILE ...]</code></pre>
+<h2 id="description">
+DESCRIPTION
+</h2>
+<p>
+opmlcat concatenates one or more opml files as siblings to standard out.
+</p>
+<h2 id="options">
+OPTIONS
+</h2>
+<p>
+Below are a set of options available.
+</p>
 <pre><code>    -examples            display examples
     -generate-manpage    generate man page
     -generate-markdown   generate Markdown documentation
@@ -28,33 +35,42 @@
     -o, -output          set output filename
     -p, -pretty          pretty print XML output
     -quiet               suppress error messages
-    -v, -version         display version
-</code></pre>
-
-<h2>EXAMPLES</h2>
-
-<p>This is an example of using opmlcat and opmlsort together to
-create a combined sorted opml file.</p>
-
-<pre><code>opmlcat file1.opml file1.opml | opmlsort -o combined-sorted.opml
-</code></pre>
-
-<p>opmlcat v0.0.6</p>
-
+    -v, -version         display version</code></pre>
+<h2 id="examples">
+EXAMPLES
+</h2>
+<p>
+This is an example of using opmlcat and opmlsort together to create a combined sorted opml file.
+</p>
+<pre><code>opmlcat file1.opml file1.opml | opmlsort -o combined-sorted.opml</code></pre>
+<p>
+opmlcat v0.0.6
+</p>
 </section>
 <nav>
 <ul>
-<li><a href="/">HOME</a></li>
-<li><a href="../">README</a></li>
-<li><a href="../license.html">LICENSE</a></li>
-<li><a href="./">DOCUMENTATION</a></li>
-<li><a href="../install.html">INSTALL</a></li>
-<li><a href="https://github.com/rsdoiel/opml">Github</a></li>
+<li>
+<a href="/">HOME</a>
+</li>
+<li>
+<a href="../">README</a>
+</li>
+<li>
+<a href="../license.html">LICENSE</a>
+</li>
+<li>
+<a href="./">DOCUMENTATION</a>
+</li>
+<li>
+<a href="../install.html">INSTALL</a>
+</li>
+<li>
+<a href="https://github.com/rsdoiel/opml">Github</a>
+</li>
 </ul>
-
 </nav>
 <footer>
-copyright (c) 2019 all rights reserved.
+copyright (c) 2021 all rights reserved.
 <a href="https://github.com/rsdoiel/opml/releases/latest">Released</a> under the <a href="http://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</a>
 </footer>
 </body>

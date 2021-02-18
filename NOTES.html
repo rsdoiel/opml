@@ -1,103 +1,120 @@
 <!DOCTYPE html>
 <html>
-<head><title>OPML, a Go package and cli</title>
+<head>
+    <title>OPML, a Go package and cli</title>
     <link href="/css/site.css" rel="stylesheet" />
 </head>
-<body><header>OPML, a Go package and cli</header>
+<body>
+<header>
+OPML, a Go package and cli
+</header>
 <section>
-<h1>misc notes</h1>
-
-<p>Example using the &ldquo;,any,attr&rdquo; xml dsl</p>
-
-<pre><code class="language-go">    package main
-    
-    import (
-    	&quot;encoding/json&quot;
-    	&quot;encoding/xml&quot;
-    	&quot;fmt&quot;
-    )
-    
-    type CustomAttrs []xml.Attr
-    
-    func (cattr CustomAttrs) MarshalJSON() ([]byte, error) {
-    	m := map[string]string{}
-    	for _, attr := range cattr {
-    		k := attr.Name.Local
-    		v := attr.Value
-    		if k != &quot;&quot; {
-    			m[k] = v
-    		}
-    	}
-    
-    	return json.Marshal(m)
-    }
-    
-    func main() {
-    	type Email struct {
-    		Where string `xml:&quot;where,attr&quot;`
-    		Addr  string
-    		Attrs CustomAttrs `xml:&quot;,any,attr&quot; json:&quot;custom_attrs,omitempty&quot;`
-    	}
-    	type Address struct {
-    		City, State string
-    	}
-    	type Result struct {
-    		XMLName xml.Name `xml:&quot;Person&quot; json:&quot;-&quot;`
-    		Name    string   `xml:&quot;FullName&quot;`
-    		Phone   string
-    		Email   []Email
-    		Groups  []string `xml:&quot;Group&gt;Value&quot;`
-    		Address
-    	}
-    	v := Result{Name: &quot;none&quot;, Phone: &quot;none&quot;}
-    	data := `
-    		&lt;Person&gt;
-    			&lt;FullName&gt;Grace R. Emlin&lt;/FullName&gt;
-    			&lt;Company&gt;Example Inc.&lt;/Company&gt;
-    			&lt;Email where=&quot;home&quot; preferred=&quot;true&quot; is_secret=&quot;true&quot;&gt;
-    				&lt;Addr&gt;gre@example.com&lt;/Addr&gt;
-    			&lt;/Email&gt;
-    			&lt;Email where='work' preferred=&quot;false&quot;&gt;
-    				&lt;Addr&gt;gre@work.com&lt;/Addr&gt;
-    			&lt;/Email&gt;
-    			&lt;Group&gt;
-    				&lt;Value&gt;Friends&lt;/Value&gt;
-    				&lt;Value&gt;Squash&lt;/Value&gt;
-    			&lt;/Group&gt;
-    			&lt;City&gt;Hanga Roa&lt;/City&gt;
-    			&lt;State&gt;Easter Island&lt;/State&gt;
-    		&lt;/Person&gt;
-    	`
-    	err := xml.Unmarshal([]byte(data), &amp;v)
-    	if err != nil {
-    		fmt.Printf(&quot;error: %v&quot;, err)
-    		return
-    	}
-    	fmt.Printf(&quot;XMLName: %#v\n&quot;, v.XMLName)
-    	fmt.Printf(&quot;Name: %q\n&quot;, v.Name)
-    	fmt.Printf(&quot;Phone: %q\n&quot;, v.Phone)
-    	fmt.Printf(&quot;Email: %v\n&quot;, v.Email)
-    	fmt.Printf(&quot;Groups: %v\n&quot;, v.Groups)
-    	fmt.Printf(&quot;Address: %v\n&quot;, v.Address)
-    	src, _ := json.MarshalIndent(v, &quot;&quot;, &quot; &quot;)
-    	fmt.Printf(&quot;json: %s&quot;, src)
-    }
-</code></pre>
-
+<h1 id="misc-notes">
+misc notes
+</h1>
+<p>
+Example using the “,any,attr” xml dsl
+</p>
+<div id="cb1" class="sourceCode">
+<pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1"></a>    <span class="kw">package</span> main</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    </span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="kw">import</span> (</span>
+<span id="cb1-4"><a href="#cb1-4"></a>        <span class="st">&quot;encoding/json&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>        <span class="st">&quot;encoding/xml&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>        <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>    )</span>
+<span id="cb1-8"><a href="#cb1-8"></a>    </span>
+<span id="cb1-9"><a href="#cb1-9"></a>    <span class="kw">type</span> CustomAttrs []xml.Attr</span>
+<span id="cb1-10"><a href="#cb1-10"></a>    </span>
+<span id="cb1-11"><a href="#cb1-11"></a>    <span class="kw">func</span> (cattr CustomAttrs) MarshalJSON() ([]<span class="dt">byte</span>, <span class="dt">error</span>) {</span>
+<span id="cb1-12"><a href="#cb1-12"></a>        m := <span class="kw">map</span>[<span class="dt">string</span>]<span class="dt">string</span>{}</span>
+<span id="cb1-13"><a href="#cb1-13"></a>        <span class="kw">for</span> _, attr := <span class="kw">range</span> cattr {</span>
+<span id="cb1-14"><a href="#cb1-14"></a>            k := attr.Name.Local</span>
+<span id="cb1-15"><a href="#cb1-15"></a>            v := attr.Value</span>
+<span id="cb1-16"><a href="#cb1-16"></a>            <span class="kw">if</span> k != <span class="st">&quot;&quot;</span> {</span>
+<span id="cb1-17"><a href="#cb1-17"></a>                m[k] = v</span>
+<span id="cb1-18"><a href="#cb1-18"></a>            }</span>
+<span id="cb1-19"><a href="#cb1-19"></a>        }</span>
+<span id="cb1-20"><a href="#cb1-20"></a>    </span>
+<span id="cb1-21"><a href="#cb1-21"></a>        <span class="kw">return</span> json.Marshal(m)</span>
+<span id="cb1-22"><a href="#cb1-22"></a>    }</span>
+<span id="cb1-23"><a href="#cb1-23"></a>    </span>
+<span id="cb1-24"><a href="#cb1-24"></a>    <span class="kw">func</span> main() {</span>
+<span id="cb1-25"><a href="#cb1-25"></a>        <span class="kw">type</span> Email <span class="kw">struct</span> {</span>
+<span id="cb1-26"><a href="#cb1-26"></a>            Where <span class="dt">string</span> <span class="st">`xml:&quot;where,attr&quot;`</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a>            Addr  <span class="dt">string</span></span>
+<span id="cb1-28"><a href="#cb1-28"></a>            Attrs CustomAttrs <span class="st">`xml:&quot;,any,attr&quot; json:&quot;custom_attrs,omitempty&quot;`</span></span>
+<span id="cb1-29"><a href="#cb1-29"></a>        }</span>
+<span id="cb1-30"><a href="#cb1-30"></a>        <span class="kw">type</span> Address <span class="kw">struct</span> {</span>
+<span id="cb1-31"><a href="#cb1-31"></a>            City, State <span class="dt">string</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>        }</span>
+<span id="cb1-33"><a href="#cb1-33"></a>        <span class="kw">type</span> Result <span class="kw">struct</span> {</span>
+<span id="cb1-34"><a href="#cb1-34"></a>            XMLName xml.Name <span class="st">`xml:&quot;Person&quot; json:&quot;-&quot;`</span></span>
+<span id="cb1-35"><a href="#cb1-35"></a>            Name    <span class="dt">string</span>   <span class="st">`xml:&quot;FullName&quot;`</span></span>
+<span id="cb1-36"><a href="#cb1-36"></a>            Phone   <span class="dt">string</span></span>
+<span id="cb1-37"><a href="#cb1-37"></a>            Email   []Email</span>
+<span id="cb1-38"><a href="#cb1-38"></a>            Groups  []<span class="dt">string</span> <span class="st">`xml:&quot;Group&gt;Value&quot;`</span></span>
+<span id="cb1-39"><a href="#cb1-39"></a>            Address</span>
+<span id="cb1-40"><a href="#cb1-40"></a>        }</span>
+<span id="cb1-41"><a href="#cb1-41"></a>        v := Result{Name: <span class="st">&quot;none&quot;</span>, Phone: <span class="st">&quot;none&quot;</span>}</span>
+<span id="cb1-42"><a href="#cb1-42"></a>        data := <span class="st">`</span></span>
+<span id="cb1-43"><a href="#cb1-43"></a><span class="st">            &lt;Person&gt;</span></span>
+<span id="cb1-44"><a href="#cb1-44"></a><span class="st">                &lt;FullName&gt;Grace R. Emlin&lt;/FullName&gt;</span></span>
+<span id="cb1-45"><a href="#cb1-45"></a><span class="st">                &lt;Company&gt;Example Inc.&lt;/Company&gt;</span></span>
+<span id="cb1-46"><a href="#cb1-46"></a><span class="st">                &lt;Email where=&quot;home&quot; preferred=&quot;true&quot; is_secret=&quot;true&quot;&gt;</span></span>
+<span id="cb1-47"><a href="#cb1-47"></a><span class="st">                    &lt;Addr&gt;gre@example.com&lt;/Addr&gt;</span></span>
+<span id="cb1-48"><a href="#cb1-48"></a><span class="st">                &lt;/Email&gt;</span></span>
+<span id="cb1-49"><a href="#cb1-49"></a><span class="st">                &lt;Email where=&#39;work&#39; preferred=&quot;false&quot;&gt;</span></span>
+<span id="cb1-50"><a href="#cb1-50"></a><span class="st">                    &lt;Addr&gt;gre@work.com&lt;/Addr&gt;</span></span>
+<span id="cb1-51"><a href="#cb1-51"></a><span class="st">                &lt;/Email&gt;</span></span>
+<span id="cb1-52"><a href="#cb1-52"></a><span class="st">                &lt;Group&gt;</span></span>
+<span id="cb1-53"><a href="#cb1-53"></a><span class="st">                    &lt;Value&gt;Friends&lt;/Value&gt;</span></span>
+<span id="cb1-54"><a href="#cb1-54"></a><span class="st">                    &lt;Value&gt;Squash&lt;/Value&gt;</span></span>
+<span id="cb1-55"><a href="#cb1-55"></a><span class="st">                &lt;/Group&gt;</span></span>
+<span id="cb1-56"><a href="#cb1-56"></a><span class="st">                &lt;City&gt;Hanga Roa&lt;/City&gt;</span></span>
+<span id="cb1-57"><a href="#cb1-57"></a><span class="st">                &lt;State&gt;Easter Island&lt;/State&gt;</span></span>
+<span id="cb1-58"><a href="#cb1-58"></a><span class="st">            &lt;/Person&gt;</span></span>
+<span id="cb1-59"><a href="#cb1-59"></a><span class="st">        `</span></span>
+<span id="cb1-60"><a href="#cb1-60"></a>        err := xml.Unmarshal([]<span class="dt">byte</span>(data), &amp;v)</span>
+<span id="cb1-61"><a href="#cb1-61"></a>        <span class="kw">if</span> err != <span class="ot">nil</span> {</span>
+<span id="cb1-62"><a href="#cb1-62"></a>            fmt.Printf(<span class="st">&quot;error: %v&quot;</span>, err)</span>
+<span id="cb1-63"><a href="#cb1-63"></a>            <span class="kw">return</span></span>
+<span id="cb1-64"><a href="#cb1-64"></a>        }</span>
+<span id="cb1-65"><a href="#cb1-65"></a>        fmt.Printf(<span class="st">&quot;XMLName: %#v</span><span class="ch">\n</span><span class="st">&quot;</span>, v.XMLName)</span>
+<span id="cb1-66"><a href="#cb1-66"></a>        fmt.Printf(<span class="st">&quot;Name: %q</span><span class="ch">\n</span><span class="st">&quot;</span>, v.Name)</span>
+<span id="cb1-67"><a href="#cb1-67"></a>        fmt.Printf(<span class="st">&quot;Phone: %q</span><span class="ch">\n</span><span class="st">&quot;</span>, v.Phone)</span>
+<span id="cb1-68"><a href="#cb1-68"></a>        fmt.Printf(<span class="st">&quot;Email: %v</span><span class="ch">\n</span><span class="st">&quot;</span>, v.Email)</span>
+<span id="cb1-69"><a href="#cb1-69"></a>        fmt.Printf(<span class="st">&quot;Groups: %v</span><span class="ch">\n</span><span class="st">&quot;</span>, v.Groups)</span>
+<span id="cb1-70"><a href="#cb1-70"></a>        fmt.Printf(<span class="st">&quot;Address: %v</span><span class="ch">\n</span><span class="st">&quot;</span>, v.Address)</span>
+<span id="cb1-71"><a href="#cb1-71"></a>        src, _ := json.MarshalIndent(v, <span class="st">&quot;&quot;</span>, <span class="st">&quot; &quot;</span>)</span>
+<span id="cb1-72"><a href="#cb1-72"></a>        fmt.Printf(<span class="st">&quot;json: %s&quot;</span>, src)</span>
+<span id="cb1-73"><a href="#cb1-73"></a>    }</span></code></pre>
+</div>
 </section>
 <nav>
 <ul>
-<li><a href="/">HOME</a></li>
-<li><a href="./">README</a></li>
-<li><a href="license.html">LICENSE</a></li>
-<li><a href="docs/">DOCUMENTATION</a></li>
-<li><a href="install.html">INSTALL</a></li>
-<li><a href="https://github.com/rsdoiel/opml">Github</a></li>
+<li>
+<a href="/">HOME</a>
+</li>
+<li>
+<a href="./">README</a>
+</li>
+<li>
+<a href="license.html">LICENSE</a>
+</li>
+<li>
+<a href="docs/">DOCUMENTATION</a>
+</li>
+<li>
+<a href="install.html">INSTALL</a>
+</li>
+<li>
+<a href="https://github.com/rsdoiel/opml">Github</a>
+</li>
 </ul>
-
 </nav>
 <footer>
-copyright (c) 2019 all rights reserved.
+copyright (c) 2021 all rights reserved.
 <a href="https://github.com/rsdoiel/opml/releases/latest">Released</a> under the <a href="http://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</a>
 </footer>
 </body>
