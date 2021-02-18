@@ -7,7 +7,6 @@ USAGE
 DESCRIPTION
 -----------
 
-
 opml2json is a program that converts OPML's XML to JSON.
 
 
