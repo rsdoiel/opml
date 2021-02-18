@@ -1,15 +1,18 @@
 
-# USAGE
+USAGE
+=====
 
 	opmlsort [OPTIONS] INPUT_OPML_FILENAME [OUTPUT_OPML_FILENAME]
 
-## DESCRIPTION
+DESCRIPTION
+-----------
 
 
 opmlsort is a program that sorts the outline in an OPML document.
 
 
-## OPTIONS
+OPTIONS
+-------
 
 Below are a set of options available.
 
@@ -30,10 +33,10 @@ Below are a set of options available.
 ```
 
 
-## EXAMPLES
+EXAMPLES
+--------
 
 
     opmlsort myfeeds.opml sorted-feeds.opml
 
 
-opmlsort v0.0.6

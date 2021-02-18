@@ -1,15 +1,18 @@
 
-# USAGE
+USAGE
+=====
 
 	opml2json [OPTIONS] INPUT_OPML_FILENAME [OUTPUT_OPML_FILENAME]
 
-## DESCRIPTION
+DESCRIPTION
+-----------
 
 
 opml2json is a program that converts OPML's XML to JSON.
 
 
-## OPTIONS
+OPTIONS
+-------
 
 Below are a set of options available.
 
@@ -28,7 +31,8 @@ Below are a set of options available.
 ```
 
 
-## EXAMPLES
+EXAMPLES
+--------
 
 
 Convert *myfeeds.ompl* to *myfeeds.json*.
@@ -36,4 +40,3 @@ Convert *myfeeds.ompl* to *myfeeds.json*.
     opml2json myfeeds.opml myfeeds.json
 
 
-opml2json v0.0.6

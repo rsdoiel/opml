@@ -1,15 +1,18 @@
 
-# USAGE
+USAGE
+=====
 
 	opmlcat [OPTIONS] OPML_FILE [OPML_FILE ...]
 
-## DESCRIPTION
+DESCRIPTION
+-----------
 
 
 opmlcat concatenates one or more opml files as siblings to standard out.
 
 
-## OPTIONS
+OPTIONS
+-------
 
 Below are a set of options available.
 
@@ -28,7 +31,8 @@ Below are a set of options available.
 ```
 
 
-## EXAMPLES
+EXAMPLES
+--------
 
 
 This is an example of using opmlcat and opmlsort together to 
@@ -37,4 +41,3 @@ create a combined sorted opml file.
     opmlcat file1.opml file1.opml | opmlsort -o combined-sorted.opml
 
 
-opmlcat v0.0.6

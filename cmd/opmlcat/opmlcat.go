@@ -4,7 +4,7 @@
 //
 // @author R. S. Doiel, <rsdoiel@gmail.com>
 //
-// Copyright (c) 2019, R. S. Doiel
+// Copyright (c) 2021, R. S. Doiel
 // All rights not granted herein are expressly reserved by R. S. Doiel.
 //
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -47,7 +47,7 @@ create a combined sorted opml file.
 	license = `
 %s %s
 
-Copyright (c) 2019, R. S. Doiel
+Copyright (c) 2021, R. S. Doiel
 All rights not granted herein are expressly reserved by R. S. Doiel.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

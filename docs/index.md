@@ -1,5 +1,6 @@
 
-# opml project
+opml project
+============
 
 Currently three command line tools are available with the 
 _opml_ project.
