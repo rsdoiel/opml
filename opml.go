@@ -30,13 +30,13 @@ import (
 
 const (
 	// Version of the ompl package, useful for display in cli tools
-	Version = `v0.0.6`
+	Version = `v0.0.7`
 
 	// The license for the ompl package, useful for display in cli tools
 	LicenseText = `
 %s %s
 
-Copyright (c) 2019, R. S. Doiel
+Copyright (c) 2021, R. S. Doiel
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
