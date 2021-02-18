@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {{- with .front_matter -}}<title>{{- .title -}}</title>{{- end }}
+    ${if(front_matter)}<title>${title}</title>${endif}
     <link href="/css/site.css" rel="stylesheet" />
 </head>
 <body>
-{{- with .front_matter -}}
+${if(front_matter)}
 <header>
-{{- .title -}}
+${title}
 </header>
-{{- end }}
+${endif}
 <section>
-{{ .content }}
+${content}
 </section>
 <nav>
-{{ .nav }}
+${nav}
 </nav>
 <footer>
-copyright (c) 2019 all rights reserved.
+copyright (c) 2021 all rights reserved.
 <a href="https://github.com/rsdoiel/opml/releases/latest">Released</a> under the <a href="http://opensource.org/licenses/BSD-3-Clause">BSD 3-Clause License</a>
 </footer>
 </body>
