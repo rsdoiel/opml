@@ -6,6 +6,6 @@ if [ ! -d bin ]; then
 fi
 ls -1 bin/ | while read ITEM; do
    D=$(basename "${ITEM}")
-   "bin/${ITEM}" -generate-markdown > "docs/${D}.md"
+   #"bin/${ITEM}" -generate-markdown > "docs/${D}.md"
    git add "docs/${D}.md"
 done

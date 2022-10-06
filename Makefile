@@ -9,15 +9,17 @@ VERSION = $(shell grep -m 1 'Version = `' opml.go | cut -d\` -f 2)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
 
+#PREFIX = /usr/local/bin
+PREFIX = $(HOME)
+
 PKGASSETS = $(shell which pkgassets)
 
 OS = $(shell uname)
 
-EXT = 
+EXT =
 ifeq ($(OS), Windows)
 	EXT = .exe
 endif
-
 
 CLI_NAMES = opmlsort opmlcat opml2json
 
@@ -43,16 +45,17 @@ test:
 	go test
 
 man: build
-	mkdir -p man/man1
-	bin/opmlsort -generate-manpage | nroff -Tutf8 -man > man/man1/opmlsort.1
-	bin/opmlcat -generate-manpage | nroff -Tutf8 -man > man/man1/opmlcat.1
-	bin/opml2json -generate-manpage | nroff -Tutf8 -man > man/man1/opml2json.1
+	@mkdir -p man/man1
+	@for FNAME in $(CLI_NAMES); do pandoc docs/$$FNAME.md -s --from markdown --to man > man/man1/$$FNAME.1; done
 
 
-install:
-	env GOBIN=$(HOME)/bin go install cmd/opmlsort/opmlsort.go
-	env GOBIN=$(HOME)/bin go install cmd/opmlcat/opmlcat.go
-	env GOBIN=$(HOME)/bin go install cmd/opml2json/opml2json.go
+install: build man
+	@for FNAME in $(CLI_NAMES); do mv bin/$$FNAME $(PREFIX)/bin/; done
+	@for FNAME in $(CLI_NAMES); do cp man/man1/$$FNAME.1 $(PREFIX)/man/man1/; done
+
+uninstall: .FORCE
+	@for FNAME in $(CLI_NAMES); do if [ -f $(PREFIX)/bin/$$FNAME$(EXT) ]; then rm $(PREFIX)/bin/$$FNAME$(EXT); fi; done
+	@for FNAME in $(CLI_NAMES); do if [ -f $(PREFIX)/man/man1/$$FNAME.1 ]; then rm $(PREFIX)/man/man1/$$FNAME.1; fi; done
 
 status:
 	git status
@@ -143,3 +146,5 @@ release: generate_usage_pages distribute_docs dist/linux-amd64 dist/windows-amd6
 publish: website
 	./publish.bash
 
+
+.FORCE:
