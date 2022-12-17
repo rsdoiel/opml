@@ -63,6 +63,7 @@ test:
 man: .FORCE 
 	@mkdir -p man/man1
 	@for FNAME in $(MANPAGES); do pandoc $$FNAME.md -s --from markdown --to man >./man/man1/$$FNAME; done
+	@git add man
 
 
 install: build man
@@ -90,7 +91,7 @@ website: about.html
 
 dist/linux-amd64:
 	@mkdir -p dist/bin
-	@for FNAME in $(PROGRAMS); do env GOOS=linux GOARCH=amd64 go build -o dist/bin/$$FNAME cmd/$$FNAME/*.go: done
+	@for FNAME in $(PROGRAMS); do env GOOS=windows GOARCH=amd64 go build -o dist/bin/$$FNAME cmd/$$FNAME/*.go; done
 	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
