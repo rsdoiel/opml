@@ -1,11 +1,11 @@
 {
     "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
     "@type": "SoftwareSourceCode",
-    "description": "A library for working with OPML XML files.",
+    "description": "A library for working with OPML XML files and example command line programs.",
     "name": "opml",
     "codeRepository": "https://github.com/rsdoiel/opml",
     "issueTracker": "https://github.com/rsdoiel/opml/issues",
-    "license": "https://rsdoiel.github.io/opml/license.html",
+    "license": "https://rsdoiel.github.io/opml/LICENSE",
     "version": "0.0.8",
     "author": [
         {
@@ -18,11 +18,20 @@
     ],
     "developmentStatus": "wip",
     "keywords": [
-        "Github",
+		"xml",
+		"opml",
         "text markup",
         "list markup"
     ],
-    "maintainer": "https://orcid.org/0000-0003-0900-6903",
+    "maintainer": [
+        {
+            "@type": "Person",
+            "givenName": "Robert",
+            "familyName": "Doiel",
+            "email": "rsdoiel@gmail.com",
+            "@id": "https://orcid.org/0000-0003-0900-6903"
+        }
+	],
     "programmingLanguage": [
         "Go"
     ]
