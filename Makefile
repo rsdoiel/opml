@@ -5,7 +5,7 @@
 
 PROJECT = opml
 
-VERSION = $(shell grep -m 1 'Version = `' opml.go | cut -d\` -f 2)
+VERSION = $(shell grep '"version":' codemeta.json | cut -d\"  -f 4)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
 
@@ -14,6 +14,12 @@ PREFIX = $(HOME)
 
 PKGASSETS = $(shell which pkgassets)
 
+PROGRAMS = $(shell ls -1 cmd)
+
+MANPAGES = opmlsort.1 opml2json.1 opmlcat.1 opml2urls.1 urls2opml.1
+
+PANDOC = $(shell which pandoc)
+
 OS = $(shell uname)
 
 EXT =
@@ -21,37 +27,45 @@ ifeq ($(OS), Windows)
 	EXT = .exe
 endif
 
-CLI_NAMES = opmlsort opmlcat opml2json
+build: version.go $(PROGRAMS) CITATION.cff
 
-build: $(CLI_NAMES)
+version.go: .FORCE
+	@echo "package $(PROJECT)" >version.go
+	@echo '' >>version.go
+	@echo '// Version of package' >>version.go
+	@echo 'const (' >>version.go
+	@echo '    Version = `$(VERSION)`' >>version.go
+	@echo '' >>version.go
+	@echo '    LicenseText = `' >>version.go
+	@cat LICENSE >>version.go
+	@echo '`' >>version.go
+	@echo ')' >>version.go
+	@echo '' >>version.go
+	@git add version.go
 
-opmlsort: bin/opmlsort$(EXT)
+about.md: codemeta.json .FORCE
+	cat codemeta.json | sed -E   's/"@context"/"at__context"/g;s/"@type"/"at__type"/g;s/"@id"/"at__id"/g' >_codemeta.json
+	if [ -f $(PANDOC) ]; then echo "" | $(PANDOC) --metadata title="About $(PROJECT)" --metadata-file=_codemeta.json --template=codemeta-md.tmpl >about.md; fi
 
-opmlcat: bin/opmlcat$(EXT)
+CITATION.cff: codemeta.json .FORCE
+	cat codemeta.json | sed -E   's/"@context"/"at__context"/g;s/"@type"/"at__type"/g;s/"@id"/"at__id"/g' >_codemeta.json
+	if [ -f $(PANDOC) ]; then echo "" | $(PANDOC) --metadata title="Cite $(PROJECT)" --metadata-file=_codemeta.json --template=codemeta-cff.tmpl >CITATION.cff; fi
 
-opml2json: bin/opml2json$(EXT)
-
-bin/opmlsort$(EXT): opml.go cmd/opmlsort/opmlsort.go
-	env go build -o bin/opmlsort$(EXT) cmd/opmlsort/opmlsort.go
-
-
-bin/opmlcat$(EXT): opml.go cmd/opmlcat/opmlcat.go
-	env go build -o bin/opmlcat$(EXT) cmd/opmlcat/opmlcat.go
-
-bin/opml2json$(EXT): opml.go cmd/opml2json/opml2json.go
-	env go build -o bin/opml2json$(EXT) cmd/opml2json/opml2json.go
+$(PROGRAMS): cmd/*/*.go $(PACKAGE)
+	@mkdir -p bin
+	go build -o bin/$@$(EXT) cmd/$@/*.go
 
 test:
 	go test
 
-man: build
+man: .FORCE 
 	@mkdir -p man/man1
-	@for FNAME in $(CLI_NAMES); do pandoc docs/$$FNAME.md -s --from markdown --to man > man/man1/$$FNAME.1; done
+	@for FNAME in $(MANPAGES); do pandoc $$FNAME.md -s --from markdown --to man >./man/man1/$$FNAME; done
 
 
 install: build man
-	@for FNAME in $(CLI_NAMES); do mv bin/$$FNAME $(PREFIX)/bin/; done
-	@for FNAME in $(CLI_NAMES); do cp man/man1/$$FNAME.1 $(PREFIX)/man/man1/; done
+	@for FNAME in $(PROGRAMS); do mv bin/$$FNAME $(PREFIX)/bin/; done
+	@for FNAME in $(MANPAGES); do cp ./man/man1/$$FNAME $(PREFIX)/man/man1/; done
 
 uninstall: .FORCE
 	@for FNAME in $(CLI_NAMES); do if [ -f $(PREFIX)/bin/$$FNAME$(EXT) ]; then rm $(PREFIX)/bin/$$FNAME$(EXT); fi; done
@@ -70,7 +84,7 @@ clean:
 	if [ -d man ]; then rm -fR man; fi
 
 website:
-	./mk_website.py
+	make -f website.mak
 
 dist/linux-amd64:
 	mkdir -p dist/bin
@@ -86,6 +100,14 @@ dist/windows-amd64:
 	env GOOS=windows GOARCH=amd64 go build -o dist/bin/opmlcat.exe cmd/opmlcat/opmlcat.go
 	env GOOS=windows GOARCH=amd64 go build -o dist/bin/opml2json.exe cmd/opml2json/opml2json.go
 	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md docs/* bin/*
+	rm -fR dist/bin
+
+dist/windows-arm64:
+	mkdir -p dist/bin
+	env GOOS=windows GOARCH=arm64 go build -o dist/bin/opmlsort.exe cmd/opmlsort/opmlsort.go
+	env GOOS=windows GOARCH=arm64 go build -o dist/bin/opmlcat.exe cmd/opmlcat/opmlcat.go
+	env GOOS=windows GOARCH=arm64 go build -o dist/bin/opml2json.exe cmd/opml2json/opml2json.go
+	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-arm64.zip README.md LICENSE INSTALL.md docs/* bin/*
 	rm -fR dist/bin
 
 dist/macos-amd64:

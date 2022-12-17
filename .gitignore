@@ -30,3 +30,4 @@ bin/*
 dist/*
 *.zip
 scratch/*
+_codemeta.json

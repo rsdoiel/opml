@@ -28,44 +28,6 @@ import (
 	"strings"
 )
 
-const (
-	// Version of the ompl package, useful for display in cli tools
-	Version = `v0.0.7`
-
-	// The license for the ompl package, useful for display in cli tools
-	LicenseText = `
-%s %s
-
-Copyright (c) 2021, R. S. Doiel
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-* Neither the name of opml nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-`
-)
-
 type CustomAttrs []xml.Attr
 
 func (cattr CustomAttrs) MarshalJSON() ([]byte, error) {
@@ -112,14 +74,14 @@ type Head struct {
 // Body holds the outline for an OPML document
 type Body struct {
 	XMLName   xml.Name    `json:"-"`
-	Outline   OutlineList `xml:"outline" json:"outline"`
+	Outline   []*Outline `xml:"outline" json:"outline"`
 	OtherAttr CustomAttrs `xml:",any,attr" json:"other_attrs,omitempty"`
 }
 
 // Outline is the primary element of an OPML document, may hold sub-Outlines
 type Outline struct {
 	XMLName      xml.Name    `json:"-"`
-	Text         string      `xml:"text,attr" json:"text"`
+	Text         string      `xml:"text,attr,omitempty" json:"text"`
 	Type         string      `xml:"type,attr,omitempty" json:"type,omitempty"`
 	Title        string      `xml:"title,attr,omitempty" json:"title,omitempty"`
 	IsComment    bool        `xml:"isComment,attr,omitempty" json:"isComment,omitempty"`
@@ -132,16 +94,15 @@ type Outline struct {
 	Description  string      `xml:"description,attr,omitempty" json:"description,omitempty"`
 	Version      string      `xml:"version,attr,omitempty" json:"version,omitempty"`
 	URL          string      `xml:"url,attr,omitempty" json:"url,omitempty"` // url
-	Outline      OutlineList `xml:"outline,omitempty" json:"outline,omitempty"`
+	Outline      []*Outline `xml:"outline,omitempty" json:"outline,omitempty"`
 	OtherAttr    CustomAttrs `xml:",any,attr" json:"other_attrs,omitempty"`
 }
 
-type OutlineList []Outline
-type ByText []Outline
-type ByTextCaseInsensitive []Outline
-type ByType []Outline
-type ByTitle []Outline
-type ByTitleCaseInsensitive []Outline
+type ByText []*Outline
+type ByTextCaseInsensitive []*Outline
+type ByType []*Outline
+type ByTitle []*Outline
+type ByTitleCaseInsensitive []*Outline
 
 // New creates an empty OPML structure
 func New() *OPML {
@@ -177,28 +138,6 @@ func (ol *Outline) HasChildren() bool {
 	return false
 }
 
-// Append adds one or more outline element to the end of an outline list
-func (ol OutlineList) Append(elems ...*Outline) error {
-	for _, elem := range elems {
-		i := len(ol)
-		ol = append(ol, *elem)
-		if len(ol) != (i+1) || ol[i].Text != elem.Text {
-			return fmt.Errorf("failed to append element")
-		}
-	}
-	return nil
-}
-
-// Adds one or more children to outline element
-func (ol *Outline) AppendChild(elems ...*Outline) error {
-	for _, elem := range elems {
-		err := ol.Outline.Append(elem)
-		if err != nil {
-			return fmt.Errorf("failed to add child, %s", err)
-		}
-	}
-	return nil
-}
 
 // Append one or more Body.Outline lists to the current OPML structure
 func (o *OPML) Append(outlines ...*OPML) error {
@@ -217,15 +156,8 @@ func (o *OPML) Append(outlines ...*OPML) error {
 
 func (o *OPML) String() string {
 	if o.Body != nil {
-		if o.Body.Outline == nil {
-			o.Body.Outline = make(OutlineList, 1)
-			o.Body.Outline.Append(&Outline{
-				Text: "",
-			})
-		} else if len(o.Body.Outline) == 0 {
-			o.Body.Outline.Append(&Outline{
-				Text: "",
-			})
+		if o.Body.Outline == nil || len(o.Body.Outline) == 0 {
+			o.Body.Outline = []*Outline{}
 		}
 	}
 	s, _ := xml.Marshal(o)
@@ -438,9 +370,7 @@ func (o *OPML) ReadFile(s string) error {
 // WriteFile writes the contents of a OPML struct to a file
 func (o *OPML) WriteFile(s string, perm os.FileMode) error {
 	if len(o.Body.Outline) == 0 {
-		o.Body.Outline = append(o.Body.Outline, Outline{
-			Text: "",
-		})
+		o.Body.Outline = []*Outline{}
 	}
 	b, _ := xml.Marshal(o)
 	return ioutil.WriteFile(s, b, perm)
@@ -454,4 +384,32 @@ func Marshal(o *OPML) ([]byte, error) {
 // Unmarshal takes an OPML XML representation and populates an OPML struct
 func Unmarshal(src []byte, o *OPML) error {
 	return xml.Unmarshal(src, &o)
+}
+
+func walk(ol *Outline, fn func(*Outline) bool) bool {
+	if ol == nil {
+		return false
+	}
+	ok := fn(ol)
+	if ol.Outline != nil {
+		for _, elem := range ol.Outline {
+			return walk(elem, fn)
+		}
+	}
+	return ok
+}
+
+// Walk does a depth first walk of an outline, stops if function
+// return false.
+func (o *OPML) Walk(fn func(*Outline) bool) error {
+	if o.Body.Outline != nil && len(o.Body.Outline) > 0 {
+		for _, elem := range o.Body.Outline {
+			if ok := walk(elem, fn); ! ok {
+				break
+			}
+		}
+	} else {
+		return fmt.Errorf("outline is empty")
+	}
+	return nil
 }

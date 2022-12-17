@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "opml"
+abstract: "A library for working with OPML XML files."
+authors:
+  - family-names: Doiel
+    given-names: Robert
+    orcid: "https://orcid.org/0000-0003-0900-6903"
+
+
+maintainers:
+  - family-names: 
+    given-names: 
+    orcid: ""
+
+repository-code: "https://github.com/rsdoiel/opml"
+version: 0.0.8
+license-url: "https://rsdoiel.github.io/opml/license.html"
+keywords: [ "Github", "text markup", "list markup" ]
