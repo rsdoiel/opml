@@ -70,8 +70,8 @@ install: build man
 	@for FNAME in $(MANPAGES); do cp ./man/man1/$$FNAME $(PREFIX)/man/man1/; done
 
 uninstall: .FORCE
-	@for FNAME in $(CLI_NAMES); do if [ -f $(PREFIX)/bin/$$FNAME$(EXT) ]; then rm $(PREFIX)/bin/$$FNAME$(EXT); fi; done
-	@for FNAME in $(CLI_NAMES); do if [ -f $(PREFIX)/man/man1/$$FNAME.1 ]; then rm $(PREFIX)/man/man1/$$FNAME.1; fi; done
+	@for FNAME in $(PROGRAMS); do if [ -f $(PREFIX)/bin/$$FNAME$(EXT) ]; then rm $(PREFIX)/bin/$$FNAME$(EXT); fi; done
+	@for FNAME in $(PROGRAMS); do if [ -f $(PREFIX)/man/man1/$$FNAME ]; then rm $(PREFIX)/man/man1/$$FNAME; fi; done
 
 status:
 	git status
@@ -89,83 +89,56 @@ website: about.html
 	make -f website.mak
 
 dist/linux-amd64:
-	mkdir -p dist/bin
-	env GOOS=linux GOARCH=amd64 go build -o dist/bin/opmlsort cmd/opmlsort/opmlsort.go
-	env GOOS=linux GOARCH=amd64 go build -o dist/bin/opmlcat cmd/opmlcat/opmlcat.go
-	env GOOS=linux GOARCH=amd64 go build -o dist/bin/opml2json cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md docs/* bin/*
+	@mkdir -p dist/bin
+	@for FNAME in $(PROGRAMS); do env GOOS=linux GOARCH=amd64 go build -o dist/bin/$$FNAME cmd/$$FNAME/*.go: done
+	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-amd64.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
 dist/windows-amd64:
 	mkdir -p dist/bin
-	env GOOS=windows GOARCH=amd64 go build -o dist/bin/opmlsort.exe cmd/opmlsort/opmlsort.go
-	env GOOS=windows GOARCH=amd64 go build -o dist/bin/opmlcat.exe cmd/opmlcat/opmlcat.go
-	env GOOS=windows GOARCH=amd64 go build -o dist/bin/opml2json.exe cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md docs/* bin/*
+	@for FNAME in $(PROGRAMS); do env GOOS=windows GOARCH=amd64 go build -o dist/bin/$$FNAME.exe cmd/$$FNAME/*.go; done
+	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-amd64.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
 dist/windows-arm64:
 	mkdir -p dist/bin
-	env GOOS=windows GOARCH=arm64 go build -o dist/bin/opmlsort.exe cmd/opmlsort/opmlsort.go
-	env GOOS=windows GOARCH=arm64 go build -o dist/bin/opmlcat.exe cmd/opmlcat/opmlcat.go
-	env GOOS=windows GOARCH=arm64 go build -o dist/bin/opml2json.exe cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-arm64.zip README.md LICENSE INSTALL.md docs/* bin/*
+	@for FNAME in $(PROGRAMS); do env GOOS=windows GOARCH=arm64 go build -o dist/bin/$$FNAME.exe cmd/$$FNAME/*.go; done
+	cd dist && zip -r $(PROJECT)-$(VERSION)-windows-arm64.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
 dist/macos-amd64:
 	mkdir -p dist/bin
-	env GOOS=darwin GOARCH=amd64 go build -o dist/bin/opmlsort cmd/opmlsort/opmlsort.go
-	env GOOS=darwin GOARCH=amd64 go build -o dist/bin/opmlcat cmd/opmlcat/opmlcat.go
-	env GOOS=darwin GOARCH=amd64 go build -o dist/bin/opml2json cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-macos-amd64.zip README.md LICENSE INSTALL.md docs/* bin/*
+	@for FNAME in $(PROGRAMS); do env GOOS=darwin GOARCH=amd64 go build -o dist/bin/$$FNAME cmd/$$FNAME/*.go; done
+	cd dist && zip -r $(PROJECT)-$(VERSION)-macos-amd64.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
 dist/macos-arm64:
 	mkdir -p dist/bin
-	env GOOS=darwin GOARCH=arm64 go build -o dist/bin/opmlsort cmd/opmlsort/opmlsort.go
-	env GOOS=darwin GOARCH=arm64 go build -o dist/bin/opmlcat cmd/opmlcat/opmlcat.go
-	env GOOS=darwin GOARCH=arm64 go build -o dist/bin/opml2json cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-macos-arm64.zip README.md LICENSE INSTALL.md docs/* bin/*
+	@for FNAME in $(PROGRAMS); do env GOOS=darwin GOARCH=arm64 go build -o dist/bin/$$FNAME cmd/$$FNAME/*.go; done
+	cd dist && zip -r $(PROJECT)-$(VERSION)-macos-arm64.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
 dist/raspbian-arm7:
 	mkdir -p dist/bin
-	env GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/opmlsort cmd/opmlsort/opmlsort.go
-	env GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/opmlcat cmd/opmlcat/opmlcat.go
-	env GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/opml2json cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-raspbian-arm7.zip README.md LICENSE INSTALL.md docs/* bin/*
+	@for FNAME in $(PROGRAMS); do env GOOS=linux GOARCH=arm GOARM=7 go build -o dist/bin/$$FNAME cmd/$$FNAME/*.go; done
+	cd dist && zip -r $(PROJECT)-$(VERSION)-raspbian-arm7.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
 
 dist/raspbian-arm6:
 	mkdir -p dist/bin
-	env GOOS=linux GOARCH=arm GOARM=6 go build -o dist/bin/opmlsort cmd/opmlsort/opmlsort.go
-	env GOOS=linux GOARCH=arm GOARM=6 go build -o dist/bin/opmlcat cmd/opmlcat/opmlcat.go
-	env GOOS=linux GOARCH=arm GOARM=6 go build -o dist/bin/opml2json cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-raspbian-arm6.zip README.md LICENSE INSTALL.md docs/* bin/*
+	@for FNAME in $(PROGRAMS); do env GOOS=linux GOARCH=arm GOARM=6 go build -o dist/bin/$$FNAME cmd/$$FNAME/*.go; done
+	cd dist && zip -r $(PROJECT)-$(VERSION)-raspbian-arm6.zip README.md LICENSE INSTALL.md bin/*
 	rm -fR dist/bin
-
-dist/linux-arm64:
-	mkdir -p dist/bin
-	env GOOS=linux GOARCH=arm64 GOARM=6 go build -o dist/bin/opmlsort cmd/opmlsort/opmlsort.go
-	env GOOS=linux GOARCH=arm64 GOARM=6 go build -o dist/bin/opmlcat cmd/opmlcat/opmlcat.go
-	env GOOS=linux GOARCH=arm64 GOARM=6 go build -o dist/bin/opml2json cmd/opml2json/opml2json.go
-	cd dist && zip -r $(PROJECT)-$(VERSION)-linux-arm64.zip README.md LICENSE INSTSALL.md docs/* bin/*
-	rm -fR dist/bin
-
-generate_usage_pages: opmlsort opmlcat opml2json
-	bash gen-usage-pages.bash
 
 distribute_docs:
 	mkdir -p dist/docs
 	cp -v README.md dist/
 	cp -v LICENSE dist/
 	cp -v INSTALL.md dist/
-	bash gen-usage-pages.bash
-	cp -v docs/opmlsort.md dist/docs/
-	cp -v docs/opmlcat.md dist/docs/
-	cp -v docs/opml2json.md dist/docs/
+	cp -v *.1.md dist/
+	cp -vR man dist/
 
-release: generate_usage_pages distribute_docs dist/linux-amd64 dist/windows-amd64 dist/macos-amd64 dist/macos-arm64 dist/raspbian-arm7 dist/raspbian-arm6 dist/linux-arm64
+release: man distribute_docs dist/linux-amd64 dist/windows-amd64 dist/windows-arm64 dist/macos-amd64 dist/macos-arm64 dist/raspbian-arm7 dist/raspbian-arm6
 
 publish: website
 	./publish.bash

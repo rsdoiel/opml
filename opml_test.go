@@ -43,10 +43,12 @@ func TestNewAndString(t *testing.T) {
 	if body == nil {
 		t.Errorf("Can't find Body in opml structure")
 	}
+	o.Body.Outline = []*Outline{}
 
+	expected := `<opml version="2.0"><head></head><body></body></opml>` 
 	s := o.String()
-	if s != `<opml version="2.0"><head></head><body><outline text=""></outline></body></opml>` {
-		t.Errorf("Expected a minimal OPML document [%s]", s)
+	if strings.Compare(expected, s) != 0 {
+		t.Errorf("expected %q, got %q", expected, s)
 	}
 }
 

@@ -16,6 +16,5 @@ $(HTML_PAGES): $(MD_PAGES) .FORCE
 
 clean:
 	@if [ -f index.html ]; then rm *.html; fi
-	#@if [ -f docs/index.html ]; then rm docs/*.html; fi
 
 .FORCE:
