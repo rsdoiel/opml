@@ -4,6 +4,7 @@
 
 ## Next
 
++ [ ] Added -newsboat option to urls2opml, need to add the url description tas text attribute and optionally use a sub-list to import nicely into NetNewsWire
 + [ ] create a command line tool that reads an OPML and appends a element to the list (e.g. adds a feed URL to an OPML list of feeds)
     + basic verbs would be insert (insert a new list element), append (a new list element), replace (replace a list element) delete (a list element), and find (return the path to an element by name or attribute value)
         + append, insert, replace takes a path and the value to update with

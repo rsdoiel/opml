@@ -59,26 +59,48 @@ var (
 	showVersion bool
 )
 
-func displayHelp(appName string, txt string) string {
-	return strings.ReplaceAll(txt, `{app_name}`, appName)
+func fmtHelp(src string, appName string, version string, releaseDate string, releaseHash string) string {
+	m := map[string]string{
+		"{app_name}": appName,
+		"{version}": version,
+		"{release_date}": releaseDate,
+		"{release_hash}": releaseHash,
+	}
+	for k,v := range m {
+		if strings.Contains(src, k) {
+			src = strings.ReplaceAll(src, k,v)
+		}
+	}
+	return src
+
 }
+
 
 func main() {
 	appName := path.Base(os.Args[0])
+	// NOTE: The followimg variables are set when version.go is generated
+	version := opml.Version
+	requestDate := opml.RequestDate
+	requestHash := opml.RequestHash
+
+
 	flag.BoolVar(&showHelp, "help", false, "display help")
 	flag.BoolVar(&showVersion, "version", false, "display version")
 	flag.BoolVar(&showLicense, "license", false, "display license")
 	flag.Parse()
 
+	var err error
+
 	in := os.Stdin
 	out := os.Stdout
 	eout := os.Stderr
+
 	if showHelp {
-		fmt.Fprintf(out, "%s", displayHelp(appName, HelpText))
+		fmt.Fprintf(out, "%s", fmtHelp(helpText, appName, version, requestDate, requestHash))
 		os.Exit(0)
 	}
 	if showVersion {
-		fmt.Fprintf(out, "%s %s\n", appName, opml.Version)
+		fmt.Fprintf(out, "%s %s %s\n", appName, version, requestHash)
 		os.Exit(0)
 	}
 	if showLicense {
@@ -88,7 +110,7 @@ func main() {
 
 	//FIXME: Should allow for creation/pick of outline to append to.
 	// E.g. mimik a "subscripts" outline element that has URLs as children.
-	label := fmt.Sprintf("url list convert with %s %s", appName, opml.Version)
+	label := fmt.Sprintf("url list convert with %s %s", appName, version)
 	o := opml.New()
 	o.Head.Title = label
 	o.Head.Created = time.Now().Format(time.RFC822Z)

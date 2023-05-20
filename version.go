@@ -1,8 +1,14 @@
 package opml
 
-// Version of package
 const (
-    Version = `0.0.8`
+    // Version number of release
+    Version = "0.0.8"
+
+    // ReleaseDate, the date version.go was generated
+    ReleaseDate = "2023-05-19"
+
+    // ReleaseHash, the Git hash when version.go was generated
+    ReleaseHash = "8fcf430"
 
     LicenseText = `
 

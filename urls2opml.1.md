@@ -28,7 +28,7 @@ Convert a newsboat "url" file to OPML.
 
 ~~~
 cat .newsboat/url | cut -d \" -f 1 |\
-   grep -v '#' | urls2opml \
-   >subscriptions.opml
+    grep -v '#' | urls2opml \
+	>subscriptions.opml
 ~~~
 

@@ -21,41 +21,71 @@ package main
 
 import (
 	"encoding/xml"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path"
+	"strings"
 
 	// My Packages
 	"github.com/rsdoiel/opml"
 
-	// Caltech Library Packages
-	"github.com/caltechlibrary/cli"
 )
 
 var (
-	description = `
-%s is a program that sorts the outline in an OPML document.
-`
+	helpText = `%{app_name}(1) | version {version} {release_hash}
+% R. S. Doiel
+% {release_date}
 
-	examples = `
-    %s myfeeds.opml sorted-feeds.opml
-`
+# NAME
 
-	license = `
-%s %s
+{app_name}
 
-Copyright (c) 2021, R. S. Doiel
-All rights not granted herein are expressly reserved by R. S. Doiel.
+# SYNOPSIS
 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+{app_name} [OPTIONS] [INPUT_FILENAME] [OUTPUT_FILENAME]
 
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+# DESCRIPTION
 
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+{app_name} is a program that sorts the outline in an OPML document.
 
-3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+# OPTIONS
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-help
+: display help
+
+-license
+: display license
+
+-version
+: display version
+
+-i
+: read from filename
+
+-o
+: write to filename
+
+-newline
+: add a tailing newline
+
+-pretty
+: pretty print JSON output
+
+-case-insensitive
+: case insensitive sort
+
+-title
+: sort by title
+
+
+# EXAMPLES
+
+~~~
+    {app_name} myfeeds.opml sorted-feeds.opml
+~~~
+
 `
 
 	// Standard options
@@ -65,10 +95,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	showExamples     bool
 	inputFName       string
 	outputFName      string
-	quiet            bool
 	newLine          bool
-	generateMarkdown bool
-	generateManPage  bool
 
 	// Application options
 	prettyPrint     bool
@@ -76,38 +103,45 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 	byTitle         bool
 )
 
+func fmtHelp(src string, appName string, version string, releaseDate string, releaseHash string) string {
+	m := map[string]string{
+		"{app_name}": appName,
+		"{version}": version,
+		"{release_date}": releaseDate,
+		"{release_hash}": releaseHash,
+	}
+	for k,v := range m {
+		if strings.Contains(src, k) {
+			src = strings.ReplaceAll(src, k,v)
+		}
+	}
+	return src
+
+}
+
 func main() {
-	app := cli.NewCli(opml.Version)
-	appName := app.AppName()
-
-	// Document non-option parameters
-	app.SetParams("INPUT_OPML_FILENAME", "[OUTPUT_OPML_FILENAME]")
-
-	// Add Help Docs
-	app.AddHelp("description", []byte(fmt.Sprintf(description, appName)))
-	app.AddHelp("examples", []byte(fmt.Sprintf(examples, appName)))
-	app.AddHelp("license", []byte(fmt.Sprintf(license, appName, opml.Version)))
+	appName := path.Base(os.Args[0])
+	// NOTE: the following are set when version.go is generated
+	version := opml.Version
+	releaseDate := opml.ReleaseDate
+	releaseHash := opml.ReleaseHash
 
 	// Standard Options
-	app.BoolVar(&showHelp, "h,help", false, "display help")
-	app.BoolVar(&showLicense, "l,license", false, "display license")
-	app.BoolVar(&showVersion, "v,version", false, "display version")
-	app.BoolVar(&showExamples, "examples", false, "display examples")
-	app.BoolVar(&quiet, "quiet", false, "suppress error messages")
-	app.BoolVar(&newLine, "nl,newline", false, "add trailing newline")
-	app.StringVar(&inputFName, "i,input", "", "set input filename")
-	app.StringVar(&outputFName, "o,output", "", "set output filename")
-	app.BoolVar(&generateMarkdown, "generate-markdown", false, "generate Markdown documentation")
-	app.BoolVar(&generateManPage, "generate-manpage", false, "generate man page")
+	flag.BoolVar(&showHelp, "help", false, "display help")
+	flag.BoolVar(&showLicense, "license", false, "display license")
+	flag.BoolVar(&showVersion, "version", false, "display version")
+	flag.BoolVar(&newLine, "newline", false, "add trailing newline")
+	flag.StringVar(&inputFName, "i", "", "set input filename")
+	flag.StringVar(&outputFName, "o", "", "set output filename")
 
 	// Application Options
-	app.BoolVar(&prettyPrint, "p,pretty", false, "pretty print XML output")
-	app.BoolVar(&caseInsensitive, "ci,case-insensitive", false, "case insensitive sort")
-	app.BoolVar(&byTitle, "T,title", true, "sort by title")
+	flag.BoolVar(&prettyPrint, "pretty", false, "pretty print XML output")
+	flag.BoolVar(&caseInsensitive, "case-insensitive", false, "case insensitive sort")
+	flag.BoolVar(&byTitle, "title", true, "sort by title")
 
 	// Process environment and options
-	app.Parse()
-	args := app.Args()
+	flag.Parse()
+	args := flag.Args()
 
 	if len(args) > 0 {
 		inputFName = args[0]
@@ -119,51 +153,53 @@ func main() {
 	// Setup I/O
 	var err error
 
-	app.Eout = os.Stderr
-	app.In, err = cli.Open(inputFName, os.Stdin)
-	cli.ExitOnError(app.Eout, err, quiet)
-	defer cli.CloseFile(inputFName, app.In)
+	in := os.Stdin
+	out := os.Stdout
+	eout := os.Stderr
 
-	app.Out, err = cli.Create(outputFName, os.Stdout)
-	cli.ExitOnError(app.Eout, err, quiet)
-	defer cli.CloseFile(outputFName, app.Out)
+	if inputFName != "" {
+		in, err = os.Open(inputFName)
+		if err != nil {
+			fmt.Fprintf(eout, "%s\n", err)
+			os.Exit(0)
+		}
+		defer in.Close()
+	}
+
+	if outputFName != "" {
+		out, err = os.Create(outputFName)
+		if err != nil {
+			fmt.Fprintf(eout, "%s\n", err)
+			os.Exit(1)
+		}
+		defer out.Close()
+	}
 
 	// Handle options
-	if generateMarkdown {
-		app.GenerateMarkdown(os.Stdout)
-		os.Exit(0)
-	}
-	if generateManPage {
-		app.GenerateManPage(os.Stdout)
-		os.Exit(0)
-	}
-	if showHelp || showExamples {
-		if len(args) > 0 {
-			fmt.Fprintln(app.Out, app.Help(args...))
-		} else {
-			app.Usage(app.Out)
-		}
+	if showHelp {
+		fmt.Fprintf(out, "%s\n", fmtHelp(helpText, appName, version, releaseDate, releaseHash)
 		os.Exit(0)
 	}
 	if showLicense {
-		fmt.Fprintln(app.Out, app.License())
+		fmt.Fprintf(out, "%s\n", opml.LicenseTexT)
 		os.Exit(0)
 	}
 	if showVersion {
-		fmt.Fprintln(app.Out, app.Version())
+		fmt.Fprintln(out, "%s %s %s\n", appName, version, releaseHash)
 		os.Exit(0)
 	}
 
 	o := opml.New()
-	if len(inputFName) > 0 {
-		err := o.ReadFile(inputFName)
-		cli.ExitOnError(app.Eout, err, quiet)
-	} else {
-		src, err := ioutil.ReadAll(app.In)
-		cli.ExitOnError(app.Eout, err, quiet)
+		src, err := ioutil.ReadAll(in)
+		if err != nil {
+			fmt.Fprintf(eout,"%s", err)
+			os.Exit(1)
+		}
 		o, err = opml.Parse(src)
-		cli.ExitOnError(app.Eout, err, quiet)
-	}
+		if err != nil {
+			fmt.Fprintf(eout,"%s", err)
+			os.Exit(1)
+		}
 	if byTitle {
 		if caseInsensitive {
 			o.SortTitleCaseInsensitive()
@@ -181,15 +217,17 @@ func main() {
 	var src []byte
 	if prettyPrint {
 		src, err = xml.MarshalIndent(o, "", "    ")
-		cli.ExitOnError(app.Eout, err, quiet)
+		if err != nil {
+			fmt.Fprintf(eout,"%s", err)
+			os.Exit(1)
+		}
 	} else {
 		src = []byte(o.String())
 	}
 
-	fmt.Fprintln(app.Out, `<?xml version="1.0" encoding="UTF-8"?>`)
+	fmt.Fprintln(out, `<?xml version="1.0" encoding="UTF-8"?>`)
+		fmt.Fprintf(out, "%s", src)
 	if newLine {
-		fmt.Fprintf(app.Out, "%s\n", src)
-	} else {
-		fmt.Fprintf(app.Out, "%s", src)
+		fmt.Fprintf(out)
 	}
 }

@@ -14,63 +14,37 @@
 . ftr VB CB
 . ftr VBI CBI
 .\}
-.TH "opmlsort" "1" "2022-12-16" "user manual" ""
+.TH "" "" "" "" ""
 .hy
-.SH NAME
 .PP
-opmlsort
-.SH SYNOPSIS
+USAGE: opmlsort [OPTIONS] INPUT_OPML_FILENAME [OUTPUT_OPML_FILENAME]
 .PP
-opmlsort OPTIONS INPUT_OPML_FILENAME [OUTPUT_OPML_FILENAME]
-.SH DESCRIPTION
+DESCRIPTION
 .PP
 opmlsort is a program that sorts the outline in an OPML document.
-.SH OPTIONS
-.TP
--T, -title
-sort by title
-.TP
--ci, -case-insensitive
-case insensitive sort
-.TP
--examples
-display examples
-.TP
--generate-manpage
-generate man page
-.TP
--generate-markdown
-generate Markdown documentation
-.TP
--h, -help
-display help
-.TP
--i, -input
-set input filename
-.TP
--l, -license
-display license
-.TP
--nl, -newline
-add trailing newline
-.TP
--o, -output
-set output filename
-.TP
--p, -pretty
-pretty print XML output
-.TP
--quiet
-suppress error messages
-.TP
--v, -version
-display version
-.SH EXAMPLES
+.PP
+OPTIONS
 .IP
 .nf
 \f[C]
-opmlsort myfeeds.opml sorted-feeds.opml
+-T, -title               sort by title
+-ci, -case-insensitive   case insensitive sort
+-examples                display examples
+-generate-manpage        generate man page
+-generate-markdown       generate Markdown documentation
+-h, -help                display help
+-i, -input               set input filename
+-l, -license             display license
+-nl, -newline            add trailing newline
+-o, -output              set output filename
+-p, -pretty              pretty print XML output
+-quiet                   suppress error messages
+-v, -version             display version
 \f[R]
 .fi
-.SH AUTHORS
-R. S. Doiel.
+.PP
+EXAMPLES
+.PP
+opmlsort myfeeds.opml sorted-feeds.opml
+.PP
+opmlsort 0.0.8

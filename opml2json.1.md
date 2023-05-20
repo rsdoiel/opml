@@ -1,6 +1,7 @@
-% opml2json(1) user manual
+%s
+%opml2json(1) | version 0.0.8 8fcf430
 % R. S. Doiel
-% 2022-12-16
+% 2023-05-19
 
 # NAME
 
@@ -8,7 +9,7 @@ opml2json
 
 # SYNOPSIS
 
-opml2json [OPTIONS] INPUT_OPML_FILENAME [OUTPUT_OPML_FILENAME]
+opml2json [OPTIONS] [INPUT_FILENAME] [OUTPUT_FILENAME]
 
 # DESCRIPTION
 
@@ -16,38 +17,26 @@ opml2json is a program that converts OPML's XML to JSON.
 
 # OPTIONS
 
--examples
-: display examples
-
--generate-manpage
-: generate man page
-
--generate-markdown
-: generate Markdown documentation
-
--h, -help
+-help
 : display help
 
--i, -input
-: set input filename
-
--l, -license
+-license
 : display license
 
--nl, -newline
-: add trailing newline
-
--o, -output
-: set output filename
-
--p, -pretty
-: pretty print XML output
-
--quiet
-: suppress error messages
-
--v, -version
+-version
 : display version
+
+-i
+: read from filename
+
+-o
+: write to filename
+
+-newline
+: add a trailing newline
+
+-pretty
+: pretty print JSON output
 
 
 # EXAMPLES
@@ -55,5 +44,6 @@ opml2json is a program that converts OPML's XML to JSON.
 Convert *myfeeds.ompl* to *myfeeds.json*.
 
 ~~~
-    opml2json myfeeds.opml myfeeds.json
+opml2json myfeeds.opml myfeeds.json
 ~~~
+

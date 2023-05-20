@@ -34,9 +34,9 @@ About this software
 A library for working with OPML XML files and example command line
 programs.
 
-- License: https://rsdoiel.github.io/opml/LICENSE
-- GitHub: https://github.com/rsdoiel/opml
-- Issues: https://github.com/rsdoiel/opml/issues
+- License: <https://rsdoiel.github.io/opml/LICENSE>
+- GitHub: <https://github.com/rsdoiel/opml>
+- Issues: <https://github.com/rsdoiel/opml/issues>
 
 
 ### Programming languages

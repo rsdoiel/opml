@@ -14,60 +14,42 @@
 . ftr VB CB
 . ftr VBI CBI
 .\}
-.TH "opmlcat" "1" "2022-12-16" "user manual" ""
+.TH "" "" "" "" ""
 .hy
-.SH NAME
 .PP
-opmlcat
-.SH SYNOPSIS
+USAGE: opmlcat [OPTIONS] OPML_FILE [OPML_FILE \&...]
 .PP
-opmlcat OPTIONS OPML_FILE [OPML_FILE \&...]
-.SH DESCRIPTION
+DESCRIPTION
 .PP
 opmlcat concatenates one or more opml files as siblings to standard out.
-.SH OPTIONS
-.TP
--examples
-display examples
-.TP
--generate-manpage
-generate man page
-.TP
--generate-markdown
-generate Markdown documentation
-.TP
--h, -help
-display help
-.TP
--i, -input
-set input filename
-.TP
--l, -license
-display license
-.TP
--nl, -newline
-add a trailing newline
-.TP
--o, -output
-set output filename
-.TP
--p, -pretty
-pretty print XML output
-.TP
--quiet
-suppress error messages
-.TP
--v, -version
-display version
-.SH EXAMPLES
+.PP
+OPTIONS
+.IP
+.nf
+\f[C]
+-examples           display examples
+-generate-manpage   generate man page
+-generate-markdown  generate Markdown documentation
+-h, -help           display help
+-i, -input          set input filename
+-l, -license        display license
+-nl, -newline       add a trailing newline
+-o, -output         set output filename
+-p, -pretty         pretty print XML output
+-quiet              suppress error messages
+-v, -version        display version
+\f[R]
+.fi
+.PP
+EXAMPLES
 .PP
 This is an example of using opmlcat and opmlsort together to create a
 combined sorted opml file.
 .IP
 .nf
 \f[C]
-    opmlcat file1.opml file1.opml | opmlsort -o combined-sorted.opml
+opmlcat file1.opml file1.opml | opmlsort -o combined-sorted.opml
 \f[R]
 .fi
-.SH AUTHORS
-R. S. Doiel.
+.PP
+opmlcat 0.0.8
