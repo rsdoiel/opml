@@ -16,10 +16,11 @@
 <ul>
 <li><a href="/">Home</a></li>
 <li><a href="./">README</a></li>
-<li><a href="user-manual.html">User Manual</a></li>
 <li><a href="LICENSE">LICENSE</a></li>
+<li><a href="user-manual.html">User Manual</a></li>
+<li><a href="INSTALL.html">INSTALL</a></li>
 <li><a href="about.html">About</a></li>
-<li><a href="https://github.com/rsdoiel/opml">GitHub</a></li>
+<li><a href="https://github.com/rsdoiel/osf">GitHub</a></li>
 </ul>
 </nav>
 
@@ -33,11 +34,11 @@
 reads from standard input and writes to standard output.</p>
 <h1 id="options">OPTIONS</h1>
 <dl>
-<dt>help</dt>
+<dt>-help</dt>
 <dd>
 Display this help page
 </dd>
-<dt>version</dt>
+<dt>-version</dt>
 <dd>
 Display version
 </dd>
@@ -49,8 +50,8 @@ Display license
 <h1 id="example">EXAMPLE</h1>
 <p>Convert a newsboat “url” file to OPML.</p>
 <pre><code>cat .newsboat/url | cut -d \&quot; -f 1 |\
-   grep -v &#39;#&#39; | urls2opml \
-   &gt;subscriptions.opml</code></pre>
+    grep -v &#39;#&#39; | urls2opml \
+    &gt;subscriptions.opml</code></pre>
 </section>
 
 <footer>

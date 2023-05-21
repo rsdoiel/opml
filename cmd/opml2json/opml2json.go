@@ -26,7 +26,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
-	"strings"
 
 	// My Packages
 	"github.com/rsdoiel/opml"
@@ -96,28 +95,13 @@ Convert *myfeeds.ompl* to *myfeeds.json*.
 	prettyPrint bool
 )
 
-func fmtHelp(src string, appName string, version string, releaseDate string, releaseHash string) string {
-	m := map[string]string{
-		"{app_name}": appName,
-		"{version}": version,
-		"{release_date}": releaseDate,
-		"{release_hash}": releaseHash,
-	}
-	for k,v := range m {
-		if strings.Contains(src, k) {
-			src = strings.ReplaceAll(src, k,v)
-		}
-	}
-	return src
-
-}
-
 func main() {
 	appName := path.Base(os.Args[0])
 	// NOTE: the following are set when version.go is generated
 	version := opml.Version
 	releaseDate := opml.ReleaseDate
 	releaseHash := opml.ReleaseHash
+	fmtHelp := opml.FmtHelp
 
 	// Standard Options
 	flag.BoolVar(&showHelp, "help", false, "display help")
@@ -135,10 +119,10 @@ func main() {
 	flag.Parse()
 	args := flag.Args()
 
-	if len(args) >= 1 {
+	if len(args) > 0 {
 		inputFName = args[0]
 	}
-	if len(args) >= 2 {
+	if len(args) > 1 {
 		outputFName = args[1]
 	}
 
@@ -148,6 +132,20 @@ func main() {
 	in := os.Stdin
 	out := os.Stdout
 	eout := os.Stderr
+
+	// Handle options
+	if showHelp {
+		fmt.Fprint(out, "%s\n", fmtHelp(helpText, appName, version, releaseDate, releaseHash))
+		os.Exit(0)
+	}
+	if showLicense {
+		fmt.Fprintln(out, "%s\n", opml.LicenseText)
+		os.Exit(0)
+	}
+	if showVersion {
+		fmt.Fprintln(out, "%s %s %s\n", appName, version, releaseHash)
+		os.Exit(0)
+	}
 
 	if inputFName != "" {
 		in, err = os.Open(inputFName)
@@ -167,21 +165,6 @@ func main() {
 		defer out.Close()
 	}
 
-
-
-	// Handle options
-	if showHelp {
-		fmt.Fprint(out, "%s\n", fmtHelp(helpText, appName, version, releaseDate, releaseHash))
-		os.Exit(0)
-	}
-	if showLicense {
-		fmt.Fprintln(out, "%s\n", opml.LicenseText)
-		os.Exit(0)
-	}
-	if showVersion {
-		fmt.Fprintln(out, "%s %s %s\n", appName, version, releaseHash)
-		os.Exit(0)
-	}
 
 	o := opml.New()
 	if len(inputFName) > 0 {

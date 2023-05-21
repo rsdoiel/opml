@@ -6,14 +6,13 @@ import (
 	"io"
 	"os"
 	"path"
-	"strings"
 
 	// My packages
 	"github.com/rsdoiel/opml"
 )
 
 const (
-	HelpText = `% {app_name}(1) user manual
+	helpText = `% {app_name}(1) user manual
 % R. S. Doiel
 % 2022-12-16
 
@@ -84,28 +83,13 @@ var (
 	newsboat      bool
 )
 
-func fmtHelp(src string, appName string, version string, releaseDate string, releaseHash string) string {
-	m := map[string]string{
-		"{app_name}": appName,
-		"{version}": version,
-		"{release_date}": releaseDate,
-		"{release_hash}": releaseHash,
-	}
-	for k,v := range m {
-		if strings.Contains(src, k) {
-			src = strings.ReplaceAll(src, k,v)
-		}
-	}
-	return src
-
-}
-
 func main() {
 	appName := path.Base(os.Args[0])
 	// NOTE: the following are set when version.go is generated
 	version := opml.Version
 	releaseDate := opml.ReleaseDate
 	releaseHash := opml.ReleaseHash
+	fmtHelp := opml.FmtHelp
 
 	flag.BoolVar(&showHelp, "help", false, "display help")
 	flag.BoolVar(&showVersion, "version", false, "display version")
@@ -119,12 +103,13 @@ func main() {
 	flag.Parse()
 
 	var err error
+
 	in := os.Stdin
 	out := os.Stdout
 	eout := os.Stderr
 
 	if showHelp {
-		fmt.Fprintf(out, "%s", fmtHelp(helpText, appName, version, releaseDate, releaseHash))
+		fmt.Fprintf(out, "%s\n", fmtHelp(helpText, appName, version, releaseDate, releaseHash))
 		os.Exit(0)
 	}
 	if showLicense {

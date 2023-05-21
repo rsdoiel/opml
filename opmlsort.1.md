@@ -1,29 +1,53 @@
+%opmlsort(1) | version 0.0.8 9a7e187
+% R. S. Doiel
+% 2023-05-20
 
-USAGE: opmlsort [OPTIONS] INPUT_OPML_FILENAME [OUTPUT_OPML_FILENAME]
+# NAME
 
-DESCRIPTION
+opmlsort
+
+# SYNOPSIS
+
+opmlsort [OPTIONS] [INPUT_FILENAME] [OUTPUT_FILENAME]
+
+# DESCRIPTION
 
 opmlsort is a program that sorts the outline in an OPML document.
 
-OPTIONS
+# OPTIONS
 
-    -T, -title               sort by title
-    -ci, -case-insensitive   case insensitive sort
-    -examples                display examples
-    -generate-manpage        generate man page
-    -generate-markdown       generate Markdown documentation
-    -h, -help                display help
-    -i, -input               set input filename
-    -l, -license             display license
-    -nl, -newline            add trailing newline
-    -o, -output              set output filename
-    -p, -pretty              pretty print XML output
-    -quiet                   suppress error messages
-    -v, -version             display version
+-help
+: display help
+
+-license
+: display license
+
+-version
+: display version
+
+-i
+: read from filename
+
+-o
+: write to filename
+
+-newline
+: add a tailing newline
+
+-pretty
+: pretty print JSON output
+
+-case-insensitive
+: case insensitive sort
+
+-title
+: sort by title
 
 
-EXAMPLES
+# EXAMPLES
 
-opmlsort myfeeds.opml sorted-feeds.opml
+~~~
+    opmlsort myfeeds.opml sorted-feeds.opml
+~~~
 
-opmlsort 0.0.8
+

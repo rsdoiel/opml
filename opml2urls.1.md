@@ -51,3 +51,4 @@ cat subscriptions.xml | opml2urls -newsboat
 ~~~
 
 
+

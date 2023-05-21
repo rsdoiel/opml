@@ -1,6 +1,6 @@
-% urls2opml(1) user manual
+% urls2opml(1) user manual | 0.0.8 9a7e187
 % R. S. Doiel
-% 2022-12-16
+% 2023-05-20
 
 # NAME
 
@@ -13,14 +13,15 @@ XML.  It reads from standard input and writes to standard output.
 
 # OPTIONS
 
-help
+-help
 : Display this help page
 
-version
+-version
 : Display version
 
 -license
 : Display license
+
 
 # EXAMPLE
 

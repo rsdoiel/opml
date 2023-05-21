@@ -26,7 +26,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
-	"strings"
 
 	// My Packages
 	"github.com/rsdoiel/opml"
@@ -99,29 +98,13 @@ create a combined sorted opml file.
 )
 
 
-func fmtHelp(src string, appName string, version string, releaseDate string, releaseHash string) string {
-	m := map[string]string{
-		"{app_name}": appName,
-		"{version}": version,
-		"{release_date}": releaseDate,
-		"{release_hash}": releaseHash,
-	}
-	for k,v := range m {
-		if strings.Contains(src, k) {
-			src = strings.ReplaceAll(src, k,v)
-		}
-	}
-	return src
-
-}
-
-
 func main() {
 	appName := path.Base(os.Args[0])
 	// NOTE: the following are set when version.go is generated
 	version := opml.Version
 	releaseDate := opml.ReleaseDate
 	releaseHash := opml.ReleaseHash
+	fmtHelp := opml.FmtHelp
 
 	// Standard Options
 	flag.BoolVar(&showHelp, "help", false, "display help")
@@ -140,10 +123,10 @@ func main() {
 	flag.Parse()
 	args := flag.Args()
 
-	if len(args) >= 1 {
+	if len(args) > 0 {
 		inputFName = args[0]
 	}
-	if len(args) >= 2 {
+	if len(args) > 1 {
 		outputFName = args[1]
 	}
 
@@ -153,6 +136,20 @@ func main() {
 	in := os.Stdin
 	out := os.Stdout
 	eout := os.Stderr
+
+	// Handle options
+	if showHelp {
+		fmt.Fprintf(out, "%s\n", fmtHelp(helpText, appName, version, releaseDate, releaseHash))
+		os.Exit(0)
+	}
+	if showLicense {
+		fmt.Fprintf(out, "%s\n", opml.LicenseText)
+		os.Exit(0)
+	}
+	if showVersion {
+		fmt.Fprintf(out, "%s %s %s\n", appName, version, releaseHash)
+		os.Exit(0)
+	}
 
 
 	if inputFName != "" {
@@ -171,20 +168,6 @@ func main() {
 			os.Exit(1)
 		}
 		defer out.Close()
-	}
-
-	// Handle options
-	if showHelp {
-		fmt.Fprintf(out, "%s\n", fmtHelp(helpText, appName, version, releaseDate, releaseHash))
-		os.Exit(0)
-	}
-	if showLicense {
-		fmt.Fprintf(out, "%s\n", opml.LicenseText)
-		os.Exit(0)
-	}
-	if showVersion {
-		fmt.Fprintf(out, "%s %s %s\n", appName, version, releaseHash)
-		os.Exit(0)
 	}
 
 	o := opml.New()
@@ -228,8 +211,8 @@ func main() {
 		src = []byte(o.String())
 	}
 
-	fmt.Fprintln(app.Out, `<?xml version="1.0" encoding="UTF-8"?>`)
-	fmt.Fprintf(app.Out, "%s", src)
+	fmt.Fprintln(out, `<?xml version="1.0" encoding="UTF-8"?>`)
+	fmt.Fprintf(out, "%s", src)
 	if newLine {
 		fmt.Fprintln(out)
 	}

@@ -26,7 +26,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
-	"strings"
 
 	// My Packages
 	"github.com/rsdoiel/opml"
@@ -103,28 +102,13 @@ var (
 	byTitle         bool
 )
 
-func fmtHelp(src string, appName string, version string, releaseDate string, releaseHash string) string {
-	m := map[string]string{
-		"{app_name}": appName,
-		"{version}": version,
-		"{release_date}": releaseDate,
-		"{release_hash}": releaseHash,
-	}
-	for k,v := range m {
-		if strings.Contains(src, k) {
-			src = strings.ReplaceAll(src, k,v)
-		}
-	}
-	return src
-
-}
-
 func main() {
 	appName := path.Base(os.Args[0])
 	// NOTE: the following are set when version.go is generated
 	version := opml.Version
 	releaseDate := opml.ReleaseDate
 	releaseHash := opml.ReleaseHash
+	fmtHelp := opml.FmtHelp
 
 	// Standard Options
 	flag.BoolVar(&showHelp, "help", false, "display help")
@@ -151,11 +135,28 @@ func main() {
 	}
 
 	// Setup I/O
-	var err error
+	var (
+		err error
+		src []byte
+	)
 
 	in := os.Stdin
 	out := os.Stdout
 	eout := os.Stderr
+
+	// Handle options
+	if showHelp {
+		fmt.Fprintf(out, "%s\n", fmtHelp(helpText, appName, version, releaseDate, releaseHash))
+		os.Exit(0)
+	}
+	if showLicense {
+		fmt.Fprintf(out, "%s\n", opml.LicenseText)
+		os.Exit(0)
+	}
+	if showVersion {
+		fmt.Fprintln(out, "%s %s %s\n", appName, version, releaseHash)
+		os.Exit(0)
+	}
 
 	if inputFName != "" {
 		in, err = os.Open(inputFName)
@@ -175,22 +176,8 @@ func main() {
 		defer out.Close()
 	}
 
-	// Handle options
-	if showHelp {
-		fmt.Fprintf(out, "%s\n", fmtHelp(helpText, appName, version, releaseDate, releaseHash)
-		os.Exit(0)
-	}
-	if showLicense {
-		fmt.Fprintf(out, "%s\n", opml.LicenseTexT)
-		os.Exit(0)
-	}
-	if showVersion {
-		fmt.Fprintln(out, "%s %s %s\n", appName, version, releaseHash)
-		os.Exit(0)
-	}
-
 	o := opml.New()
-		src, err := ioutil.ReadAll(in)
+		src, err = ioutil.ReadAll(in)
 		if err != nil {
 			fmt.Fprintf(eout,"%s", err)
 			os.Exit(1)
@@ -214,7 +201,6 @@ func main() {
 		}
 	}
 
-	var src []byte
 	if prettyPrint {
 		src, err = xml.MarshalIndent(o, "", "    ")
 		if err != nil {
@@ -228,6 +214,6 @@ func main() {
 	fmt.Fprintln(out, `<?xml version="1.0" encoding="UTF-8"?>`)
 		fmt.Fprintf(out, "%s", src)
 	if newLine {
-		fmt.Fprintf(out)
+		fmt.Fprintln(out)
 	}
 }
