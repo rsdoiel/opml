@@ -1,4 +1,4 @@
-%opmlsort(1) | version 0.0.8 9da173e
+%opmlsort(1) | version 0.0.8 00adbf6
 % R. S. Doiel
 % 2023-06-05
 
