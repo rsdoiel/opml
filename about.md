@@ -3,8 +3,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
 title: "opml"
-abstract: "A library for working with OPML XML files and example command
-line programs."
+abstract: "A library for working with OPML XML files and example command line programs."
 authors:
   - family-names: Doiel
     given-names: Robert
@@ -31,8 +30,7 @@ About this software
 
 - Robert Doiel
 
-A library for working with OPML XML files and example command line
-programs.
+A library for working with OPML XML files and example command line programs.
 
 - License: <https://rsdoiel.github.io/opml/LICENSE>
 - GitHub: <https://github.com/rsdoiel/opml>

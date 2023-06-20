@@ -1,7 +1,7 @@
 %s
-%opml2json(1) | version 0.0.8 00adbf6
+%opml2json(1) | version 0.0.8 db50e8d
 % R. S. Doiel
-% 2023-06-05
+% 2023-06-20
 
 # NAME
 
