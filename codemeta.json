@@ -5,8 +5,8 @@
     "name": "opml",
     "codeRepository": "https://github.com/rsdoiel/opml",
     "issueTracker": "https://github.com/rsdoiel/opml/issues",
-    "license": "https://rsdoiel.github.io/opml/LICENSE",
-    "version": "0.0.8",
+    "license": "https://spdx.org/licenses/AGPL-3.0-or-later",
+    "version": "0.0.9",
     "author": [
         {
             "@type": "Person",

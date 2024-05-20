@@ -1,6 +1,6 @@
-%opmlsort(1) | version 0.0.8 00adbf6
+%opmlsort(1) | version 0.0.9 db50e8d
 % R. S. Doiel
-% 2023-06-05
+% 2024-05-20
 
 # NAME
 
