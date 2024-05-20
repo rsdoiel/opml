@@ -30,45 +30,35 @@
 <h1 id="name">NAME</h1>
 <p>opml2urls</p>
 <h1 id="synopsis">SYNOPSIS</h1>
-<p>opml2urls converts a OPML XML to a list of urls for elements that
-have the xmlUrl attribute set.</p>
+<p>opml2urls converts a OPML XML to a list of urls for elements that have the xmlUrl attribute set.</p>
 <h1 id="options">OPTIONS</h1>
 <dl>
 <dt>help</dt>
-<dd>
-Display this help page
+<dd>Display this help page
 </dd>
 <dt>version</dt>
-<dd>
-Display version
+<dd>Display version
 </dd>
 <dt>-license</dt>
-<dd>
-Display license
+<dd>Display license
 </dd>
 <dt>-xmlurl</dt>
-<dd>
-output the xmlUrl attribute (default is true)
+<dd>output the xmlUrl attribute (default is true)
 </dd>
 <dt>-htmlurl</dt>
-<dd>
-output the htmlUrl attribute (default is false)
+<dd>output the htmlUrl attribute (default is false)
 </dd>
 <dt>-text-as-comment</dt>
-<dd>
-output the text attribute as a hash prefix comment
+<dd>output the text attribute as a hash prefix comment
 </dd>
 <dt>-newsboat</dt>
-<dd>
-convert the OPML into a newsboat url file format
+<dd>convert the OPML into a newsboat url file format
 </dd>
 </dl>
 <h1 id="examples">EXAMPLES</h1>
-<p>Convert OPML XML to a list of plain text URLs from the xmlUrl
-attributes on the OPML.</p>
+<p>Convert OPML XML to a list of plain text URLs from the xmlUrl attributes on the OPML.</p>
 <pre><code>cat subscriptions.xml | opml2urls &gt; urls.txt</code></pre>
-<p>Convert an OPML XML file to the newsboart <code>.newboat/urls</code>
-format.</p>
+<p>Convert an OPML XML file to the newsboart <code>.newboat/urls</code> format.</p>
 <pre><code>cat subscriptions.xml | opml2urls -newsboat</code></pre>
 </section>
 

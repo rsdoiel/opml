@@ -50,26 +50,6 @@ version.go: .FORCE
 		--metadata release_hash=$(RELEASE_HASH) \
 		--template codemeta-version-go.tmpl \
 		LICENSE >version.go
-##	@echo "package $(PROJECT)" >version.go
-##	@echo '' >>version.go
-##	@echo 'const (' >>version.go
-##	@echo  '    // Version number of release'>>version.go
-##	@echo '    Version = "$(VERSION)"' >>version.go
-##	@echo '' >>version.go
-##	@echo  '    // ReleaseDate, the date version.go was generated'>>version.go
-##	@echo '    ReleaseDate = "$(RELEASE_DATE)"' >>version.go
-##	@echo '' >>version.go
-##	@echo  '    // ReleaseHash, the Git hash when version.go was generated'>>version.go
-##	@echo '    ReleaseHash = "$(RELEASE_HASH)"' >>version.go
-##	@echo '' >>version.go
-##	@echo '    LicenseText = `' >>version.go
-##	@cat LICENSE >>version.go
-##	@echo '`' >>version.go
-##	@echo ')' >>version.go
-##	@echo '' >>version.go
-##	@git add version.go
-##	@if [ -f bin/codemeta ]; then ./bin/codemeta; fi
-
 
 $(PROGRAMS): $(PACKAGE)
 	@mkdir -p bin
@@ -200,12 +180,6 @@ dist/Linux-armv7l: $(PROGRAMS)
 	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Linux-armv7l.zip LICENSE codemeta.json CITATION.cff *.md bin/* man/*
 	@rm -fR dist/bin
 
-dist/RaspberryPiOS-arm7: $(PROGRAMS)
-	@mkdir -p dist/bin
-	@for FNAME in $(PROGRAMS); do env GOOS=linux GOARCH=arm GOARM=7 go build -o "dist/bin/$${FNAME}" cmd/$${FNAME}/*.go; done
-	@cd dist && zip -r $(PROJECT)-v$(VERSION)-RaspberryPiOS-arm7.zip LICENSE codemeta.json CITATION.cff *.md bin/* man/*
-	@rm -fR dist/bin
-
 distribute_docs:
 	@mkdir -p dist/
 	@cp -v codemeta.json dist/
@@ -215,6 +189,6 @@ distribute_docs:
 	@cp -v INSTALL.md dist/
 	@cp -vR man dist/
 
-release: .FORCE installer.sh save build save distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64 dist/RaspberryPiOS-arm7 dist/Linux-armv7l
+release: .FORCE installer.sh save build save distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64 dist/Linux-armv7l
 
 .FORCE:
