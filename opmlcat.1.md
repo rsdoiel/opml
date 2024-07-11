@@ -1,4 +1,4 @@
-%opmlcat(1) | version 0.0.9 7d96b12
+%opmlcat(1) | version 0.0.9 fdad103
 % R. S. Doiel
 % 2024-05-20
 
