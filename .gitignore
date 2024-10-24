@@ -31,3 +31,4 @@ dist/*
 *.zip
 scratch/*
 _codemeta.json
+man/*
