@@ -1,0 +1,10 @@
+{
+  "tasks": {
+    "test": "deno test --allow-read --allow-write"
+  },
+  "imports": {
+    "@libs/xml": "jsr:@libs/xml@^6.0.4",
+    "@std/assert": "jsr:@std/assert@^1.0.11",
+    "@std/path": "jsr:@std/path@^1.0.8"
+  }
+}
