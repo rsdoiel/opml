@@ -1,6 +1,6 @@
-%opmlsort(1) | version 0.0.9 fdad103
+%opmlsort(1) | version 0.0.9 facd557
 % R. S. Doiel
-% 2024-05-20
+% 2025-08-10
 
 # NAME
 
