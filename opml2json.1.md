@@ -1,5 +1,5 @@
 %s
-%opml2json(1) | version 0.0.9 facd557
+%opml2json(1) | version 0.0.9 bb8f719
 % R. S. Doiel
 % 2025-08-10
 
