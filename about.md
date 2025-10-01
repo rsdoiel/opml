@@ -13,7 +13,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: https://github.com/rsdoiel/opml
-version: 0.0.9
+version: 0.0.10
 license_url: https://spdx.org/licenses/AGPL-3.0-or-later
 
 programming_language:
@@ -31,7 +31,7 @@ date_released: 2025-10-01
 About this software
 ===================
 
-## opml 0.0.9
+## opml 0.0.10
 
 - normalized the license to AGPL >= 3
 - updated codemeta status to be inactive (it's stable)

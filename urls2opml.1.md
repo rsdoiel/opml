@@ -1,4 +1,4 @@
-% urls2opml(1) user manual | 0.0.9 088bc62
+% urls2opml(1) user manual | 0.0.10 5751c24
 % R. S. Doiel
 % 2025-10-01
 

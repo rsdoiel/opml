@@ -17,7 +17,7 @@ contacts:
     email: rsdoiel@gmail.com
 
 repository-code: "https://github.com/rsdoiel/opml"
-version: 0.0.9
+version: 0.0.10
 date-released: 2025-10-01
 
 license-url: "https://spdx.org/licenses/AGPL-3.0-or-later"
