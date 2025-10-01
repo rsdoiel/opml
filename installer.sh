@@ -1,4 +1,5 @@
 #!/bin/sh
+# generated with CMTools 0.0.9 bb8f719
 
 #
 # Set the package name and version to install
@@ -7,6 +8,10 @@ PACKAGE="opml"
 VERSION="0.0.9"
 GIT_GROUP="rsdoiel"
 RELEASE="https://github.com/$GIT_GROUP/$PACKAGE/releases/tag/v$VERSION"
+if [ "$PKG_VERSION" != "" ]; then
+   VERSION="${PKG_VERSION}"
+   echo "${PKG_VERSION} used for version v${VERSION}"
+fi
 
 #
 # Get the name of this script.
@@ -16,7 +21,7 @@ INSTALLER="$(basename "$0")"
 #
 # Figure out what the zip file is named
 #
-OS_NAME="$(uname -o)"
+OS_NAME="$(uname)"
 MACHINE="$(uname -m)"
 case "$OS_NAME" in
    Darwin)
@@ -26,6 +31,11 @@ case "$OS_NAME" in
    OS_NAME="Linux"
    ;;
 esac
+
+if [ "$1" != "" ]; then
+   VERSION="$1"
+   echo "Version set to v${VERSION}"
+fi
 
 ZIPFILE="$PACKAGE-v$VERSION-$OS_NAME-$MACHINE.zip"
 
@@ -43,14 +53,17 @@ cat<<EOT
 
 EOT
 
+if [ ! -d "$HOME/Downloads" ]; then
+	mkdir -p "$HOME/Downloads"
+fi
 if [ ! -f "$HOME/Downloads/$ZIPFILE" ]; then
 	cat<<EOT
 
-  To install $PACKAGE you need to download 
+  To install $PACKAGE you need to download
 
     $ZIPFILE
 
-  from 
+  from
 
     $RELEASE
 
@@ -85,14 +98,14 @@ rm .binfiles.tmp
 # Make sure $HOME/bin is in the path
 #
 case :$PATH: in
-	*:$HOME/bin:*) 
+	*:$HOME/bin:*)
 	;;
 	*)
 	# shellcheck disable=SC2016
 	echo 'export PATH="$HOME/bin:$PATH"' >>"$HOME/.bashrc"
 	# shellcheck disable=SC2016
 	echo 'export PATH="$HOME/bin:$PATH"' >>"$HOME/.zshrc"
-    ;;	
+    ;;
 esac
 
 # shellcheck disable=SC2031
@@ -101,7 +114,7 @@ if [ "$EXPLAIN_OS_POLICY" = "no" ]; then
 
   You need to take additional steps to complete installation.
 
-  Your operating system security policied needs to "allow" 
+  Your operating system security policies needs to "allow"
   running programs from $PACKAGE.
 
   Example: on macOS you can type open the programs in finder.
@@ -110,6 +123,8 @@ if [ "$EXPLAIN_OS_POLICY" = "no" ]; then
 
   Find the program(s) and right click on the program(s)
   installed to enable them to run.
+
+  More information about security policies see INSTALL_NOTES_macOS.md
 
 EOT
 
@@ -144,3 +159,4 @@ fi
 
 rm -fR "$HOME/.$PACKAGE/installer"
 cd "$START" || exit 1
+

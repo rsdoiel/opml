@@ -40,5 +40,16 @@
   "issueTracker": "https://github.com/rsdoiel/opml/issues",
   "releaseNotes": "- normalized the license to AGPL >= 3\n- updated codemeta status to be inactive (it's stable)",
   "copyrightYear": 2021,
-  "copyrightHolder": "R. S. Doiel"
+  "copyrightHolder": "R. S. Doiel",
+  "softwareRequirements": [
+    "Golang >= 1.24",
+    "CMTools >= 0.0.40"
+  ],
+  "softwareSuggestions": [
+    "Pandoc >= 3.1",
+    "GNU Make >= 3.5"
+  ],
+  "version": "0.0.9",
+  "developmentStatus": "wip",
+  "issueTracker": "https://github.com/rsdoiel/opml/issues"
 }

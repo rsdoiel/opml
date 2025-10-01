@@ -1,6 +1,6 @@
-% urls2opml(1) user manual | 0.0.9 fdad103
+% urls2opml(1) user manual | 0.0.9 bb8f719
 % R. S. Doiel
-% 2024-05-20
+% 2025-08-10
 
 # NAME
 
