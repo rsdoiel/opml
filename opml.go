@@ -414,18 +414,3 @@ func (o *OPML) Walk(fn func(*Outline) bool) error {
 	return nil
 }
 
-// ParseMarkdown will parse a Markdown or CommonMark file and
-// extracting any list of links into the OPML structure.
-func (o *OPML) ParseMarkdown(src []byte) error {
-	md := goldmark.New(
-		goldmark.WithExtensions(
-		extension.GFM,
-		extension.Footnote,
-	),
-		goldmark.WithParserOptions(
-			parser.WithAutoHeadingID(),
-		),
-	)
-	var buf bytes.Buffer
-	
-}

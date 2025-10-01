@@ -25,7 +25,7 @@ keywords:
   - text markup
   - list markup
 
-
+date_released: 2025-10-01
 ---
 
 About this software
@@ -33,7 +33,8 @@ About this software
 
 ## opml 0.0.9
 
-
+- normalized the license to AGPL >= 3
+- updated codemeta status to be inactive (it's stable)
 
 ### Authors
 
