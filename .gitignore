@@ -32,3 +32,6 @@ dist/*
 scratch/*
 _codemeta.json
 man/*
+
+# PageFind output is generated, large and changes on every build; never commit it.
+pagefind/
