@@ -32,6 +32,9 @@ Installing from source
 
 ### Required software
 
+- Go >= 1.27.3
+- Pandoc >= 3.9 (man pages and website)
+- GNU Make >= 3
 
 ### Steps
 

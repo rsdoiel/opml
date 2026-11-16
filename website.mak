@@ -1,5 +1,5 @@
 
-# generated with CMTools 0.0.9 facd557
+# generated with CMTools 0.0.1 844c936
 
 #
 # Makefile for running pandoc on all Markdown docs ending in .md
@@ -8,15 +8,20 @@ PROJECT = opml
 
 PANDOC = $(shell which pandoc)
 
-MD_PAGES = $(shell ls -1 *.md)
+# Internal notes and upstream drafts (issues, pull requests), not website pages. Kept out of the
+# build so they stay unpublished. The drafts are untracked and deleted once submitted.
+NO_PUBLISH = TODO.md
 
-HTML_PAGES = $(shell ls -1 *.md | sed -E 's/.md/.html/g')
+MD_PAGES = $(filter-out $(NO_PUBLISH),$(shell ls -1 *.md))
+
+HTML_PAGES = $(patsubst %.md,%.html,$(MD_PAGES))
 
 build: $(HTML_PAGES) $(MD_PAGES)
 
 $(HTML_PAGES): $(MD_PAGES) .FORCE
 	if [ -f $(PANDOC) ]; then $(PANDOC) --metadata title=$(basename $@) -s --to html5 $(basename $@).md -o $(basename $@).html \
 		--lua-filter=links-to-html.lua \
+		--lua-filter=add-col-scope.lua \
 	    --template=page.tmpl; fi
 	@if [ $@ = "README.html" ]; then mv README.html index.html; fi
 

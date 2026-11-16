@@ -1,4 +1,3 @@
-%s
 %opml2json(1) | version 0.0.10 5751c24
 % R. S. Doiel
 % 2025-10-01
@@ -46,4 +45,5 @@ Convert *myfeeds.ompl* to *myfeeds.json*.
 ~~~
 opml2json myfeeds.opml myfeeds.json
 ~~~
+
 

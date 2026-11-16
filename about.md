@@ -1,23 +1,24 @@
 ---
 title: opml
-abstract: "A library for working with OPML XML files and example command line programs."
+abstract: |-
+  A library for working with OPML XML files and example command line programs.
 authors:
   - family_name: Doiel
-    given_name: Robert
+    given_name: R. S.
     id: https://orcid.org/0000-0003-0900-6903
 
 
 maintainer:
   - family_name: Doiel
-    given_name: Robert
+    given_name: R. S.
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: https://github.com/rsdoiel/opml
 version: 0.0.10
-license_url: https://spdx.org/licenses/AGPL-3.0-or-later
+license_url: https://www.gnu.org/licenses/agpl-3.0.txt
 
 programming_language:
-  - Go
+  - Go >= 1.27.3
 
 keywords:
   - xml
@@ -36,40 +37,41 @@ About this software
 - normalized the license to AGPL >= 3
 - updated codemeta status to be inactive (it's stable)
 
-### Authors
+## Authors
 
-- Robert Doiel, <https://orcid.org/0000-0003-0900-6903>
-
-
+- [R. S. Doiel](https://orcid.org/0000-0003-0900-6903)
 
 
-### Maintainers
 
-- Robert Doiel, <https://orcid.org/0000-0003-0900-6903>
+
+## Maintainers
+
+- [R. S. Doiel](https://orcid.org/0000-0003-0900-6903)
 
 
 A library for working with OPML XML files and example command line programs.
 
-- License: <https://spdx.org/licenses/AGPL-3.0-or-later>
-- GitHub: <https://github.com/rsdoiel/opml>
-- Issues: <https://github.com/rsdoiel/opml/issues>
+- [License](https://www.gnu.org/licenses/agpl-3.0.txt)
+- [Code Repository](https://github.com/rsdoiel/opml)
+  - [Issue Tracker](https://github.com/rsdoiel/opml/issues)
 
-### Programming languages
+## Programming languages
 
-- Go
-
-
+- Go >= 1.27.3
 
 
-### Software Requirements
-
-- Golang >= 1.24
-- CMTools >= 0.0.40
 
 
-### Software Suggestions
+## Software Requirements
 
-- Pandoc &gt;&#x3D; 3.1
-- GNU Make &gt;&#x3D; 3.5
+- Go >= 1.27.3
+- github.com/caltechlibrary/cli >= 0.0.16
+
+
+## Software Suggestions
+
+- CMTools >= 0.0.45b
+- Pandoc >= 3.9
+- GNU Make >= 3
 
 
