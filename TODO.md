@@ -39,3 +39,9 @@
 + [x] Add opml2json 
 + [x] Add support for custom attributes
 + [x] Add Bash script to fetch Dave Winer's userland samples at http://scripting.com/misc/userlandSamples.zip
+
+## Modernization (2026-11-16)
+
+To match the workspace standard (knowledge and opml are the models; Go 1.27.3 across repositories). Do one repository at a time; run the tests and `make -n release` after each step.
+
+- [ ] Replace `github.com/caltechlibrary/cli` with the standard library `flag`, with `-h/-l/-v` and long spellings (Go CLI conventions).
