@@ -135,15 +135,15 @@ func main() {
 
 	// Handle options
 	if showHelp {
-		fmt.Fprint(out, "%s\n", fmtHelp(helpText, appName, version, releaseDate, releaseHash))
+		fmt.Fprintf(out, "%s\n", fmtHelp(helpText, appName, version, releaseDate, releaseHash))
 		os.Exit(0)
 	}
 	if showLicense {
-		fmt.Fprintln(out, "%s\n", opml.LicenseText)
+		fmt.Fprintf(out, "%s\n", opml.LicenseText)
 		os.Exit(0)
 	}
 	if showVersion {
-		fmt.Fprintln(out, "%s %s %s\n", appName, version, releaseHash)
+		fmt.Fprintf(out, "%s %s %s\n", appName, version, releaseHash)
 		os.Exit(0)
 	}
 
