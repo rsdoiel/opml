@@ -1,4 +1,4 @@
-%opmlsort(1) | version 0.0.10 5751c24
+%opmlsort(1) | version 0.0.10 f7001d7
 % R. S. Doiel
 % 2025-10-01
 
