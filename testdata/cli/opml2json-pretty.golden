@@ -1,0 +1,458 @@
+{
+    "version": "1.0",
+    "head": {
+        "title": "johndoe@example.com subscriptions in Go Read"
+    },
+    "body": {
+        "outline": [
+            {
+                "text": "A dead man fell from the sky...",
+                "type": "rss",
+                "title": "A dead man fell from the sky...",
+                "xmlUrl": "http://blog.garycorby.com/feeds/posts/default",
+                "htmlUrl": "http://www.garycorby.com/"
+            },
+            {
+                "text": "ArchivesSpace@Yale",
+                "type": "rss",
+                "title": "ArchivesSpace@Yale",
+                "xmlUrl": "http://campuspress.yale.edu/yalearchivesspace/feed/",
+                "htmlUrl": "http://campuspress.yale.edu/yalearchivesspace"
+            },
+            {
+                "text": "BBC News - Technology",
+                "type": "rss",
+                "title": "BBC News - Technology",
+                "xmlUrl": "http://feeds.bbci.co.uk/news/technology/rss.xml",
+                "htmlUrl": "http://www.bbc.co.uk/news/technology"
+            },
+            {
+                "text": "BBC News | Programmes | Click | World Edition",
+                "type": "rss",
+                "title": "BBC News | Programmes | Click | World Edition",
+                "xmlUrl": "http://newsrss.bbc.co.uk/rss/newsonline_world_edition/programmes/click_online/rss.xml",
+                "htmlUrl": "http://news.bbc.co.uk/go/rss/-/2/hi/programmes/click_online/default.stm"
+            },
+            {
+                "text": "Christian Heilmann",
+                "type": "rss",
+                "title": "Christian Heilmann",
+                "xmlUrl": "http://feeds.feedburner.com/chrisheilmann",
+                "htmlUrl": "https://www.christianheilmann.com"
+            },
+            {
+                "text": "DSHR's Blog",
+                "type": "rss",
+                "title": "DSHR's Blog",
+                "xmlUrl": "http://blog.dshr.org/",
+                "htmlUrl": "http://blog.dshr.org/"
+            },
+            {
+                "text": "DailyJS",
+                "type": "rss",
+                "title": "DailyJS",
+                "xmlUrl": "http://feeds.feedburner.com/dailyjs",
+                "htmlUrl": "http://dailyjs.com/"
+            },
+            {
+                "text": "Dave's Fargo Blog",
+                "type": "rss",
+                "title": "Dave's Fargo Blog",
+                "xmlUrl": "http://dave.smallpict.com/rss.xml",
+                "htmlUrl": "http://scripting.com/"
+            },
+            {
+                "text": "Digital Library Blog",
+                "type": "rss",
+                "title": "Digital Library Blog",
+                "xmlUrl": "https://library.stanford.edu/feeds/blog/276",
+                "htmlUrl": "https://library.stanford.edu/feeds/blog/276"
+            },
+            {
+                "text": "Digital Public Library of America",
+                "type": "rss",
+                "title": "Digital Public Library of America",
+                "xmlUrl": "http://dp.la/info/feed/",
+                "htmlUrl": "http://dp.la/info"
+            },
+            {
+                "text": "Doc Searls WeblogDoc Searls Weblog »",
+                "type": "rss",
+                "title": "Doc Searls WeblogDoc Searls Weblog »",
+                "xmlUrl": "http://blogs.law.harvard.edu/doc/",
+                "htmlUrl": "http://blogs.harvard.edu/doc"
+            },
+            {
+                "text": "GOKb: The Global Open Knowledgebase",
+                "type": "rss",
+                "title": "GOKb: The Global Open Knowledgebase",
+                "xmlUrl": "http://gokb.org/news",
+                "htmlUrl": "http://gokb.org/"
+            },
+            {
+                "text": "Go Newsletter",
+                "type": "rss",
+                "title": "Go Newsletter",
+                "xmlUrl": "http://golangweekly.com/rss/129fppdf",
+                "htmlUrl": "http://golangweekly.com/"
+            },
+            {
+                "text": "Google Research Blog",
+                "type": "rss",
+                "title": "Google Research Blog",
+                "xmlUrl": "http://googleresearch.blogspot.com/feeds/posts/default",
+                "htmlUrl": "http://googleresearch.blogspot.com/"
+            },
+            {
+                "text": "HTML5 Doctor",
+                "type": "rss",
+                "title": "HTML5 Doctor",
+                "xmlUrl": "http://feeds.feedburner.com/html5doctor",
+                "htmlUrl": "http://html5doctor.com"
+            },
+            {
+                "text": "Hydra Project",
+                "type": "rss",
+                "title": "Hydra Project",
+                "xmlUrl": "http://projecthydra.org/feed/",
+                "htmlUrl": "http://projecthydra.org"
+            },
+            {
+                "text": "Identity at Mozilla",
+                "type": "rss",
+                "title": "Identity at Mozilla",
+                "xmlUrl": "http://identity.mozilla.com/rss",
+                "htmlUrl": "http://identity.mozilla.com/"
+            },
+            {
+                "text": "Inside the Guardian blog | The Guardian",
+                "type": "rss",
+                "title": "Inside the Guardian blog | The Guardian",
+                "xmlUrl": "http://www.theguardian.com/help/insideguardian",
+                "htmlUrl": "https://www.theguardian.com/help/insideguardian"
+            },
+            {
+                "text": "JSTOR Daily",
+                "type": "rss",
+                "title": "JSTOR Daily",
+                "xmlUrl": "http://daily.jstor.org/feed/",
+                "htmlUrl": "http://daily.jstor.org"
+            },
+            {
+                "text": "Jane Street Tech Blogs",
+                "type": "rss",
+                "title": "Jane Street Tech Blogs",
+                "xmlUrl": "https://blogs.janestreet.com/feed",
+                "htmlUrl": "https://blogs.janestreet.com"
+            },
+            {
+                "text": "Jisc Monitor",
+                "type": "rss",
+                "title": "Jisc Monitor",
+                "xmlUrl": "http://jiscmonitor.jiscinvolve.org/wp/feed/",
+                "htmlUrl": "https://jiscmonitor.jiscinvolve.org/wp"
+            },
+            {
+                "text": "John Naughton | The Guardian",
+                "type": "rss",
+                "title": "John Naughton | The Guardian",
+                "xmlUrl": "http://www.theguardian.com/profile/johnnaughton/rss",
+                "htmlUrl": "https://www.theguardian.com/profile/johnnaughton"
+            },
+            {
+                "text": "Lambda the Ultimate - Programming Languages Weblog",
+                "type": "rss",
+                "title": "Lambda the Ultimate - Programming Languages Weblog",
+                "xmlUrl": "http://lambda-the-ultimate.org/rss.xml",
+                "htmlUrl": "http://lambda-the-ultimate.org"
+            },
+            {
+                "text": "Letters of Note",
+                "type": "rss",
+                "title": "Letters of Note",
+                "xmlUrl": "http://feeds.feedburner.com/LettersOfNote",
+                "htmlUrl": "http://www.lettersofnote.com/"
+            },
+            {
+                "text": "Library Labs Blog",
+                "type": "rss",
+                "title": "Library Labs Blog",
+                "xmlUrl": "http://libraryblogs.is.ed.ac.uk/librarylabs/feed/",
+                "htmlUrl": "http://libraryblogs.is.ed.ac.uk/librarylabs"
+            },
+            {
+                "text": "Library of Congress: News",
+                "type": "rss",
+                "title": "Library of Congress: News",
+                "xmlUrl": "http://www.loc.gov/rss/pao/news.xml",
+                "htmlUrl": "http://www.loc.gov/index.html"
+            },
+            {
+                "text": "Liliputing",
+                "type": "rss",
+                "title": "Liliputing",
+                "xmlUrl": "http://feeds.feedburner.com/Liliputing",
+                "htmlUrl": "http://liliputing.com"
+            },
+            {
+                "text": "Lisp, the Universe and Everything",
+                "type": "rss",
+                "title": "Lisp, the Universe and Everything",
+                "xmlUrl": "http://lisp-univ-etc.blogspot.com/feeds/posts/default/-/lisp/en",
+                "htmlUrl": "http://lisp-univ-etc.blogspot.com/search/label/lisp"
+            },
+            {
+                "text": "Meatball's Meatballs - Juicy and spicy audio meatballs.",
+                "type": "rss",
+                "title": "Meatball's Meatballs - Juicy and spicy audio meatballs.",
+                "xmlUrl": "http://www.zbs.org/dircast/dircaster.php",
+                "htmlUrl": "http://www.zbs.org/podcast.php"
+            },
+            {
+                "text": "Microtonal Music by Prent Rodgers",
+                "type": "rss",
+                "title": "Microtonal Music by Prent Rodgers",
+                "xmlUrl": "http://ripnread.com/",
+                "htmlUrl": "http://ripnread.com"
+            },
+            {
+                "text": "Mozilla Hacks - the Web developer blog",
+                "type": "rss",
+                "title": "Mozilla Hacks - the Web developer blog",
+                "xmlUrl": "http://hacks.mozilla.org/feed/",
+                "htmlUrl": "http://hacks.mozilla.org"
+            },
+            {
+                "text": "NPR Blogs: Inside NPR.org",
+                "type": "rss",
+                "title": "NPR Blogs: Inside NPR.org",
+                "xmlUrl": "http://www.npr.org/rss/rss.php?id=91000411",
+                "htmlUrl": "http://www.npr.org/sections/inside/"
+            },
+            {
+                "text": "Neil Gaiman's Journal",
+                "type": "rss",
+                "title": "Neil Gaiman's Journal",
+                "xmlUrl": "http://journal.neilgaiman.com/feeds/posts/default",
+                "htmlUrl": "http://journal.neilgaiman.com/"
+            },
+            {
+                "text": "Online Journalism Review",
+                "type": "rss",
+                "title": "Online Journalism Review",
+                "xmlUrl": "http://www.ojr.org/feed/",
+                "htmlUrl": "http://www.ojr.org"
+            },
+            {
+                "text": "Open Knowledge Labs: The Data Wrangling Blog",
+                "type": "rss",
+                "title": "Open Knowledge Labs: The Data Wrangling Blog",
+                "xmlUrl": "http://okfnlabs.org/blog/",
+                "htmlUrl": "http://okfnlabs.org/"
+            },
+            {
+                "text": "Paul Graham: Essays",
+                "type": "rss",
+                "title": "Paul Graham: Essays",
+                "xmlUrl": "http://www.aaronsw.com/2002/feeds/pgessays.rss",
+                "htmlUrl": "http://www.paulgraham.com/"
+            },
+            {
+                "text": "Perl News",
+                "type": "rss",
+                "title": "Perl News",
+                "xmlUrl": "http://feeds.feedburner.com/PerlNews",
+                "htmlUrl": "http://perlnews.org"
+            },
+            {
+                "text": "Quantum Frontiers",
+                "type": "rss",
+                "title": "Quantum Frontiers",
+                "xmlUrl": "http://quantumfrontiers.com/",
+                "htmlUrl": "https://quantumfrontiers.com"
+            },
+            {
+                "text": "Quicklisp news",
+                "type": "rss",
+                "title": "Quicklisp news",
+                "xmlUrl": "http://blog.quicklisp.org/",
+                "htmlUrl": "http://blog.quicklisp.org/"
+            },
+            {
+                "text": "R-statistics blog",
+                "type": "rss",
+                "title": "R-statistics blog",
+                "xmlUrl": "http://www.r-statistics.com/feed/",
+                "htmlUrl": "http://www.r-statistics.com"
+            },
+            {
+                "text": "Raspberry Pi",
+                "type": "rss",
+                "title": "Raspberry Pi",
+                "xmlUrl": "http://www.raspberrypi.org/feed",
+                "htmlUrl": "https://www.raspberrypi.org"
+            },
+            {
+                "text": "Readium",
+                "type": "rss",
+                "title": "Readium",
+                "xmlUrl": "http://readium.org/rss.xml",
+                "htmlUrl": "http://readium.org"
+            },
+            {
+                "text": "Responsive News",
+                "type": "rss",
+                "title": "Responsive News",
+                "xmlUrl": "http://responsivenews.co.uk/rss",
+                "htmlUrl": "http://responsivenews.co.uk/"
+            },
+            {
+                "text": "The  (λ) Lambda meme - all things Lisp - lisp",
+                "type": "rss",
+                "title": "The  (λ) Lambda meme - all things Lisp - lisp",
+                "xmlUrl": "http://www.ymeme.com/category/lisp/feed",
+                "htmlUrl": "http://www.ymeme.com/taxonomy/term/40/0"
+            },
+            {
+                "text": "The Cellar Door",
+                "type": "rss",
+                "title": "The Cellar Door",
+                "xmlUrl": "http://www.literatureandlatte.com/blog/?feed=rss2",
+                "htmlUrl": "http://www.literatureandlatte.com/blog"
+            },
+            {
+                "text": "The Fiction Desk",
+                "type": "rss",
+                "title": "The Fiction Desk",
+                "xmlUrl": "http://www.thefictiondesk.com/blog/feed/atom/",
+                "htmlUrl": "http://www.thefictiondesk.com/blog"
+            },
+            {
+                "text": "The Future of the Internet -- And How to Stop It",
+                "type": "rss",
+                "title": "The Future of the Internet -- And How to Stop It",
+                "xmlUrl": "http://futureoftheinternet.org/feed",
+                "htmlUrl": "http://blogs.harvard.edu/futureoftheinternet"
+            },
+            {
+                "text": "The Go Programming Language Blog",
+                "type": "rss",
+                "title": "The Go Programming Language Blog",
+                "xmlUrl": "http://blog.golang.org/",
+                "htmlUrl": "http://blog.golang.org/feed.atom"
+            },
+            {
+                "text": "The Magpi Magazine",
+                "type": "rss",
+                "title": "The Magpi Magazine",
+                "xmlUrl": "https://www.raspberrypi.org/magpi/feed/?post_type%5B0%5D=issues\u0026post_type%5B1%5D=post",
+                "htmlUrl": "https://www.raspberrypi.org/magpi"
+            },
+            {
+                "text": "The Mozilla Blog",
+                "type": "rss",
+                "title": "The Mozilla Blog",
+                "xmlUrl": "http://blog.mozilla.org/feed/",
+                "htmlUrl": "https://blog.mozilla.org"
+            },
+            {
+                "text": "The Open Library Blog",
+                "type": "rss",
+                "title": "The Open Library Blog",
+                "xmlUrl": "http://blog.openlibrary.org/feed/",
+                "htmlUrl": "http://blog.openlibrary.org"
+            },
+            {
+                "text": "The R Journal",
+                "type": "rss",
+                "title": "The R Journal",
+                "xmlUrl": "https://journal.r-project.org/rss.atom",
+                "htmlUrl": "http://journal.r-project.org"
+            },
+            {
+                "text": "The Racket Blog",
+                "type": "rss",
+                "title": "The Racket Blog",
+                "xmlUrl": "http://blog.racket-lang.org/",
+                "htmlUrl": "http://blog.racket-lang.org/"
+            },
+            {
+                "text": "The Tink Tank",
+                "type": "rss",
+                "title": "The Tink Tank",
+                "xmlUrl": "http://tink.co.uk/feed/",
+                "htmlUrl": "http://tink.uk"
+            },
+            {
+                "text": "Usability.gov - Improving the User Experience",
+                "type": "rss",
+                "title": "Usability.gov - Improving the User Experience",
+                "xmlUrl": "http://www.usability.gov/rss.xml",
+                "htmlUrl": "http://www.usability.gov/get-involved/blog/rss.xml"
+            },
+            {
+                "text": "Vox Product Blog -  All",
+                "type": "rss",
+                "title": "Vox Product Blog -  All",
+                "xmlUrl": "http://product.voxmedia.com/",
+                "htmlUrl": "http://product.voxmedia.com/"
+            },
+            {
+                "text": "Web Platform Blog",
+                "type": "rss",
+                "title": "Web Platform Blog",
+                "xmlUrl": "http://blog.webplatform.org/feed/",
+                "htmlUrl": "https://blog.webplatform.org"
+            },
+            {
+                "text": "WebComponents.org",
+                "type": "rss",
+                "title": "WebComponents.org",
+                "xmlUrl": "http://feeds.feedburner.com/webcomponentsorg/podcasts",
+                "htmlUrl": "http://webcomponents.org"
+            },
+            {
+                "text": "Zach Beane Common Lisp",
+                "type": "rss",
+                "title": "Zach Beane Common Lisp",
+                "xmlUrl": "http://lispblog.xach.com/",
+                "htmlUrl": "http://lispblog.xach.com/"
+            },
+            {
+                "text": "code4lib",
+                "type": "rss",
+                "title": "code4lib",
+                "xmlUrl": "http://code4lib.org/",
+                "htmlUrl": "http://code4lib.org"
+            },
+            {
+                "text": "rob pike",
+                "type": "rss",
+                "title": "rob pike",
+                "xmlUrl": "http://robpike.blogspot.com/feeds/posts/default",
+                "htmlUrl": "http://robpike.blogspot.com/"
+            },
+            {
+                "text": "schema blog",
+                "type": "rss",
+                "title": "schema blog",
+                "xmlUrl": "http://blog.schema.org/feeds/posts/default",
+                "htmlUrl": "http://blog.schema.org/"
+            },
+            {
+                "text": "schema blog",
+                "type": "rss",
+                "title": "schema blog",
+                "xmlUrl": "http://blog.schema.org/",
+                "htmlUrl": "http://blog.schema.org/"
+            },
+            {
+                "text": "thatgamecompany",
+                "type": "rss",
+                "title": "thatgamecompany",
+                "xmlUrl": "http://thatgamecompany.com/feed/",
+                "htmlUrl": "http://thatgamecompany.com"
+            }
+        ]
+    }
+}

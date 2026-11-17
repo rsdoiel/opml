@@ -1,53 +1,77 @@
-%opmlsort(1) | version 0.0.10 f7001d7
+%opmlsort(1) user manual | version 0.0.10 f7001d7
 % R. S. Doiel
 % 2025-10-01
 
 # NAME
 
-opmlsort
+opmlsort — sort the outlines of an OPML document
 
 # SYNOPSIS
 
-opmlsort [OPTIONS] [INPUT_FILENAME] [OUTPUT_FILENAME]
+opmlsort [OPTIONS] [INPUT_FILENAME [OUTPUT_FILENAME]]
 
 # DESCRIPTION
 
-opmlsort is a program that sorts the outline in an OPML document.
+opmlsort reads an OPML document and writes it with its outlines sorted.
 
 # OPTIONS
 
 -h, -help
-: display help
+: display this help page
 
 -l, -license
-: display license
+: display the license
 
 -v, -version
-: display version
+: display the version
 
--i
-: read from filename
+-i, -input FILENAME
+: read from FILENAME; the default, and -, is standard input
 
--o
-: write to filename
+-o, -output FILENAME
+: write to FILENAME; the default, and -, is standard output
 
--newline
-: add a tailing newline
+-nl, -newline
+: add a trailing newline (the default is none)
+
+-quiet
+: suppress error messages; the exit status still says what happened
 
 -pretty
-: pretty print JSON output
+: indent the XML
 
 -case-insensitive
-: case insensitive sort
+: sort without regard to case
 
 -title
-: sort by title
+: sort by title (the default; -title=false sorts by text)
 
+The input and output may also be given as the first and second argument.
+
+# EXIT STATUS
+
+0
+: success
+
+2
+: bad command line: an unknown option, a surplus argument
+
+65
+: the input is not valid OPML
+
+66
+: an input file does not exist
+
+73
+: the output file cannot be created
+
+74
+: reading or writing failed part way
+
+77
+: the operating system refused access to a file
 
 # EXAMPLES
 
-~~~
     opmlsort myfeeds.opml sorted-feeds.opml
-~~~
-
 

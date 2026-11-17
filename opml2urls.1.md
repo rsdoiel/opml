@@ -1,54 +1,84 @@
-% opml2urls(1) user manual
+%opml2urls(1) user manual | version 0.0.10 f7001d7
 % R. S. Doiel
-% 2022-12-16
+% 2025-10-01
 
 # NAME
 
-opml2urls
+opml2urls — list the feed URLs of an OPML document
 
 # SYNOPSIS
 
-opml2urls converts a OPML XML to a list of urls for elements that
-have the xmlUrl attribute set.
+opml2urls [OPTIONS] [INPUT_FILENAME [OUTPUT_FILENAME]]
+
+# DESCRIPTION
+
+opml2urls reads an OPML document and writes the URLs of the outlines that have an xmlUrl attribute, one per line.
 
 # OPTIONS
 
-help
-: Display this help page
-
-version
-: Display version
+-h, -help
+: display this help page
 
 -l, -license
-: Display license
+: display the license
+
+-v, -version
+: display the version
+
+-i, -input FILENAME
+: read from FILENAME; the default, and -, is standard input
+
+-o, -output FILENAME
+: write to FILENAME; the default, and -, is standard output
+
+-nl, -newline
+: add a trailing newline (the default is none)
+
+-quiet
+: suppress error messages; the exit status still says what happened
 
 -xmlurl
-: output the xmlUrl attribute (default is true)
+: write the xmlUrl attribute (the default; -xmlurl=false turns it off)
 
 -htmlurl
-: output the htmlUrl attribute (default is false)
+: write the htmlUrl attribute (the default is not to)
 
 -text-as-comment
-: output the text attribute as a hash prefix comment
+: write the text attribute as a comment line starting with # (the default; -text-as-comment=false turns it off)
 
 -newsboat
-: convert the OPML into a newsboat url file format
+: write newsboat's url file format
+
+The input and output may also be given as the first and second argument.
+
+# EXIT STATUS
+
+0
+: success
+
+2
+: bad command line: an unknown option, a surplus argument
+
+65
+: the input is not valid OPML
+
+66
+: an input file does not exist
+
+73
+: the output file cannot be created
+
+74
+: reading or writing failed part way
+
+77
+: the operating system refused access to a file
 
 # EXAMPLES
 
-Convert OPML XML to a list of plain text URLs 
-from the xmlUrl attributes on the OPML.
+    cat subscriptions.opml | opml2urls > urls.txt
 
-~~~
-cat subscriptions.xml | opml2urls > urls.txt
-~~~
+Write newsboat's url file format:
 
-Convert an OPML XML file to the newsboart
-`.newboat/urls` format.
-
-~~~
-cat subscriptions.xml | opml2urls -newsboat
-~~~
-
-
+    opml2urls -newsboat subscriptions.opml urls
 

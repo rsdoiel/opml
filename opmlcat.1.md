@@ -1,49 +1,71 @@
-%opmlcat(1) | version 0.0.10 f7001d7
+%opmlcat(1) user manual | version 0.0.10 f7001d7
 % R. S. Doiel
 % 2025-10-01
 
 # NAME
 
-opmlcat
+opmlcat — concatenate OPML documents
 
 # SYNOPSIS
 
-opmlcat [OPTIONS]
+opmlcat [OPTIONS] [INPUT_FILENAME ...]
 
 # DESCRIPTION
 
-opmlcat concatenates one or more opml files as siblings to standard out.
+opmlcat reads one or more OPML documents and writes one document with their outlines side by side. With no input file it reads standard input. Every argument is an input file; use -o for the output.
 
 # OPTIONS
 
 -h, -help
-: display help
+: display this help page
 
 -l, -license
-: display license
+: display the license
 
 -v, -version
-: display version
+: display the version
 
--i
-: read from filename
+-i, -input FILENAME
+: read from FILENAME; the default, and -, is standard input
 
--o
-: write to filename
+-o, -output FILENAME
+: write to FILENAME; the default, and -, is standard output
 
--newline
-: add trailing newline
+-nl, -newline
+: add a trailing newline (the default is none)
+
+-quiet
+: suppress error messages; the exit status still says what happened
 
 -pretty
-: pretty print JSON output
+: indent the XML
+
+Every argument is an input file; the output is -o.
+
+# EXIT STATUS
+
+0
+: success
+
+2
+: bad command line: an unknown option, a surplus argument
+
+65
+: an input is not valid OPML, or cannot be combined
+
+66
+: an input file does not exist
+
+73
+: the output file cannot be created
+
+74
+: reading or writing failed part way
+
+77
+: the operating system refused access to a file
 
 # EXAMPLES
 
-This is an example of using opmlcat and opmlsort together to 
-create a combined sorted opml file.
-
-~~~
-    opmlcat file1.opml file1.opml | opmlsort -o combined-sorted.opml
-~~~
-
+    opmlcat file1.opml file2.opml | opmlsort -o combined-sorted.opml
 

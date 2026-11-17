@@ -1,0 +1,2 @@
+https://a.example/feed.xml
+https://b.example/rss
