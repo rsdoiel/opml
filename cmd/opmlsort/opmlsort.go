@@ -51,13 +51,13 @@ var (
 
 # OPTIONS
 
--help
+-h, -help
 : display help
 
--license
+-l, -license
 : display license
 
--version
+-v, -version
 : display version
 
 -i
@@ -111,8 +111,11 @@ func main() {
 	fmtHelp := opml.FmtHelp
 
 	// Standard Options
+	flag.BoolVar(&showHelp, "h", false, "display help")
 	flag.BoolVar(&showHelp, "help", false, "display help")
+	flag.BoolVar(&showLicense, "l", false, "display license")
 	flag.BoolVar(&showLicense, "license", false, "display license")
+	flag.BoolVar(&showVersion, "v", false, "display version")
 	flag.BoolVar(&showVersion, "version", false, "display version")
 	flag.BoolVar(&newLine, "newline", false, "add trailing newline")
 	flag.StringVar(&inputFName, "i", "", "set input filename")

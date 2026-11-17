@@ -16,13 +16,13 @@ opmlsort is a program that sorts the outline in an OPML document.
 
 # OPTIONS
 
--help
+-h, -help
 : display help
 
--license
+-l, -license
 : display license
 
--version
+-v, -version
 : display version
 
 -i

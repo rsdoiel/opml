@@ -16,13 +16,13 @@ opmlcat concatenates one or more opml files as siblings to standard out.
 
 # OPTIONS
 
--help
+-h, -help
 : display help
 
--license
+-l, -license
 : display license
 
--version
+-v, -version
 : display version
 
 -i

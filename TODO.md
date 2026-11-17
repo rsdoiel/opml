@@ -44,4 +44,5 @@
 
 To match the workspace standard (knowledge and opml are the models; Go 1.27.3 across repositories). Do one repository at a time; run the tests and `make -n release` after each step.
 
-- [ ] Replace `github.com/caltechlibrary/cli` with the standard library `flag`, with `-h/-l/-v` and long spellings (Go CLI conventions).
+- [x] Replace `github.com/caltechlibrary/cli`: the programs already used the standard library `flag`; the unused requirement is gone from go.mod and go.sum, and -h, -l and -v now work beside the long spellings. Moving the code into internal/cli and DR-0003 exit codes (every failure exits 1 today) is a follow-up, as done for osf.
+- [ ] Move the five programs into `internal/cli` behind thin mains and give them the DR-0003 exit codes (every failure exits 1 today), test first through the built binaries; `osf` and `stngo` are the models.

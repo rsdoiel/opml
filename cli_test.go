@@ -19,10 +19,17 @@ func TestCommandsInformationalOptions(t *testing.T) {
 		if out, err := exec.Command("go", "build", "-o", bin, "./cmd/"+name).CombinedOutput(); err != nil {
 			t.Fatalf("%s: build failed: %v\n%s", name, err, out)
 		}
+		// Each standard option has a short and a long spelling, with one or two dashes.
 		for opt, want := range map[string]string{
-			"-help":    name,
-			"-license": "GNU AFFERO GENERAL PUBLIC LICENSE",
-			"-version": name + " " + Version,
+			"-h":        name,
+			"-help":     name,
+			"--help":    name,
+			"-l":        "GNU AFFERO GENERAL PUBLIC LICENSE",
+			"-license":  "GNU AFFERO GENERAL PUBLIC LICENSE",
+			"--license": "GNU AFFERO GENERAL PUBLIC LICENSE",
+			"-v":        name + " " + Version,
+			"-version":  name + " " + Version,
+			"--version": name + " " + Version,
 		} {
 			out, err := exec.Command(bin, opt).Output()
 			if err != nil {

@@ -16,13 +16,13 @@ opml2json is a program that converts OPML's XML to JSON.
 
 # OPTIONS
 
--help
+-h, -help
 : display help
 
--license
+-l, -license
 : display license
 
--version
+-v, -version
 : display version
 
 -i

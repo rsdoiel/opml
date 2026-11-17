@@ -13,13 +13,13 @@ XML.  It reads from standard input and writes to standard output.
 
 # OPTIONS
 
--help
+-h, -help
 : Display this help page
 
--version
+-v, -version
 : Display version
 
--license
+-l, -license
 : Display license
 
 

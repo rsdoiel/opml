@@ -19,7 +19,7 @@ help
 version
 : Display version
 
--license
+-l, -license
 : Display license
 
 -xmlurl

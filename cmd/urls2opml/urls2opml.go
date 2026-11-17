@@ -31,13 +31,13 @@ XML.  It reads from standard input and writes to standard output.
 
 # OPTIONS
 
--help
+-h, -help
 : Display this help page
 
--version
+-v, -version
 : Display version
 
--license
+-l, -license
 : Display license
 
 
@@ -68,8 +68,11 @@ func main() {
 	releaseHash := opml.ReleaseHash
 	fmtHelp := opml.FmtHelp
 
+	flag.BoolVar(&showHelp, "h", false, "display help")
 	flag.BoolVar(&showHelp, "help", false, "display help")
+	flag.BoolVar(&showVersion, "v", false, "display version")
 	flag.BoolVar(&showVersion, "version", false, "display version")
+	flag.BoolVar(&showLicense, "l", false, "display license")
 	flag.BoolVar(&showLicense, "license", false, "display license")
 	flag.Parse()
 
