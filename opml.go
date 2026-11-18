@@ -89,7 +89,7 @@ type Outline struct {
 	Category     string      `xml:"category,attr,omitempty" json:"category,omitempty"`
 	XMLURL       string      `xml:"xmlUrl,attr,omitempty" json:"xmlUrl,omitempty"`   // url
 	HTMLURL      string      `xml:"htmlUrl,attr,omitempty" json:"htmlUrl,omitempty"` // url
-	Language     string      `xml:"langauge,attr,omitempty" json:"language,omitempty"`
+	Language     string      `xml:"language,attr,omitempty" json:"language,omitempty"`
 	Description  string      `xml:"description,attr,omitempty" json:"description,omitempty"`
 	Version      string      `xml:"version,attr,omitempty" json:"version,omitempty"`
 	URL          string      `xml:"url,attr,omitempty" json:"url,omitempty"` // url
@@ -389,14 +389,15 @@ func walk(ol *Outline, fn func(*Outline) bool) bool {
 	if ol == nil {
 		return false
 	}
-	ok := fn(ol)
-	if ol.Outline != nil {
-		for _, elem := range ol.Outline {
-
-			return walk(elem, fn)
+	if !fn(ol) {
+		return false
+	}
+	for _, elem := range ol.Outline {
+		if !walk(elem, fn) {
+			return false
 		}
 	}
-	return ok
+	return true
 }
 
 // Walk does a depth first walk of an outline, stops if function

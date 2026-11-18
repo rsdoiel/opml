@@ -167,3 +167,65 @@ func TestFilterForTypes(t *testing.T) {
 	t.FailNow()
 }
 */
+
+const walkSrc = `<?xml version="1.0"?>
+<opml version="2.0"><head><title>t</title></head><body>
+<outline text="a"><outline text="a1"/><outline text="a2"><outline text="a2x"/></outline><outline text="a3"/></outline>
+<outline text="b"><outline text="b1"/></outline>
+</body></opml>`
+
+// TestWalkVisitsEveryOutline: Walk must visit siblings and nested children,
+// depth first, not only the first child at each level.
+func TestWalkVisitsEveryOutline(t *testing.T) {
+	o := &OPML{}
+	if err := Unmarshal([]byte(walkSrc), o); err != nil {
+		t.Fatal(err)
+	}
+	var got []string
+	if err := o.Walk(func(ol *Outline) bool {
+		got = append(got, ol.Text)
+		return true
+	}); err != nil {
+		t.Fatal(err)
+	}
+	want := "a a1 a2 a2x a3 b b1"
+	if s := strings.Join(got, " "); s != want {
+		t.Errorf("visited %q, want %q", s, want)
+	}
+}
+
+// TestWalkStopsWhenFuncReturnsFalse: false from the callback ends the whole
+// walk, including from a nested outline.
+func TestWalkStopsWhenFuncReturnsFalse(t *testing.T) {
+	o := &OPML{}
+	if err := Unmarshal([]byte(walkSrc), o); err != nil {
+		t.Fatal(err)
+	}
+	var got []string
+	_ = o.Walk(func(ol *Outline) bool {
+		got = append(got, ol.Text)
+		return ol.Text != "a2"
+	})
+	if s := strings.Join(got, " "); s != "a a1 a2" {
+		t.Errorf("visited %q, want %q", s, "a a1 a2")
+	}
+}
+
+// TestLanguageAttribute: the OPML language attribute is read and written.
+func TestLanguageAttribute(t *testing.T) {
+	src := `<opml version="2.0"><head/><body><outline text="x" language="en"/></body></opml>`
+	o := &OPML{}
+	if err := Unmarshal([]byte(src), o); err != nil {
+		t.Fatal(err)
+	}
+	if got := o.Body.Outline[0].Language; got != "en" {
+		t.Errorf("Language = %q, want %q", got, "en")
+	}
+	out, err := Marshal(o)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(out), `language="en"`) {
+		t.Errorf("marshalled output lacks language attribute: %s", out)
+	}
+}

@@ -2,11 +2,6 @@
     "title": "OPML, a Go package and cli"
 }
 
-## Bugs
-
-+ [ ] `walk()` (opml.go, used by `OPML.Walk`) only ever visits an outline's *first* child, never its siblings: the `for _, elem := range ol.Outline { return walk(elem, fn) }` loop returns on its first iteration instead of iterating over every child and only stopping early when `fn` returns false. Any outline with more than one child per level silently loses everything past the first branch. Found while integrating this package into audiobox's OPML playlist export/import (audiobox doesn't use `Walk` itself — flat single-level outlines — so it wasn't blocking, just noticed in passing).
-+ [ ] `Outline.Language` has a struct tag typo: `` `xml:"langauge,attr,omitempty"` `` (opml.go) — should be `language`. The actual OPML `language` attribute is never read or written because of the misspelling.
-
 ## Next
 
 + [ ] Added -newsboat option to urls2opml, need to add the url description tas text attribute and optionally use a sub-list to import nicely into NetNewsWire
@@ -21,7 +16,6 @@
         + append "URL" /3/2 would apend the URL the third items' second entry 
         + find ITEN_NAME append NEW_ITEM would find the item in the OPML tree, then append the content
 + [ ] create a tool that can read an OPML file, harvest the current feeds, index for browsing and support an option to send interesting articles to Pocket
-+ [ ] Add a opml.Walk() function to package
 + [ ] Add support to process Frontier's fttb into OPML
     + See http://scripting.com/fatpages/about.html, http://scripting.com/fatpages/faq.html and http://scripting.com/fatpages/outline.html
     + fttb is a "fatpages" document, it is a Base 64 encoded document like is done with email.
@@ -36,6 +30,8 @@
 
 ## Completed
 
++ [x] Fix `Walk` visiting only the first child at each level, and stopping early from a nested outline (2026-11-18)
++ [x] Fix the `Outline.Language` struct tag typo (`langauge`), so the `language` attribute is read and written (2026-11-18)
 + [x] Add opml2json 
 + [x] Add support for custom attributes
 + [x] Add Bash script to fetch Dave Winer's userland samples at http://scripting.com/misc/userlandSamples.zip
