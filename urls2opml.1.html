@@ -1,61 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="language" content="EN">
-  <title>R. S. Doiel, Software Engineer/Analyst - urls2opml.1</title>
-
-  <link rel="stylesheet" type="text/css"  href="/printfonts/print.css" media="print" />
-  <link rel="stylesheet" type="text/css"  href="/webfonts/fonts.css" media="screen" />
-  <link rel="stylesheet" type="text/css"  href="/css/site.css" media="screen" />
-  <link title="RSS feed for rsdoiel's blog" rel="alternate" type="application/rss+xml" href="https://rsdoiel.github.io/rss.xml" />
-  <link title="markdown source for page" rel="alternative" type="application/markdown" href="urls2opml.1.md">
+    <title>opml</title>
+    <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
+<a href="#main-content" class="visually-hidden">skip to main content</a>
 <nav>
 <ul>
-<li><a href="/">Home</a></li>
-<li><a href="./">README</a></li>
-<li><a href="LICENSE">LICENSE</a></li>
-<li><a href="user-manual.html">User Manual</a></li>
-<li><a href="INSTALL.html">INSTALL</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="https://github.com/rsdoiel/osf">GitHub</a></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user-manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="https://github.com/rsdoiel/opml">Code Repository</a></li>
 </ul>
 </nav>
-
-<section>
-<!--  <h1>urls2opml.1</h1> -->
-
+<section id="main-content">
 <h1 id="name">NAME</h1>
-<p>urls2opml</p>
+<p>urls2opml — convert a list of URLs to OPML</p>
 <h1 id="synopsis">SYNOPSIS</h1>
-<p>urls2opml converts a text file, one url per line, to OPML XML. It
-reads from standard input and writes to standard output.</p>
+<p>urls2opml <a href="#options">OPTIONS</a> [INPUT_FILENAME
+[OUTPUT_FILENAME]]</p>
+<h1 id="description">DESCRIPTION</h1>
+<p>urls2opml reads a text file with one URL per line and writes an OPML
+document with an outline for each http or https URL. Empty lines,
+comments and lines that are not usable URLs are skipped, with a warning
+on standard error.</p>
 <h1 id="options">OPTIONS</h1>
 <dl>
-<dt>-help</dt>
+<dt>-h, -help</dt>
 <dd>
-Display this help page
+display this help page
 </dd>
-<dt>-version</dt>
+<dt>-l, -license</dt>
 <dd>
-Display version
+display the license
 </dd>
-<dt>-license</dt>
+<dt>-v, -version</dt>
 <dd>
-Display license
+display the version
+</dd>
+<dt>-i, -input FILENAME</dt>
+<dd>
+read from FILENAME; the default, and -, is standard input
+</dd>
+<dt>-o, -output FILENAME</dt>
+<dd>
+write to FILENAME; the default, and -, is standard output
+</dd>
+<dt>-nl, -newline</dt>
+<dd>
+add a trailing newline (the default; -nl=false turns it off)
+</dd>
+<dt>-quiet</dt>
+<dd>
+suppress error messages; the exit status still says what happened
 </dd>
 </dl>
-<h1 id="example">EXAMPLE</h1>
-<p>Convert a newsboat “url” file to OPML.</p>
-<pre><code>cat .newsboat/url | cut -d \&quot; -f 1 |\
-    grep -v &#39;#&#39; | urls2opml \
-    &gt;subscriptions.opml</code></pre>
+<p>The input and output may also be given as the first and second
+argument.</p>
+<h1 id="exit-status">EXIT STATUS</h1>
+<dl>
+<dt>0</dt>
+<dd>
+success
+</dd>
+<dt>2</dt>
+<dd>
+bad command line: an unknown option, a surplus argument
+</dd>
+<dt>65</dt>
+<dd>
+the input cannot be read as text lines
+</dd>
+<dt>66</dt>
+<dd>
+an input file does not exist
+</dd>
+<dt>73</dt>
+<dd>
+the output file cannot be created
+</dd>
+<dt>74</dt>
+<dd>
+reading or writing failed part way
+</dd>
+<dt>77</dt>
+<dd>
+the operating system refused access to a file
+</dd>
+</dl>
+<h1 id="examples">EXAMPLES</h1>
+<p>Convert a newsboat url file to OPML.</p>
+<pre><code>cut -d &#39; &#39; -f 1 ~/.newsboat/urls | grep -v &#39;#&#39; | urls2opml &gt; subscriptions.opml</code></pre>
 </section>
-
 <footer>
+<p>opml</p>
 </footer>
-
 </body>
 </html>

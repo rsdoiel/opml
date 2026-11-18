@@ -1,78 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="language" content="EN">
-  <title>R. S. Doiel, Software Engineer/Analyst - opmlcat.1</title>
-
-  <link rel="stylesheet" type="text/css"  href="/printfonts/print.css" media="print" />
-  <link rel="stylesheet" type="text/css"  href="/webfonts/fonts.css" media="screen" />
-  <link rel="stylesheet" type="text/css"  href="/css/site.css" media="screen" />
-  <link title="RSS feed for rsdoiel's blog" rel="alternate" type="application/rss+xml" href="https://rsdoiel.github.io/rss.xml" />
-  <link title="markdown source for page" rel="alternative" type="application/markdown" href="opmlcat.1.md">
+    <title>opml</title>
+    <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
+<a href="#main-content" class="visually-hidden">skip to main content</a>
 <nav>
 <ul>
-<li><a href="/">Home</a></li>
-<li><a href="./">README</a></li>
-<li><a href="LICENSE">LICENSE</a></li>
-<li><a href="user-manual.html">User Manual</a></li>
-<li><a href="INSTALL.html">INSTALL</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="https://github.com/rsdoiel/osf">GitHub</a></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user-manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="https://github.com/rsdoiel/opml">Code Repository</a></li>
 </ul>
 </nav>
-
-<section>
-<!--  <h1>opmlcat.1</h1> -->
-
+<section id="main-content">
 <h1 id="name">NAME</h1>
-<p>opmlcat</p>
+<p>opmlcat — concatenate OPML documents</p>
 <h1 id="synopsis">SYNOPSIS</h1>
-<p>opmlcat <a href="#options">OPTIONS</a></p>
+<p>opmlcat <a href="#options">OPTIONS</a> [INPUT_FILENAME …]</p>
 <h1 id="description">DESCRIPTION</h1>
-<p>opmlcat concatenates one or more opml files as siblings to standard
-out.</p>
+<p>opmlcat reads one or more OPML documents and writes one document with
+their outlines side by side. With no input file it reads standard input.
+Every argument is an input file; use -o for the output.</p>
 <h1 id="options">OPTIONS</h1>
 <dl>
-<dt>-help</dt>
+<dt>-h, -help</dt>
 <dd>
-display help
+display this help page
 </dd>
-<dt>-license</dt>
+<dt>-l, -license</dt>
 <dd>
-display license
+display the license
 </dd>
-<dt>-version</dt>
+<dt>-v, -version</dt>
 <dd>
-display version
+display the version
 </dd>
-<dt>-i</dt>
+<dt>-i, -input FILENAME</dt>
 <dd>
-read from filename
+read from FILENAME; the default, and -, is standard input
 </dd>
-<dt>-o</dt>
+<dt>-o, -output FILENAME</dt>
 <dd>
-write to filename
+write to FILENAME; the default, and -, is standard output
 </dd>
-<dt>-newline</dt>
+<dt>-nl, -newline</dt>
 <dd>
-add trailing newline
+add a trailing newline (the default is none)
+</dd>
+<dt>-quiet</dt>
+<dd>
+suppress error messages; the exit status still says what happened
 </dd>
 <dt>-pretty</dt>
 <dd>
-pretty print JSON output
+indent the XML
+</dd>
+</dl>
+<p>Every argument is an input file; the output is -o.</p>
+<h1 id="exit-status">EXIT STATUS</h1>
+<dl>
+<dt>0</dt>
+<dd>
+success
+</dd>
+<dt>2</dt>
+<dd>
+bad command line: an unknown option, a surplus argument
+</dd>
+<dt>65</dt>
+<dd>
+an input is not valid OPML, or cannot be combined
+</dd>
+<dt>66</dt>
+<dd>
+an input file does not exist
+</dd>
+<dt>73</dt>
+<dd>
+the output file cannot be created
+</dd>
+<dt>74</dt>
+<dd>
+reading or writing failed part way
+</dd>
+<dt>77</dt>
+<dd>
+the operating system refused access to a file
 </dd>
 </dl>
 <h1 id="examples">EXAMPLES</h1>
-<p>This is an example of using opmlcat and opmlsort together to create a
-combined sorted opml file.</p>
-<pre><code>    opmlcat file1.opml file1.opml | opmlsort -o combined-sorted.opml</code></pre>
+<pre><code>opmlcat file1.opml file2.opml | opmlsort -o combined-sorted.opml</code></pre>
 </section>
-
 <footer>
+<p>opml</p>
 </footer>
-
 </body>
 </html>
