@@ -25,6 +25,7 @@ _testmain.go
 
 # Project specific ignores
 *~
+*.tmp
 *.swp
 bin/*
 dist/*

@@ -6,20 +6,19 @@
   "codeRepository": "https://github.com/rsdoiel/opml",
   "issueTracker": "https://github.com/rsdoiel/opml/issues",
   "license": "https://www.gnu.org/licenses/agpl-3.0.txt",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "developmentStatus": "wip",
-  "releaseNotes": "- normalized the license to AGPL >= 3\n- updated codemeta status to be inactive (it's stable)",
+  "releaseNotes": "- fixed Walk(), which visited only the first child at each level and did not stop when the callback returned false at depth\n- fixed the Outline.Language tag typo so the language attribute is read and written\n- the programs moved into internal/cli with documented exit codes (2, 65, 66, 73, 74, 77) and an EXIT STATUS section in each help page\n- added -h, -l and -v; new -nl, -input and -output options\n- opmlcat and opml2urls no longer empty an input file named by mistake; opmlsort exits non-zero on a missing input\n- fixed -help, -license and -version output in opml2json and opmlsort\n- dropped the unused caltechlibrary/cli requirement",
   "dateCreated": "2016-05-20",
-  "dateModified": "2025-10-01",
-  "datePublished": "2025-10-01",
+  "dateModified": "2026-11-18",
+  "datePublished": "2026-11-18",
   "copyrightYear": 2021,
   "copyrightHolder": "R. S. Doiel",
   "programmingLanguage": [
     "Go >= 1.27.3"
   ],
   "softwareRequirements": [
-    "Go >= 1.27.3",
-    "github.com/caltechlibrary/cli >= 0.0.16"
+    "Go >= 1.27.3"
   ],
   "softwareSuggestions": [
     "CMTools >= 0.0.45b",
