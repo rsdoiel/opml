@@ -106,3 +106,51 @@ func TestCheckCommitted(t *testing.T) {
 		t.Errorf("pushed again: want pass, got %v", err)
 	}
 }
+
+/** TestWebsiteMakPages checks that website.mak lists the same PROGRAMS as the
+ * Makefile and that every page in SITE_PAGES has a Markdown source, so a
+ * renamed or missing file fails here instead of silently dropping a page.
+ */
+func TestWebsiteMakPages(t *testing.T) {
+	read := func(name string) string {
+		b, err := os.ReadFile(name)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return string(b)
+	}
+	programs := func(s string) string {
+		m := regexp.MustCompile(`(?m)^PROGRAMS *= *(.*)$`).FindStringSubmatch(s)
+		if m == nil {
+			t.Fatal("no PROGRAMS line")
+		}
+		return m[1]
+	}
+	web := read("website.mak")
+	if a, b := programs(read("Makefile")), programs(web); a != b {
+		t.Errorf("Makefile PROGRAMS = %q, website.mak PROGRAMS = %q", a, b)
+	}
+	m := regexp.MustCompile(`(?m)^SITE_PAGES *= *((?:.*\\\n)*.*)$`).FindStringSubmatch(web)
+	if m == nil {
+		t.Fatal("website.mak has no SITE_PAGES")
+	}
+	list := strings.NewReplacer("\\\n", " ", "\t", " ").Replace(m[1])
+	var pages []string
+	for _, f := range strings.Fields(list) {
+		if f == "$(addsuffix" || f == ".1,$(PROGRAMS))" {
+			continue
+		}
+		pages = append(pages, f)
+	}
+	for _, p := range strings.Fields(programs(web)) {
+		pages = append(pages, p+".1")
+	}
+	for _, p := range pages {
+		if _, err := os.Stat(p + ".md"); err != nil {
+			t.Errorf("website.mak lists %s, no %s.md: %v", p, p, err)
+		}
+	}
+	if len(pages) < 8 {
+		t.Errorf("parsed only %v from SITE_PAGES", pages)
+	}
+}

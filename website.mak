@@ -1,31 +1,35 @@
 
-# generated with CMTools 0.0.1 844c936
-
 #
-# Makefile for running pandoc on all Markdown docs ending in .md
+# Makefile for building the website pages with pandoc.
+#
+# The pages are listed by name, not globbed, so the site does not change with
+# whatever .md files happen to sit in the directory (TODO.md and other internal
+# notes stay unpublished). opml_test.go checks every listed page has a source.
+# README.md becomes index.html.
 #
 PROJECT = opml
 
 PANDOC = $(shell which pandoc)
 
-# Internal notes and upstream drafts (issues, pull requests), not website pages. Kept out of the
-# build so they stay unpublished. The drafts are untracked and deleted once submitted.
-NO_PUBLISH = TODO.md
+PROGRAMS = opml2json opml2urls opmlcat opmlsort urls2opml
 
-MD_PAGES = $(filter-out $(NO_PUBLISH),$(shell ls -1 *.md))
+SITE_PAGES = README about INSTALL INSTALL_NOTES_macOS INSTALL_NOTES_Windows NOTES user-manual \
+	$(addsuffix .1,$(PROGRAMS))
 
-HTML_PAGES = $(patsubst %.md,%.html,$(MD_PAGES))
+HTML_PAGES = $(patsubst README.html,index.html,$(addsuffix .html,$(SITE_PAGES)))
 
-build: $(HTML_PAGES) $(MD_PAGES)
+build: $(HTML_PAGES)
 
-$(HTML_PAGES): $(MD_PAGES) .FORCE
-	if [ -f $(PANDOC) ]; then $(PANDOC) --metadata title=$(basename $@) -s --to html5 $(basename $@).md -o $(basename $@).html \
-		--lua-filter=links-to-html.lua \
-		--lua-filter=add-col-scope.lua \
-	    --template=page.tmpl; fi
-	@if [ $@ = "README.html" ]; then mv README.html index.html; fi
+# Pandoc is optional; without it the existing pages are left as they are.
+$(HTML_PAGES): .FORCE
+	@if [ -z "$(PANDOC)" ]; then echo "website: pandoc not found, skipping $@" >&2; else \
+		SRC="$(patsubst index.html,README.html,$@)"; SRC="$${SRC%.html}"; \
+		$(PANDOC) --metadata title="$${SRC}" -s --to html5 "$${SRC}.md" -o "$@" \
+			--lua-filter=links-to-html.lua \
+			--lua-filter=add-col-scope.lua \
+			--template=page.tmpl; fi
 
 clean:
-	@rm *.html
+	@rm -f $(HTML_PAGES)
 
 .FORCE:

@@ -1,37 +1,28 @@
 <#
-generated with CMTools 0.0.0 f50285c
-
 .SYNOPSIS
-PowerShell script for running pandoc on all Markdown docs ending in .md
+PowerShell script for building the opml website pages with pandoc. The
+counterpart of website.mak: keep the page list the same in both.
 #>
-$project = "CMTools"
+$project = "opml"
 Write-Output "Building website for ${project}"
-$pandoc = Get-Command pandoc | Select-Object -ExpandProperty Source
-
-# Get all markdown files except 'nav.md'
-$mdPages = Get-ChildItem -Filter *.md | Where-Object { $_.Name -ne "nav.md" }
-
-# Generate HTML page names from markdown files
-$htmlPages = $mdPages | ForEach-Object { [System.IO.Path]::ChangeExtension($_.Name, ".html") }
-
-function Build-HtmlPage {
-    param($htmlPages, $mdPages)
-
-    foreach ($htmlPage in $htmlPages) {
-        $mdPage = [System.IO.Path]::ChangeExtension($htmlPage, ".md")
-        if (Test-Path $pandoc) {
-            & $pandoc "--metadata" "title=$($htmlPage.Replace('.html', ''))" "-s" "--to" "html5" $mdPage "-o" $htmlPage `
-                "--lua-filter=links-to-html.lua" `
-                "--lua-filter=add-col-scope.lua" `
-                "--template=page.tmpl"
-        }
-
-        if ($htmlPage -eq "README.html") {
-            Move-Item -Path "README.html" -Destination "index.html" -Force
-        }
-    }
+$pandoc = Get-Command pandoc -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+if (-not $pandoc) {
+    Write-Error "website: pandoc not found"
+    exit 66
 }
 
-# Build HTML page
-Build-HtmlPage -htmlPages $htmlPages -mdPages $mdPages
+$programs = @("opml2json", "opml2urls", "opmlcat", "opmlsort", "urls2opml")
+$sitePages = @("README", "about", "INSTALL", "INSTALL_NOTES_macOS", "INSTALL_NOTES_Windows", "NOTES", "user-manual") +
+    ($programs | ForEach-Object { "$_.1" })
 
+foreach ($page in $sitePages) {
+    $out = if ($page -eq "README") { "index.html" } else { "$page.html" }
+    & $pandoc "--metadata" "title=$page" "-s" "--to" "html5" "$page.md" "-o" $out `
+        "--lua-filter=links-to-html.lua" `
+        "--lua-filter=add-col-scope.lua" `
+        "--template=page.tmpl"
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "website: pandoc failed on $page.md"
+        exit $LASTEXITCODE
+    }
+}
