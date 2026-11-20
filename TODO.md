@@ -1,23 +1,21 @@
-{
-    "title": "OPML, a Go package and cli"
-}
+---
+title: "OPML, a Go package and cli"
+---
 
 ## Next
 
-+ [ ] Added -newsboat option to urls2opml, need to add the url description tas text attribute and optionally use a sub-list to import nicely into NetNewsWire
-+ [ ] `cmark2opml` and `opml2cmark`: turn a CommonMark document into an OPML file and back, so an outline can be edited as Markdown in any text editor (a round trip)
-    + decide the mapping first (a nested list is the outline; headings, `text` and attributes, `url` links, includes) and write it as a decision record before building; the round trip must be lossless for what the mapping covers, and say what it does not cover
-    + the same exit codes and options conventions as the other tools; error and warning lines on standard error
-+ [ ] Add support to process Frontier's fttb into OPML
-    + See http://scripting.com/fatpages/about.html, http://scripting.com/fatpages/faq.html and http://scripting.com/fatpages/outline.html
-    + fttb is a "fatpages" document, it is a Base 64 encoded document like is done with email.
++ [ ] `cmark2opml` and `opml2cmark`: turn a CommonMark document into an OPML file and back, so an outline can be edited as Markdown in any text editor (a round trip). Design: opml DR-0001 (`agents/projects/opml/decisions/`, proposed 2026-11-20; the author accepts it in their own shell)
+    + new package `opml/cmark` (goldmark v1 AST and yaml.v3; the `opml` package stays stdlib only); head as YAML front matter; one list item per outline; `{key="value"}` block for attributes; link target is `xmlUrl` for type rss/atom, else `url`; `title` always written
+    + `opml2cmark` and `cmark.FromOPML` are built (2026-11-20; every file in `testdata` and Dave Winer's `toc.opml` convert); next `cmark2opml` and `cmark.ToOPML` (goldmark), then the round-trip tests: every file in `testdata` and the real `toc.opml`, and a fuzz test of both directions
+    + DR-0001 says nothing on the OPML root `version` attribute: it is written as `opmlVersion` in the front matter when it is not 2.0 (an absent version is written as an empty one); add to the record when it is next amended
+    + head attributes on `<head>` itself and other unmodelled head children are not written (the record says so)
+    + open for the build: text containing a newline; reference-style links (both start as errors with a line number)
 
 ## From the antennaApp table-of-contents work (2026-11-19)
 
 Found by running the module against Dave Winer's published `toc.opml` files while writing antennaApp DR-0013 (see also the `opml` project in the knowledge base). `Walk` and the `langauge` tag were found on the released v0.0.10 and are already fixed in v0.0.11 (see Completed); these are what is still open in the current source.
 
 + [ ] After the v0.0.12 release, re-install `opml2urls`: the installed `~/bin/opml2urls` is 0.0.10 (2026-11-16), from before the fix that makes it honour a file argument, so it ignores the file name and waits on standard input
-+ [ ] `opml.ts` (the Deno port) has drifted from the Go package: its `Head` uses `ownerID` (spec and Go: `ownerId`), has no `generator`, and has no `Flatten`/`Includes`; decide whether to bring it level before v0.0.12 or release the Go side alone
 + [ ] When the above are done, release v0.0.12; antennaApp pins v0.0.10 and should move to v0.0.11 now for the `Walk` fix
 
 ## Someday, maybe
@@ -30,10 +28,13 @@ Found by running the module against Dave Winer's published `toc.opml` files whil
 
 ## Dropped
 
++ [x] ~~Support for Frontier's fttb (fat pages) into OPML~~ Dropped 2026-11-20: the `#pageData` payload is Frontier's undocumented internal binary format, there is no Frontier installation to test against, and the 36 sample objects on scripting.com/fatpages are scripts and tables, not outlines. Only the envelope (an HTML comment of `#name value` lines with a Base64 `#pageData`) is specified
 + [x] ~~A tool that reads an OPML file, harvests the current feeds, indexes them for browsing and sends interesting articles to Pocket~~ Dropped 2026-11-20: Pocket no longer exists, and feeds are aggregated from a Markdown list with antennaApp, not from OPML files
 
 ## Completed
 
++ [x] Removed the TypeScript port (`opml.ts`, `opml_test.ts`, `deno.json`, `deno.lock`): it had drifted from the Go package (`ownerID`, no `generator`, `Flatten`, `Includes`) and is not being developed. Release note for v0.0.12 (2026-11-20)
++ [x] Convert an OPML file for the newsboat TUI feed reader: `opml2urls -newsboat` writes newsboat's url file (`URL "~Text"`). The old TODO line said the option was added to `urls2opml`; it was `opml2urls`, and had been done earlier without being checked off (2026-11-20)
 + [x] `Head.Generator` (`<generator>`, JSON `generator`) is read and written, so Dave Winer's `toc.opml` head round-trips; unset writes nothing. Other unknown child elements of `head` are still dropped, by choice (2026-11-20)
 + [x] `opml2urls` follows the exit-code rules for an empty listing: a document with nothing to list exits 0 and prints nothing, where it exited 70 with "outline is empty" (2026-11-20)
 + [x] `opml2urls` suits an outline of pages: `-url` lists the url attribute, and it is on by itself when a document has no xmlUrl or htmlUrl; `type="include"` outlines are left out unless `-includes`; outlines are walked at any depth in document order. Man page updated (2026-11-20)

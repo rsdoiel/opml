@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io"
 	"net/url"
@@ -12,6 +13,7 @@ import (
 	"time"
 
 	"github.com/rsdoiel/opml"
+	"github.com/rsdoiel/opml/cmark"
 )
 
 /** Opml2json is opml2json: it reads an OPML document and writes it as JSON.
@@ -50,6 +52,44 @@ func Opml2json(appName string, args []string, stdin io.Reader, stdout, stderr io
 		src, err = json.Marshal(doc)
 	}
 	if err != nil {
+		return fail(appName, &o, stderr, ExitInternal, "%v", err)
+	}
+	return write(appName, &o, src, stdout, stderr)
+}
+
+/** Opml2cmark is opml2cmark: it reads an OPML document and writes it as a
+ * CommonMark list, with the head as YAML front matter, so the outline can be
+ * edited in a text editor and read back with cmark2opml (opml DR-0001). The
+ * outlines keep their order.
+ *
+ * Parameters:
+ *   appName (string) — the program name, for help and error messages
+ *   args ([]string) — the command line without the program name
+ *   stdin (io.Reader) — standard input
+ *   stdout (io.Writer) — standard output
+ *   stderr (io.Writer) — standard error
+ *
+ * Returns:
+ *   int — the exit code
+ *
+ * Example:
+ *   os.Exit(cli.Opml2cmark("opml2cmark", os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+ */
+func Opml2cmark(appName string, args []string, stdin io.Reader, stdout, stderr io.Writer) int {
+	var o options
+	fset := newFlagSet(appName, &o, false)
+	if _, code, done := start(appName, Opml2cmarkHelpText, fset, &o, args, 2, stdout, stderr); done {
+		return code
+	}
+	doc, code := readOPML(appName, &o, o.input, stdin, stderr)
+	if code != ExitOK {
+		return code
+	}
+	src, err := cmark.FromOPML(doc)
+	if err != nil {
+		if errors.Is(err, cmark.ErrUnrepresentable) {
+			return fail(appName, &o, stderr, ExitData, "%v", err)
+		}
 		return fail(appName, &o, stderr, ExitInternal, "%v", err)
 	}
 	return write(appName, &o, src, stdout, stderr)

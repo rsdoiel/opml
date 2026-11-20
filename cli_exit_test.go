@@ -14,7 +14,7 @@ import (
 // with real files from testdata. The golden files in testdata/cli are what the
 // programs wrote before they moved into internal/cli.
 
-var programNames = []string{"opml2json", "opml2urls", "opmlcat", "opmlsort", "urls2opml"}
+var programNames = []string{"opml2cmark", "opml2json", "opml2urls", "opmlcat", "opmlsort", "urls2opml"}
 
 var builtDir string
 
@@ -83,6 +83,7 @@ func TestOutputMatchesGolden(t *testing.T) {
 		prog, gold, input string
 		args              []string
 	}{
+		{"opml2cmark", "opml2cmark-toc", toc1, nil},
 		{"opml2json", "opml2json-plain", ex1, nil},
 		{"opml2json", "opml2json-pretty", ex1, []string{"-pretty", "-newline"}},
 		{"opml2json", "opml2json-pretty", ex1, []string{"-pretty", "-nl"}},
@@ -293,5 +294,28 @@ func TestOpml2urlsEmptyListing(t *testing.T) {
 	out, _, code := run(t, dir, "opml2urls", `<opml version="2.0"><head/><body><outline text="x"/></body></opml>`, "-text-as-comment=false")
 	if code != 0 || out != "" {
 		t.Errorf("outlines without urls: exit %d, stdout %q; want 0 and nothing", code, out)
+	}
+}
+
+// TestOpml2cmarkExitCodes: an outline with nothing to write is an empty
+// listing (0); text a list item cannot hold is a data error (65) that names
+// the outline, and no output file is created for it.
+func TestOpml2cmarkExitCodes(t *testing.T) {
+	dir := t.TempDir()
+	out, errOut, code := run(t, dir, "opml2cmark", `<opml version="2.0"><head/><body/></opml>`)
+	if code != 0 || out != "" || errOut != "" {
+		t.Errorf("empty body: exit %d, stdout %q, stderr %q; want 0 and nothing", code, out, errOut)
+	}
+	bad := `<opml version="2.0"><head/><body><outline text="a"/><outline text="two&#10;lines"/></body></opml>`
+	outFile := filepath.Join(dir, "out.md")
+	out, errOut, code = run(t, dir, "opml2cmark", bad, "-o", outFile)
+	if code != 65 || out != "" {
+		t.Errorf("newline in text: exit %d, stdout %q; want 65", code, out)
+	}
+	if !strings.HasPrefix(errOut, "opml2cmark: ") || !strings.Contains(errOut, "outline 2") {
+		t.Errorf("stderr %q does not start with the program name and name outline 2", errOut)
+	}
+	if _, err := os.Stat(outFile); err == nil {
+		t.Error("a failed conversion created the output file")
 	}
 }

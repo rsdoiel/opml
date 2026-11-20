@@ -14,6 +14,9 @@ _opmlsort_
 _opml2json_
 : Converts an OPML file into a JSON document
 
+_opml2cmark_
+: Writes an OPML outline as a CommonMark list, to edit in a text editor
+
 _url2opml_
 : Converts a list of urls into OPML XML
 
