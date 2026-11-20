@@ -4,12 +4,12 @@ title: "OPML, a Go package and cli"
 
 ## Next
 
-+ [ ] `cmark2opml` and `opml2cmark`: turn a CommonMark document into an OPML file and back, so an outline can be edited as Markdown in any text editor (a round trip). Design: opml DR-0001 (`agents/projects/opml/decisions/`, proposed 2026-11-20; the author accepts it in their own shell)
-    + new package `opml/cmark` (goldmark v1 AST and yaml.v3; the `opml` package stays stdlib only); head as YAML front matter; one list item per outline; `{key="value"}` block for attributes; link target is `xmlUrl` for type rss/atom, else `url`; `title` always written
-    + `opml2cmark` and `cmark.FromOPML` are built (2026-11-20; every file in `testdata` and Dave Winer's `toc.opml` convert); next `cmark2opml` and `cmark.ToOPML` (goldmark), then the round-trip tests: every file in `testdata` and the real `toc.opml`, and a fuzz test of both directions
-    + DR-0001 says nothing on the OPML root `version` attribute: it is written as `opmlVersion` in the front matter when it is not 2.0 (an absent version is written as an empty one); add to the record when it is next amended
-    + head attributes on `<head>` itself and other unmodelled head children are not written (the record says so)
-    + open for the build: text containing a newline; reference-style links (both start as errors with a line number)
++ [ ] `cmark2opml` and `opml2cmark` are built (opml DR-0001, accepted; 2026-11-20). What is left:
+    + add a line to DR-0001 on the OPML root `version` attribute (written as `opmlVersion` in the front matter when it is not 2.0; an absent version is written as an empty one), on empty items (an empty first child needs a blank line before it, as CommonMark does not let an empty item interrupt a paragraph), and on goldmark's `Link.Destination` (raw source, so the reader unescapes it)
+    + a `-lenient` option that warns and skips foreign Markdown instead of exiting 65 (DR-0001, decision 7, left it for later)
+    + text that has a newline, tab or leading or trailing white space, and reference-style links, are still errors
+    + head attributes on `<head>` itself and unmodelled head children are not carried
+    + `go test -fuzz FuzzRoundTrip ./cmark` ran 514,000 executions with no failure; run it again after any change to the mapping
 
 ## From the antennaApp table-of-contents work (2026-11-19)
 

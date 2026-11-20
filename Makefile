@@ -6,7 +6,7 @@ PROJECT = opml
 
 GIT_GROUP = rsdoiel
 
-PROGRAMS = opml2cmark opml2json opml2urls opmlcat opmlsort urls2opml
+PROGRAMS = cmark2opml opml2cmark opml2json opml2urls opmlcat opmlsort urls2opml
 
 RELEASE_DATE = $(shell date +%Y-%m-%d)
 

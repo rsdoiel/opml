@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>Table of contents</title>
+  </head>
+  <body>
+    <outline text="Pages">
+      <outline text="Home" url="https://example.org/index.html"></outline>
+      <outline text="About" url="https://example.org/about.html"></outline>
+    </outline>
+    <outline text="Posts" type="calendarYear">
+      <outline text="November 2026" type="calendarMonth" url="https://example.org/2026/11/index.html">
+        <outline text="Nov 1" url="https://example.org/2026/11/01/a.html"></outline>
+        <outline text="Nov 2" url="https://example.org/2026/11/02/b.html"></outline>
+      </outline>
+    </outline>
+    <outline text="More" type="include" url="https://example.org/more/toc.opml"></outline>
+    <outline text="Archive" type="include" url="https://example.org/old/toc.opml"></outline>
+  </body>
+</opml>

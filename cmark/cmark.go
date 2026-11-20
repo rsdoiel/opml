@@ -98,7 +98,7 @@ func FromOPML(o *opml.OPML) ([]byte, error) {
 		out.WriteString(fm)
 	}
 	if o.Body != nil {
-		if err := writeOutlines(&out, o.Body.Outline, 0, nil); err != nil {
+		if err := writeOutlines(&out, o.Body.Outline, 0, nil, false); err != nil {
 			return nil, err
 		}
 	}
@@ -137,7 +137,7 @@ func headFrontMatter(o *opml.OPML) (string, error) {
 
 // writeOutlines writes one list level; path is the 1-based position of the
 // parent, for error messages.
-func writeOutlines(out *strings.Builder, outlines []*opml.Outline, depth int, path []int) error {
+func writeOutlines(out *strings.Builder, outlines []*opml.Outline, depth int, path []int, parentHasLine bool) error {
 	for i, ol := range outlines {
 		if ol == nil {
 			continue
@@ -147,13 +147,19 @@ func writeOutlines(out *strings.Builder, outlines []*opml.Outline, depth int, pa
 		if err != nil {
 			return fmt.Errorf("outline %s: %w", pathString(here), err)
 		}
+		if line == "" && i == 0 && parentHasLine {
+			// An empty item cannot interrupt the paragraph above it (and a
+			// bare "-" there would be a setext heading underline), so the
+			// first one under a parent with text follows a blank line.
+			out.WriteString("\n")
+		}
 		out.WriteString(strings.Repeat("  ", depth))
 		out.WriteString("-")
 		if line != "" {
 			out.WriteString(" " + line)
 		}
 		out.WriteString("\n")
-		if err := writeOutlines(out, ol.Outline, depth+1, here); err != nil {
+		if err := writeOutlines(out, ol.Outline, depth+1, here, line != ""); err != nil {
 			return err
 		}
 	}

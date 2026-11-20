@@ -57,6 +57,51 @@ func Opml2json(appName string, args []string, stdin io.Reader, stdout, stderr io
 	return write(appName, &o, src, stdout, stderr)
 }
 
+/** Cmark2opml is cmark2opml: it reads a Markdown outline, the form opml2cmark
+ * writes, and writes it as an OPML document with the XML declaration and two
+ * spaces of indentation (opml DR-0001). Markdown that is not an outline list
+ * is a data error that names the line.
+ *
+ * Parameters:
+ *   appName (string) — the program name, for help and error messages
+ *   args ([]string) — the command line without the program name
+ *   stdin (io.Reader) — standard input
+ *   stdout (io.Writer) — standard output
+ *   stderr (io.Writer) — standard error
+ *
+ * Returns:
+ *   int — the exit code
+ *
+ * Example:
+ *   os.Exit(cli.Cmark2opml("cmark2opml", os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+ */
+func Cmark2opml(appName string, args []string, stdin io.Reader, stdout, stderr io.Writer) int {
+	var o options
+	fset := newFlagSet(appName, &o, false)
+	if _, code, done := start(appName, Cmark2opmlHelpText, fset, &o, args, 2, stdout, stderr); done {
+		return code
+	}
+	src, code := readSource(appName, &o, o.input, stdin, stderr)
+	if code != ExitOK {
+		return code
+	}
+	doc, err := cmark.ToOPML(src)
+	if err != nil {
+		if errors.Is(err, cmark.ErrNotOutline) {
+			if namedInput(o.input) {
+				return fail(appName, &o, stderr, ExitData, "%s: %v", o.input, err)
+			}
+			return fail(appName, &o, stderr, ExitData, "%v", err)
+		}
+		return fail(appName, &o, stderr, ExitInternal, "%v", err)
+	}
+	out, err := opml.MarshalIndent(doc)
+	if err != nil {
+		return fail(appName, &o, stderr, ExitInternal, "%v", err)
+	}
+	return write(appName, &o, out, stdout, stderr)
+}
+
 /** Opml2cmark is opml2cmark: it reads an OPML document and writes it as a
  * CommonMark list, with the head as YAML front matter, so the outline can be
  * edited in a text editor and read back with cmark2opml (opml DR-0001). The

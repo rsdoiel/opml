@@ -219,3 +219,17 @@ func TestAttributeValuesAreEscaped(t *testing.T) {
 		t.Errorf("got %q, want %q", got, want)
 	}
 }
+
+// An empty item cannot interrupt the paragraph above it in CommonMark (and a
+// bare "-" there would be a setext heading underline), so the first empty
+// child of a parent with text follows a blank line.
+func TestFromOPMLEmptyChildFollowsABlankLine(t *testing.T) {
+	o := mustParse(t, `<opml version="2.0"><head/><body><outline text="a"><outline/><outline text="b"/></outline><outline/></body></opml>`)
+	got, err := FromOPML(o)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := "- a\n\n  -\n  - b\n-\n"; string(got) != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
+}

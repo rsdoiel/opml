@@ -14,7 +14,7 @@ import (
  */
 func TestCommandsInformationalOptions(t *testing.T) {
 	dir := t.TempDir()
-	for _, name := range []string{"opml2cmark", "opml2json", "opml2urls", "opmlcat", "opmlsort", "urls2opml"} {
+	for _, name := range []string{"cmark2opml", "opml2cmark", "opml2json", "opml2urls", "opmlcat", "opmlsort", "urls2opml"} {
 		bin := filepath.Join(dir, name)
 		if out, err := exec.Command("go", "build", "-o", bin, "./cmd/"+name).CombinedOutput(); err != nil {
 			t.Fatalf("%s: build failed: %v\n%s", name, err, out)

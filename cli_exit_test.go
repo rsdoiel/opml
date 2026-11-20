@@ -14,7 +14,7 @@ import (
 // with real files from testdata. The golden files in testdata/cli are what the
 // programs wrote before they moved into internal/cli.
 
-var programNames = []string{"opml2cmark", "opml2json", "opml2urls", "opmlcat", "opmlsort", "urls2opml"}
+var programNames = []string{"cmark2opml", "opml2cmark", "opml2json", "opml2urls", "opmlcat", "opmlsort", "urls2opml"}
 
 var builtDir string
 
@@ -84,6 +84,7 @@ func TestOutputMatchesGolden(t *testing.T) {
 		args              []string
 	}{
 		{"opml2cmark", "opml2cmark-toc", toc1, nil},
+		{"cmark2opml", "cmark2opml-toc", "testdata/cli/opml2cmark-toc.golden", nil},
 		{"opml2json", "opml2json-plain", ex1, nil},
 		{"opml2json", "opml2json-pretty", ex1, []string{"-pretty", "-newline"}},
 		{"opml2json", "opml2json-pretty", ex1, []string{"-pretty", "-nl"}},
@@ -194,6 +195,9 @@ func TestExitCodes(t *testing.T) {
 		good, _ := filepath.Abs("testdata/simple1.opml")
 		if name == "urls2opml" {
 			good, _ = filepath.Abs("testdata/cli/urls.txt")
+		}
+		if name == "cmark2opml" {
+			good, _ = filepath.Abs("testdata/cli/opml2cmark-toc.golden")
 		}
 		noDir := filepath.Join(dir, "no", "such", "dir", "out")
 		cases := []struct {
@@ -317,5 +321,33 @@ func TestOpml2cmarkExitCodes(t *testing.T) {
 	}
 	if _, err := os.Stat(outFile); err == nil {
 		t.Error("a failed conversion created the output file")
+	}
+}
+
+// TestCmark2opmlExitCodes: Markdown that is not an outline list is a data
+// error (65) that names the line and creates no output file; empty input is
+// an empty outline, not an error.
+func TestCmark2opmlExitCodes(t *testing.T) {
+	dir := t.TempDir()
+	out, errOut, code := run(t, dir, "cmark2opml", "")
+	if code != 0 || errOut != "" || !strings.Contains(out, "<opml") {
+		t.Errorf("empty input: exit %d, stderr %q, stdout %q; want 0 and an empty outline", code, errOut, out)
+	}
+	outFile := filepath.Join(dir, "out.opml")
+	out, errOut, code = run(t, dir, "cmark2opml", "- a\n\n# A heading\n", "-o", outFile)
+	if code != 65 || out != "" {
+		t.Errorf("heading: exit %d, stdout %q; want 65", code, out)
+	}
+	if !strings.HasPrefix(errOut, "cmark2opml: ") || !strings.Contains(errOut, "line 3") {
+		t.Errorf("stderr %q does not start with the program name and name line 3", errOut)
+	}
+	if _, err := os.Stat(outFile); err == nil {
+		t.Error("a failed conversion created the output file")
+	}
+	// A named file is named in the message.
+	named := filepath.Join(dir, "list.md")
+	os.WriteFile(named, []byte("# H\n"), 0o644)
+	if _, errOut, code = run(t, dir, "cmark2opml", "", named); code != 65 || !strings.Contains(errOut, "list.md") {
+		t.Errorf("named file: exit %d, stderr %q; want 65 naming list.md", code, errOut)
 	}
 }

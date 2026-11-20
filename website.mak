@@ -11,7 +11,7 @@ PROJECT = opml
 
 PANDOC = $(shell which pandoc)
 
-PROGRAMS = opml2cmark opml2json opml2urls opmlcat opmlsort urls2opml
+PROGRAMS = cmark2opml opml2cmark opml2json opml2urls opmlcat opmlsort urls2opml
 
 SITE_PAGES = README about INSTALL INSTALL_NOTES_macOS INSTALL_NOTES_Windows NOTES user-manual \
 	$(addsuffix .1,$(PROGRAMS))
