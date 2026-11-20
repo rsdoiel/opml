@@ -54,8 +54,8 @@ type OPML struct {
 type Head struct {
 	XMLName         xml.Name    `json:"-"`
 	Title           string      `xml:"title,omitempty" json:"title,omitempty"`
-	Created         string      `xml:"dateCreated,omitempty" json:"dateCreated,omitempty"`   // RFC 882 date and time
-	Modified        string      `xml:"dateModified,omitempty" json:"dateModified,omitempty"` // RFC 882 date and time
+	Created         string      `xml:"dateCreated,omitempty" json:"dateCreated,omitempty"`   // RFC 822 date and time
+	Modified        string      `xml:"dateModified,omitempty" json:"dateModified,omitempty"` // RFC 822 date and time
 	OwnerName       string      `xml:"ownerName,omitempty" json:"ownerName,omitempty"`
 	OwnerEmail      string      `xml:"ownerEmail,omitempty" json:"ownerEmail,omitempty"`
 	OwnerID         string      `xml:"ownerId,omitempty" json:"ownerId,omitempty"`               // url
@@ -84,7 +84,7 @@ type Outline struct {
 	Title        string      `xml:"title,attr,omitempty" json:"title,omitempty"`
 	IsComment    bool        `xml:"isComment,attr,omitempty" json:"isComment,omitempty"`
 	IsBreakpoint bool        `xml:"isBreakpoint,attr,omitempty" json:"isBreakpoint,omitempty"`
-	Created      string      `xml:"created,attr,omitempty" json:"created,omitempty"` // RFC 882 date and time
+	Created      string      `xml:"created,attr,omitempty" json:"created,omitempty"` // RFC 822 date and time
 	Category     string      `xml:"category,attr,omitempty" json:"category,omitempty"`
 	XMLURL       string      `xml:"xmlUrl,attr,omitempty" json:"xmlUrl,omitempty"`   // url
 	HTMLURL      string      `xml:"htmlUrl,attr,omitempty" json:"htmlUrl,omitempty"` // url

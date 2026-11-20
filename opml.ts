@@ -141,8 +141,8 @@ export class OPML {
 // Head holds the metadata for an OPML document
 export class Head {
 	title: string = '';
-	dateCreated: string  = ''; // RFC 882 date and time
-	dateModified: string = ''; // RFC 882 date and time
+	dateCreated: string  = ''; // RFC 822 date and time
+	dateModified: string = ''; // RFC 822 date and time
 	ownerName: string = '';
 	ownerEmail: string = '';
 	ownerID: string = '';      // url
@@ -231,7 +231,7 @@ export class Outline {
 	title: string = '';
 	isComment: boolean = false;
 	isBreakpoint: boolean = false;
-	created: string = ''; // RFC 882 date and time
+	created: string = ''; // RFC 822 date and time
 	category: string = '';
 	xmlURL: string = '';  // url
 	htmlURL: string = ''; // url
