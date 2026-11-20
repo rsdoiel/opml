@@ -11,7 +11,7 @@ title: "OPML, a Go package and cli"
     + head attributes on `<head>` itself and unmodelled head children are not carried
     + `go test -fuzz FuzzRoundTrip ./cmark` ran 514,000 executions with no failure; run it again after any change to the mapping
 
-## BonBon-compatible documentation site (branch `bonbon-docs`, 2026-11-20)
+## BonBon-compatible documentation site (merged and published in v0.0.12, 2026-11-20)
 
 The author wants BonBon support on all their documentation sites, applied when each site is next updated (kb dev-process, and the cmarkbrowser site is the pattern). For opml:
 
@@ -23,7 +23,7 @@ The author wants BonBon support on all their documentation sites, applied when e
 + [x] `site_test.go`: page order, `.md` links, page starts, toc order and titles, the committed toc (without its date line), `index.md`, `.nojekyll`, the HTML alternate link, and the link filter
 + [x] The `index.md` address is near the top of the README ("Markdown web" section)
 + [x] Checked in cmarkbrowser: `]` and `[` walk the toc from `index.md`
-+ [ ] Publish: `publish.bash` merges `main` into `gh-pages`; after that, check `https://rsdoiel.github.io/opml/index.md` and the `.well-known/toc.opml` answer as `text/markdown` and XML
++ [x] Published 2026-11-20: `https://rsdoiel.github.io/opml/index.md` answers `text/markdown; charset=utf-8` and `.well-known/toc.opml` answers `text/x-opml`
 + [ ] The blog's root `toc.opml` needs an `include` for `https://rsdoiel.github.io/opml/.well-known/toc.opml` for BonBon to find this site from the host root (antennaApp's side)
 + [ ] Bring cmarkbrowser's `toc.bash` level with this one (YAML title first)
 + [x] Decided 2026-11-20: this lands in v0.0.12 (merged to `main`; the release notes in `CHANGES.md` and `codemeta.json` cover both)
@@ -32,8 +32,7 @@ The author wants BonBon support on all their documentation sites, applied when e
 
 Found by running the module against Dave Winer's published `toc.opml` files while writing antennaApp DR-0013 (see also the `opml` project in the knowledge base). `Walk` and the `langauge` tag were found on the released v0.0.10 and are already fixed in v0.0.11 (see Completed); these are what is still open in the current source.
 
-+ [ ] After the v0.0.12 release, re-install `opml2urls`: the installed `~/bin/opml2urls` is 0.0.10 (2026-11-16), from before the fix that makes it honour a file argument, so it ignores the file name and waits on standard input
-+ [ ] When the above are done, release v0.0.12; antennaApp pins v0.0.10 and should move to v0.0.11 now for the `Walk` fix
++ [x] v0.0.12 released 2026-11-20 (tag at dd4a2f8). The author installed the new `opml2urls`; antennaApp (`440dd3d`, branch bonbon) and audiobox (`89dde4f`) now require v0.0.12
 
 ## Someday, maybe
 
