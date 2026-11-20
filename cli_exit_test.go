@@ -272,3 +272,26 @@ func TestExitCodes(t *testing.T) {
 		}
 	}
 }
+
+// TestOpml2urlsEmptyListing: a valid OPML with nothing to list is an empty
+// listing, which exits 0 with nothing printed (workspace DR-0003), not an
+// internal error.
+func TestOpml2urlsEmptyListing(t *testing.T) {
+	dir := t.TempDir()
+	for what, src := range map[string]string{
+		"empty body": `<opml version="2.0"><head/><body/></opml>`,
+		"no body":    `<opml version="2.0"><head/></opml>`,
+	} {
+		for _, args := range [][]string{nil, {"-newsboat"}, {"-url"}, {"-includes"}} {
+			out, errOut, code := run(t, dir, "opml2urls", src, args...)
+			if code != 0 || out != "" || errOut != "" {
+				t.Errorf("%s %v: exit %d, stdout %q, stderr %q; want 0 and nothing printed", what, args, code, out, errOut)
+			}
+		}
+	}
+	// A document whose outlines have no urls is also an empty listing.
+	out, _, code := run(t, dir, "opml2urls", `<opml version="2.0"><head/><body><outline text="x"/></body></opml>`, "-text-as-comment=false")
+	if code != 0 || out != "" {
+		t.Errorf("outlines without urls: exit %d, stdout %q; want 0 and nothing", code, out)
+	}
+}

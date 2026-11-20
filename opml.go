@@ -56,6 +56,7 @@ type Head struct {
 	Title           string      `xml:"title,omitempty" json:"title,omitempty"`
 	Created         string      `xml:"dateCreated,omitempty" json:"dateCreated,omitempty"`   // RFC 822 date and time
 	Modified        string      `xml:"dateModified,omitempty" json:"dateModified,omitempty"` // RFC 822 date and time
+	Generator       string      `xml:"generator,omitempty" json:"generator,omitempty"` // the program that wrote the document
 	OwnerName       string      `xml:"ownerName,omitempty" json:"ownerName,omitempty"`
 	OwnerEmail      string      `xml:"ownerEmail,omitempty" json:"ownerEmail,omitempty"`
 	OwnerID         string      `xml:"ownerId,omitempty" json:"ownerId,omitempty"`               // url

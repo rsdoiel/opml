@@ -88,6 +88,10 @@ func Opml2urls(appName string, args []string, stdin io.Reader, stdout, stderr io
 	if code != ExitOK {
 		return code
 	}
+	// Nothing to list is an empty listing, not an error: exit 0.
+	if doc.Body == nil || len(doc.Body.Outline) == 0 {
+		return write(appName, &o, nil, stdout, stderr)
+	}
 	// A table of contents has url attributes and no feed URLs: list the
 	// url attribute without being asked.
 	if !urlAttr && !newsboat {

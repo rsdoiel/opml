@@ -356,3 +356,37 @@ func TestModifiedJSONKeyIsDateModified(t *testing.T) {
 		t.Errorf("JSON still has the dataModified typo: %s", j)
 	}
 }
+
+// The head of Dave Winer's toc.opml has a generator element after the dates.
+func TestHeadGenerator(t *testing.T) {
+	src := `<opml version="2.0"><head><title>Table of contents</title><dateModified>Fri, 20 Nov 2026 14:06:24 GMT</dateModified><generator>opmlToMarkdown v0.5.26</generator></head><body><outline text="x"/></body></opml>`
+	o, err := Parse([]byte(src))
+	if err != nil {
+		t.Fatal(err)
+	}
+	const want = "opmlToMarkdown v0.5.26"
+	if o.Head.Generator != want {
+		t.Fatalf("Generator = %q, want %q (the element was dropped)", o.Head.Generator, want)
+	}
+	for name, marshal := range map[string]func(*OPML) ([]byte, error){"Marshal": Marshal, "MarshalIndent": MarshalIndent} {
+		out, err := marshal(o)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(string(out), "<generator>"+want+"</generator>") {
+			t.Errorf("%s lost the generator: %s", name, out)
+		}
+		back, err := Parse(out)
+		if err != nil || back.Head.Generator != want {
+			t.Errorf("%s round trip: Generator %q, err %v", name, back.Head.Generator, err)
+		}
+	}
+	j, _ := json.Marshal(o.Head)
+	if !strings.Contains(string(j), `"generator":"`+want+`"`) {
+		t.Errorf("JSON lacks generator: %s", j)
+	}
+	// An unset generator writes nothing, so existing output is unchanged.
+	if out, _ := Marshal(New()); strings.Contains(string(out), "generator") {
+		t.Errorf("an empty Head wrote a generator: %s", out)
+	}
+}

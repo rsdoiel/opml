@@ -5,17 +5,9 @@
 ## Next
 
 + [ ] Added -newsboat option to urls2opml, need to add the url description tas text attribute and optionally use a sub-list to import nicely into NetNewsWire
-+ [ ] create a command line tool that reads an OPML and appends a element to the list (e.g. adds a feed URL to an OPML list of feeds)
-    + basic verbs would be insert (insert a new list element), append (a new list element), replace (replace a list element) delete (a list element), and find (return the path to an element by name or attribute value)
-        + append, insert, replace takes a path and the value to update with
-        + delete takes a path to the item to be deleted, if you try to delete the root list you get back an empty list
-        + find takes an attribute name and value and returns a path
-    + the tree the location for the verb to operate would be assumed to be the root or the index number of the items as a path
-        + append "URL" would append the url to the root of the list
-        + append "URL" /3 would append the UR" to the with item in the root list
-        + append "URL" /3/2 would apend the URL the third items' second entry 
-        + find ITEN_NAME append NEW_ITEM would find the item in the OPML tree, then append the content
-+ [ ] create a tool that can read an OPML file, harvest the current feeds, index for browsing and support an option to send interesting articles to Pocket
++ [ ] `cmark2opml` and `opml2cmark`: turn a CommonMark document into an OPML file and back, so an outline can be edited as Markdown in any text editor (a round trip)
+    + decide the mapping first (a nested list is the outline; headings, `text` and attributes, `url` links, includes) and write it as a decision record before building; the round trip must be lossless for what the mapping covers, and say what it does not cover
+    + the same exit codes and options conventions as the other tools; error and warning lines on standard error
 + [ ] Add support to process Frontier's fttb into OPML
     + See http://scripting.com/fatpages/about.html, http://scripting.com/fatpages/faq.html and http://scripting.com/fatpages/outline.html
     + fttb is a "fatpages" document, it is a Base 64 encoded document like is done with email.
@@ -25,7 +17,7 @@
 Found by running the module against Dave Winer's published `toc.opml` files while writing antennaApp DR-0013 (see also the `opml` project in the knowledge base). `Walk` and the `langauge` tag were found on the released v0.0.10 and are already fixed in v0.0.11 (see Completed); these are what is still open in the current source.
 
 + [ ] After the v0.0.12 release, re-install `opml2urls`: the installed `~/bin/opml2urls` is 0.0.10 (2026-11-16), from before the fix that makes it honour a file argument, so it ignores the file name and waits on standard input
-+ [ ] `Head` cannot hold a `generator` child element, which Dave's `toc.opml` has: decide whether to keep unknown child elements or leave them out
++ [ ] `opml.ts` (the Deno port) has drifted from the Go package: its `Head` uses `ownerID` (spec and Go: `ownerId`), has no `generator`, and has no `Flatten`/`Includes`; decide whether to bring it level before v0.0.12 or release the Go side alone
 + [ ] When the above are done, release v0.0.12; antennaApp pins v0.0.10 and should move to v0.0.11 now for the `Walk` fix
 
 ## Someday, maybe
@@ -36,8 +28,14 @@ Found by running the module against Dave Winer's published `toc.opml` files whil
 + ompledit - CRUD operations to individual Outline elements and element lists
 + Review River5 by Dave Winer for insights into what additional functions are needed in package 
 
+## Dropped
+
++ [x] ~~A tool that reads an OPML file, harvests the current feeds, indexes them for browsing and sends interesting articles to Pocket~~ Dropped 2026-11-20: Pocket no longer exists, and feeds are aggregated from a Markdown list with antennaApp, not from OPML files
+
 ## Completed
 
++ [x] `Head.Generator` (`<generator>`, JSON `generator`) is read and written, so Dave Winer's `toc.opml` head round-trips; unset writes nothing. Other unknown child elements of `head` are still dropped, by choice (2026-11-20)
++ [x] `opml2urls` follows the exit-code rules for an empty listing: a document with nothing to list exits 0 and prints nothing, where it exited 70 with "outline is empty" (2026-11-20)
 + [x] `opml2urls` suits an outline of pages: `-url` lists the url attribute, and it is on by itself when a document has no xmlUrl or htmlUrl; `type="include"` outlines are left out unless `-includes`; outlines are walked at any depth in document order. Man page updated (2026-11-20)
 + [x] Comments say RFC 822, not 882, in `opml.go` and `opml.ts` (2026-11-20)
 + [x] `Head.Modified` JSON key is `dateModified` (was the typo `dataModified`). Release note: `opml2json` output changes; anything reading `dataModified` must read `dateModified` (2026-11-20)

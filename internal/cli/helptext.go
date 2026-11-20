@@ -150,7 +150,7 @@ The input and output may also be given as the first and second argument.
 # EXIT STATUS
 
 0
-: success
+: success, including a document that has nothing to list (nothing is written)
 
 2
 : bad command line: an unknown option, a surplus argument
