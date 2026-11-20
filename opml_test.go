@@ -19,6 +19,7 @@ package opml
 
 import (
 	"bytes"
+	"encoding/json"
 	"io/ioutil"
 	"os"
 	"path"
@@ -307,5 +308,33 @@ func TestWriteFileIndent(t *testing.T) {
 	want, _ := MarshalIndent(o)
 	if !bytes.Equal(src, want) {
 		t.Errorf("file differs from MarshalIndent:\n%s", src)
+	}
+}
+
+func TestOwnerIDUsesTheSpecName(t *testing.T) {
+	o, err := ReadFile(path.Join("testdata", "example2.opml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	const want = "http://www.example.org/profiles/johndoe"
+	if o.Head.OwnerID != want {
+		t.Fatalf("OwnerID = %q, want %q (<ownerId> in the file was dropped)", o.Head.OwnerID, want)
+	}
+	out, err := Marshal(o)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(out), "<ownerId>"+want+"</ownerId>") {
+		t.Errorf("Marshal does not write <ownerId>: %s", out)
+	}
+	if strings.Contains(string(out), "OwnerId") {
+		t.Errorf("Marshal still writes OwnerId: %s", out)
+	}
+	j, err := json.Marshal(o.Head)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(j), `"ownerId":"`+want+`"`) {
+		t.Errorf("JSON key is not ownerId: %s", j)
 	}
 }

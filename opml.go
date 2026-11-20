@@ -58,7 +58,7 @@ type Head struct {
 	Modified        string      `xml:"dateModified,omitempty" json:"dataModified,omitempty"` // RFC 882 date and time
 	OwnerName       string      `xml:"ownerName,omitempty" json:"ownerName,omitempty"`
 	OwnerEmail      string      `xml:"ownerEmail,omitempty" json:"ownerEmail,omitempty"`
-	OwnerID         string      `xml:"OwnerId,omitempty" json:"OwnerId,omitempty"`               // url
+	OwnerID         string      `xml:"ownerId,omitempty" json:"ownerId,omitempty"`               // url
 	Docs            string      `xml:"docs,omitempty" json:"docs,omitempty"`                     // url
 	ExpansionState  string      `xml:"expansionState,omitempty" json:"expansionState,omitempty"` // array of numbers
 	VertScrollState int         `xml:"vertScrollState,omitempty" json:"vertScrollState,omitempty"`
