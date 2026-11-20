@@ -24,11 +24,7 @@
 
 Found by running the module against Dave Winer's published `toc.opml` files while writing antennaApp DR-0013 (see also the `opml` project in the knowledge base). `Walk` and the `langauge` tag were found on the released v0.0.10 and are already fixed in v0.0.11 (see Completed); these are what is still open in the current source.
 
-+ [ ] `opml2urls` was written when URL lists were flat and does not suit an outline of pages (found 2026-11-19 trying it on antennaApp's `toc.opml`, which it lists as empty)
-    + it prints only the `xmlUrl` and `htmlUrl` attributes; a table of contents uses `url` on its entries. Add a `-url` option for the `url` attribute, and print `url` when a document has no `xmlUrl` or `htmlUrl`
-    + decide what to do with `type="include"` outlines (their `url` is another outline, not a page): list them apart, or only with an option
-    + depth: it should walk nested outlines in document order (the `Walk` fix in v0.0.11 is needed)
-    + the installed `~/bin/opml2urls` is 0.0.10 (2026-11-16), from before the fix that makes it honour a file argument (2026-11-17): it ignores the file name and waits on standard input. Re-install after the next release
++ [ ] After the v0.0.12 release, re-install `opml2urls`: the installed `~/bin/opml2urls` is 0.0.10 (2026-11-16), from before the fix that makes it honour a file argument, so it ignores the file name and waits on standard input
 + [ ] `Head` cannot hold a `generator` child element, which Dave's `toc.opml` has: decide whether to keep unknown child elements or leave them out
 + [ ] When the above are done, release v0.0.12; antennaApp pins v0.0.10 and should move to v0.0.11 now for the `Walk` fix
 
@@ -42,6 +38,7 @@ Found by running the module against Dave Winer's published `toc.opml` files whil
 
 ## Completed
 
++ [x] `opml2urls` suits an outline of pages: `-url` lists the url attribute, and it is on by itself when a document has no xmlUrl or htmlUrl; `type="include"` outlines are left out unless `-includes`; outlines are walked at any depth in document order. Man page updated (2026-11-20)
 + [x] Comments say RFC 822, not 882, in `opml.go` and `opml.ts` (2026-11-20)
 + [x] `Head.Modified` JSON key is `dateModified` (was the typo `dataModified`). Release note: `opml2json` output changes; anything reading `dataModified` must read `dateModified` (2026-11-20)
 + [x] `Head.OwnerID` reads and writes `ownerId` (XML and JSON), as the spec says; before, a spec-correct `<ownerId>` was silently dropped on read. Release note: `opml2json` now writes `ownerId`, and a file written by an earlier version with `<OwnerId>` is no longer read (2026-11-20)

@@ -78,7 +78,7 @@ func readFile(t *testing.T, name string) string {
  * standard input.
  */
 func TestOutputMatchesGolden(t *testing.T) {
-	ex1, simple1 := "testdata/example1.opml", "testdata/simple1.opml"
+	ex1, simple1, toc1 := "testdata/example1.opml", "testdata/simple1.opml", "testdata/toc1.opml"
 	cases := []struct {
 		prog, gold, input string
 		args              []string
@@ -89,6 +89,12 @@ func TestOutputMatchesGolden(t *testing.T) {
 		{"opml2urls", "opml2urls-default", ex1, nil},
 		{"opml2urls", "opml2urls-newsboat", ex1, []string{"-newsboat"}},
 		{"opml2urls", "opml2urls-htmlurl", ex1, []string{"-htmlurl"}},
+		// A table of contents has url attributes, not xmlUrl: with no feed
+		// URLs in the document the url attribute is listed without asking.
+		{"opml2urls", "opml2urls-toc-default", toc1, nil},
+		{"opml2urls", "opml2urls-toc-urls", toc1, []string{"-text-as-comment=false"}},
+		{"opml2urls", "opml2urls-toc-urls", toc1, []string{"-url", "-text-as-comment=false"}},
+		{"opml2urls", "opml2urls-toc-includes", toc1, []string{"-includes", "-text-as-comment=false"}},
 		{"opmlsort", "opmlsort-plain", ex1, nil},
 		{"opmlsort", "opmlsort-pretty", ex1, []string{"-pretty", "-case-insensitive", "-newline"}},
 		{"opmlcat", "opmlcat-stdin", simple1, nil},

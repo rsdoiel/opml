@@ -73,10 +73,12 @@ func Opml2json(appName string, args []string, stdin io.Reader, stdout, stderr io
  */
 func Opml2urls(appName string, args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 	var o options
-	var xmlurl, htmlurl, textAsComment, newsboat bool
+	var xmlurl, htmlurl, urlAttr, includes, textAsComment, newsboat bool
 	fset := newFlagSet(appName, &o, false)
 	fset.BoolVar(&xmlurl, "xmlurl", true, "output the xmlUrl attributes")
 	fset.BoolVar(&htmlurl, "htmlurl", false, "output the htmlUrl attributes")
+	fset.BoolVar(&urlAttr, "url", false, "output the url attributes (on by itself when the document has no xmlUrl or htmlUrl)")
+	fset.BoolVar(&includes, "includes", false, "also output the url of include outlines")
 	fset.BoolVar(&textAsComment, "text-as-comment", true, "output the text attribute as a comment")
 	fset.BoolVar(&newsboat, "newsboat", false, "output in newsboat's url file format")
 	if _, code, done := start(appName, Opml2urlsHelpText, fset, &o, args, 2, stdout, stderr); done {
@@ -86,10 +88,24 @@ func Opml2urls(appName string, args []string, stdin io.Reader, stdout, stderr io
 	if code != ExitOK {
 		return code
 	}
+	// A table of contents has url attributes and no feed URLs: list the
+	// url attribute without being asked.
+	if !urlAttr && !newsboat {
+		feeds := false
+		_ = doc.Walk(func(elem *opml.Outline) bool {
+			feeds = feeds || elem.XMLURL != "" || elem.HTMLURL != ""
+			return !feeds
+		})
+		urlAttr = !feeds
+	}
 	var buf bytes.Buffer
 	if err := doc.Walk(func(elem *opml.Outline) bool {
 		if elem == nil {
 			return false
+		}
+		// An include's url is another outline, not a page.
+		if !newsboat && strings.EqualFold(elem.Type, "include") && !includes {
+			return true
 		}
 		if newsboat {
 			if elem.XMLURL != "" {
@@ -108,6 +124,9 @@ func Opml2urls(appName string, args []string, stdin io.Reader, stdout, stderr io
 			}
 			if htmlurl && elem.HTMLURL != "" {
 				fmt.Fprintf(&buf, "%s\n", elem.HTMLURL)
+			}
+			if urlAttr && elem.URL != "" {
+				fmt.Fprintf(&buf, "%s\n", elem.URL)
 			}
 		}
 		return true

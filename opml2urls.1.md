@@ -4,7 +4,7 @@
 
 # NAME
 
-opml2urls — list the feed URLs of an OPML document
+opml2urls — list the feed URLs, or the page URLs, of an OPML document
 
 # SYNOPSIS
 
@@ -12,7 +12,9 @@ opml2urls [OPTIONS] [INPUT_FILENAME [OUTPUT_FILENAME]]
 
 # DESCRIPTION
 
-opml2urls reads an OPML document and writes the URLs of the outlines that have an xmlUrl attribute, one per line.
+opml2urls reads an OPML document and writes the URLs of the outlines that have an xmlUrl attribute, one per line. Outlines are walked in document order, at any depth.
+
+A table of contents (for example .well-known/toc.opml) names pages with the url attribute and has no feed URLs. When a document has no xmlUrl or htmlUrl attribute at all, opml2urls writes the url attributes, as if -url were given. An outline with type="include" has a url that is another outline, not a page, so it is left out unless -includes is given.
 
 # OPTIONS
 
@@ -42,6 +44,12 @@ opml2urls reads an OPML document and writes the URLs of the outlines that have a
 
 -htmlurl
 : write the htmlUrl attribute (the default is not to)
+
+-url
+: write the url attribute (the default only for a document with no xmlUrl or htmlUrl attribute)
+
+-includes
+: also write the url of outlines with type="include"
 
 -text-as-comment
 : write the text attribute as a comment line starting with # (the default; -text-as-comment=false turns it off)
