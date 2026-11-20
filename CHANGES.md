@@ -19,6 +19,10 @@ the git history); maintained going forward.
   empty" (workspace DR-0003: an empty listing is 0).
 - **`WriteFile` returns the marshal error**, uses `os` in place of `ioutil`, and no longer panics on an OPML with a nil
   `Body`. `Marshal`, `String` and `WriteFile` keep the compact form, byte for byte.
+- **The man pages' source starts with YAML front matter** (`title`, `section`, `header`, `footer`, `date`, `author`) in place
+  of a pandoc `%` title block, which a Markdown reader shows as a garbled paragraph. pandoc renders the same page, but in
+  `man` the header and footer now sit in the conventional places: "user manual" is centred at the top, and the version and
+  date are at the bottom (they were the other way round).
 - The comments say RFC 822 where they said 882.
 
 ### Added
@@ -37,6 +41,14 @@ the git history); maintained going forward.
   the include outlines.
 - **`MarshalIndent` and `WriteFileIndent`** write the XML declaration, two spaces per level and a final newline.
 - **`Head.Generator`** reads and writes the `<generator>` element, so a head like Dave Winer's round trips.
+
+- **The documentation site is published as Markdown too,** for BonBon and cmarkbrowser. Each page is served as the
+  Markdown it is written in, beside the HTML built from it, with `index.md` as the home page, a table of contents at
+  `/.well-known/toc.opml`, an empty `.nojekyll` so GitHub Pages serves that folder, and a link from each HTML page to its
+  Markdown. The pages link to each other as `.md`; the HTML build turns those into `.html` links, and, unlike before, leaves
+  an external link to a `.md` file alone. The README lists the programs as links to their man pages and says to open
+  `https://rsdoiel.github.io/opml/index.md`, because the site's address itself answers HTML. `site_test.go` keeps the page
+  order, the links, the table of contents and the built pages consistent.
 
 ### Removed
 

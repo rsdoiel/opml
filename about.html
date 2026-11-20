@@ -37,6 +37,12 @@ for a document with no xmlUrl or htmlUrl; -includes) and exits 0, not
 <li>CHANGED: Head.OwnerID is read and written as ownerId (a spec-correct
 <code>&lt;ownerId&gt;</code> was dropped before), and opml2json writes
 ownerId and dateModified (were OwnerId and the typo dataModified)</li>
+<li>the man pages’ source starts with YAML front matter, not a pandoc %
+title block; in man, “user manual” is now the header and the version and
+date the footer</li>
+<li>the documentation site is published as Markdown for BonBon and
+cmarkbrowser: index.md, /.well-known/toc.opml, .nojekyll, and each HTML
+page links its Markdown</li>
 <li>removed the TypeScript port (opml.ts)</li>
 <li>now requires github.com/yuin/goldmark and gopkg.in/yaml.v3, imported
 by the cmark package and the two new programs only</li>

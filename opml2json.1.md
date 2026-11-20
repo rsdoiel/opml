@@ -2,7 +2,7 @@
 title: opml2json
 section: 1
 header: user manual
-footer: version 0.0.12 c15bc0e
+footer: version 0.0.12 b8a4071
 date: 2026-11-20
 author: R. S. Doiel
 ---

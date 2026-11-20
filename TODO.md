@@ -26,7 +26,7 @@ The author wants BonBon support on all their documentation sites, applied when e
 + [ ] Publish: `publish.bash` merges `main` into `gh-pages`; after that, check `https://rsdoiel.github.io/opml/index.md` and the `.well-known/toc.opml` answer as `text/markdown` and XML
 + [ ] The blog's root `toc.opml` needs an `include` for `https://rsdoiel.github.io/opml/.well-known/toc.opml` for BonBon to find this site from the host root (antennaApp's side)
 + [ ] Bring cmarkbrowser's `toc.bash` level with this one (YAML title first)
-+ [ ] Whether this lands in v0.0.12 or v0.0.13: the man page `.TH` header and footer changed places, and CHANGES.md needs an entry either way
++ [x] Decided 2026-11-20: this lands in v0.0.12 (merged to `main`; the release notes in `CHANGES.md` and `codemeta.json` cover both)
 
 ## From the antennaApp table-of-contents work (2026-11-19)
 

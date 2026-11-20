@@ -42,6 +42,8 @@ About this software
 - opml2urls lists the pages of a table of contents (-url, on by itself for a document with no xmlUrl or htmlUrl; -includes) and exits 0, not 70, when there is nothing to list
 - WriteFile returns its errors and no longer panics on a nil Body
 - CHANGED: Head.OwnerID is read and written as ownerId (a spec-correct `<ownerId>` was dropped before), and opml2json writes ownerId and dateModified (were OwnerId and the typo dataModified)
+- the man pages' source starts with YAML front matter, not a pandoc % title block; in man, "user manual" is now the header and the version and date the footer
+- the documentation site is published as Markdown for BonBon and cmarkbrowser: index.md, /.well-known/toc.opml, .nojekyll, and each HTML page links its Markdown
 - removed the TypeScript port (opml.ts)
 - now requires github.com/yuin/goldmark and gopkg.in/yaml.v3, imported by the cmark package and the two new programs only
 
