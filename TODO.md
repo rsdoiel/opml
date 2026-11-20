@@ -11,6 +11,18 @@ title: "OPML, a Go package and cli"
     + head attributes on `<head>` itself and unmodelled head children are not carried
     + `go test -fuzz FuzzRoundTrip ./cmark` ran 514,000 executions with no failure; run it again after any change to the mapping
 
+## BonBon-compatible documentation site (branch `bonbon-docs`, 2026-11-20)
+
+The author wants BonBon support on all their documentation sites, applied when each site is next updated (kb dev-process, and the cmarkbrowser site is the pattern). For opml:
+
++ [x] Man page sources start with YAML front matter, not a pandoc `%` title block (header and footer now in the conventional `.TH` places); `internal/cli/helptext_test.go` checks it
++ [ ] `website.mak`: `PAGE_ORDER` and a check that every published page is listed; `index.md` from `README.md`; `.nojekyll`; `.well-known/toc.opml` from a `toc.bash` (cmarkbrowser's)
++ [ ] `page.tmpl`: `<link rel="alternate" type="text/markdown">` and a line saying the page is also Markdown
++ [ ] Markdown sources link to `.md` pages, not `.html` (`user-manual.md` links `.1.html`); `links-to-html.lua` turns them into `.html` for the HTML build
++ [ ] Pages that are not plain CommonMark: `README.md` uses a definition list for the programs (make it bullets); `NOTES.md` has JSON front matter and is not a site page (leave it unpublished); check the raw `<...>` in `about.md` and `CHANGES.md`
++ [ ] A site test, as cmarkbrowser's `site_test.go`: every page is in the order, pages link as `.md`, the toc lists them
++ [ ] Put the `index.md` address near the top of the README: `https://rsdoiel.github.io/opml/` answers HTML (GitHub Pages ignores `Accept`), so BonBon opens the site at `.../opml/index.md` or through an `include` in the blog's root `toc.opml`
+
 ## From the antennaApp table-of-contents work (2026-11-19)
 
 Found by running the module against Dave Winer's published `toc.opml` files while writing antennaApp DR-0013 (see also the `opml` project in the knowledge base). `Walk` and the `langauge` tag were found on the released v0.0.10 and are already fixed in v0.0.11 (see Completed); these are what is still open in the current source.

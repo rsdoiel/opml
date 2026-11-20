@@ -1,6 +1,11 @@
-%opml2json(1) user manual | version 0.0.12 c15bc0e
-% R. S. Doiel
-% 2026-11-20
+---
+title: opml2json
+section: 1
+header: user manual
+footer: version 0.0.12 c15bc0e
+date: 2026-11-20
+author: R. S. Doiel
+---
 
 # NAME
 

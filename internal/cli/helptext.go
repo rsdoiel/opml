@@ -7,9 +7,14 @@ package cli
  * Example:
  *   fmt.Println(opml.FmtHelp(cli.Opml2jsonHelpText, "opml2json", opml.Version, opml.ReleaseDate, opml.ReleaseHash))
  */
-const Opml2jsonHelpText = `%{app_name}(1) user manual | version {version} {release_hash}
-% R. S. Doiel
-% {release_date}
+const Opml2jsonHelpText = `---
+title: {app_name}
+section: 1
+header: user manual
+footer: version {version} {release_hash}
+date: {release_date}
+author: R. S. Doiel
+---
 
 # NAME
 
@@ -86,9 +91,14 @@ The input and output may also be given as the first and second argument.
  * Example:
  *   fmt.Println(opml.FmtHelp(cli.Cmark2opmlHelpText, "cmark2opml", opml.Version, opml.ReleaseDate, opml.ReleaseHash))
  */
-const Cmark2opmlHelpText = `%{app_name}(1) user manual | version {version} {release_hash}
-% R. S. Doiel
-% {release_date}
+const Cmark2opmlHelpText = `---
+title: {app_name}
+section: 1
+header: user manual
+footer: version {version} {release_hash}
+date: {release_date}
+author: R. S. Doiel
+---
 
 # NAME
 
@@ -177,9 +187,14 @@ Edit an outline as Markdown and convert it back:
  * Example:
  *   fmt.Println(opml.FmtHelp(cli.Opml2cmarkHelpText, "opml2cmark", opml.Version, opml.ReleaseDate, opml.ReleaseHash))
  */
-const Opml2cmarkHelpText = `%{app_name}(1) user manual | version {version} {release_hash}
-% R. S. Doiel
-% {release_date}
+const Opml2cmarkHelpText = `---
+title: {app_name}
+section: 1
+header: user manual
+footer: version {version} {release_hash}
+date: {release_date}
+author: R. S. Doiel
+---
 
 # NAME
 
@@ -267,9 +282,14 @@ Edit the list, then convert it back:
  * Example:
  *   fmt.Println(opml.FmtHelp(cli.Opml2urlsHelpText, "opml2urls", opml.Version, opml.ReleaseDate, opml.ReleaseHash))
  */
-const Opml2urlsHelpText = `%{app_name}(1) user manual | version {version} {release_hash}
-% R. S. Doiel
-% {release_date}
+const Opml2urlsHelpText = `---
+title: {app_name}
+section: 1
+header: user manual
+footer: version {version} {release_hash}
+date: {release_date}
+author: R. S. Doiel
+---
 
 # NAME
 
@@ -367,9 +387,14 @@ Write newsboat's url file format:
  * Example:
  *   fmt.Println(opml.FmtHelp(cli.OpmlcatHelpText, "opmlcat", opml.Version, opml.ReleaseDate, opml.ReleaseHash))
  */
-const OpmlcatHelpText = `%{app_name}(1) user manual | version {version} {release_hash}
-% R. S. Doiel
-% {release_date}
+const OpmlcatHelpText = `---
+title: {app_name}
+section: 1
+header: user manual
+footer: version {version} {release_hash}
+date: {release_date}
+author: R. S. Doiel
+---
 
 # NAME
 
@@ -446,9 +471,14 @@ Every argument is an input file; the output is -o.
  * Example:
  *   fmt.Println(opml.FmtHelp(cli.OpmlsortHelpText, "opmlsort", opml.Version, opml.ReleaseDate, opml.ReleaseHash))
  */
-const OpmlsortHelpText = `%{app_name}(1) user manual | version {version} {release_hash}
-% R. S. Doiel
-% {release_date}
+const OpmlsortHelpText = `---
+title: {app_name}
+section: 1
+header: user manual
+footer: version {version} {release_hash}
+date: {release_date}
+author: R. S. Doiel
+---
 
 # NAME
 
@@ -531,9 +561,14 @@ The input and output may also be given as the first and second argument.
  * Example:
  *   fmt.Println(opml.FmtHelp(cli.Urls2opmlHelpText, "urls2opml", opml.Version, opml.ReleaseDate, opml.ReleaseHash))
  */
-const Urls2opmlHelpText = `%{app_name}(1) user manual | version {version} {release_hash}
-% R. S. Doiel
-% {release_date}
+const Urls2opmlHelpText = `---
+title: {app_name}
+section: 1
+header: user manual
+footer: version {version} {release_hash}
+date: {release_date}
+author: R. S. Doiel
+---
 
 # NAME
 
