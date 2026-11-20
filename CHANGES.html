@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>opml</title>
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="alternate" type="text/markdown" href="CHANGES.md">
+</head>
+<body>
+<a href="#main-content" class="visually-hidden">skip to main content</a>
+<nav>
+<ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="INSTALL.html">Install</a></li>
+    <li><a href="user-manual.html">User Manual</a></li>
+    <li><a href="NOTES.html">Notes</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="https://github.com/rsdoiel/opml/blob/main/LICENSE">License</a></li>
+    <li><a href="https://github.com/rsdoiel/opml">Code Repository</a></li>
+</ul>
+</nav>
+<section id="main-content">
+<h1 id="changes">Changes</h1>
+<p>Reconstructed for v0.0.10 and v0.0.11 from each tag’s
+<code>codemeta.json</code> release notes (v0.0.3 to v0.0.9 have none;
+see the git history); maintained going forward.</p>
+<h2 id="v0.0.12-2026-11-20">v0.0.12 — 2026-11-20</h2>
+<h3 id="changed">Changed</h3>
+<ul>
+<li><strong><code>opml2json</code> writes <code>ownerId</code> and
+<code>dateModified</code>.</strong> The head’s JSON key
+<code>OwnerId</code> is now <code>ownerId</code>, and the typo
+<code>dataModified</code> is now <code>dateModified</code>. <strong>A
+script that reads the old keys must read the new ones.</strong> In the
+XML, <code>Head.OwnerID</code> is now read and written as
+<code>&lt;ownerId&gt;</code>, which is what the OPML spec says; before,
+a spec-correct <code>&lt;ownerId&gt;</code> was silently dropped on read
+(<code>testdata/example2.opml</code> lost its owner on a round trip). A
+file an earlier version wrote with <code>&lt;OwnerId&gt;</code> is no
+longer read.</li>
+<li><strong><code>opml2urls</code> lists the pages of a table of
+contents.</strong> <code>-url</code> writes the <code>url</code>
+attribute, and it is on by itself when a document has no
+<code>xmlUrl</code> or <code>htmlUrl</code>. An outline with
+<code>type="include"</code> is left out unless <code>-includes</code> is
+given. Outlines are walked at any depth in document order.</li>
+<li><strong><code>opml2urls</code> exits 0 for a document with nothing
+to list</strong> and prints nothing, where it exited 70 with “outline is
+empty” (workspace DR-0003: an empty listing is 0).</li>
+<li><strong><code>WriteFile</code> returns the marshal error</strong>,
+uses <code>os</code> in place of <code>ioutil</code>, and no longer
+panics on an OPML with a nil <code>Body</code>. <code>Marshal</code>,
+<code>String</code> and <code>WriteFile</code> keep the compact form,
+byte for byte.</li>
+<li>The comments say RFC 822 where they said 882.</li>
+</ul>
+<h3 id="added">Added</h3>
+<ul>
+<li><strong><code>opml2cmark</code> and <code>cmark2opml</code></strong>
+write an OPML outline as a CommonMark list and read it back, so an
+outline can be edited in any text editor (opml DR-0001). The head is
+YAML front matter, each outline is a list item, a link carries the
+address (<code>xmlUrl</code> for type rss or atom, <code>url</code>
+otherwise), and other attributes follow in a <code>{key="value"}</code>
+block. <code>cmark2opml</code> accepts any bullet, indentation, blank
+lines and wrapped items, and stops with an error that names the line for
+anything that is not part of the list. OPML to Markdown to OPML gives
+the same model for every file in <code>testdata</code> and for Dave
+Winer’s table of contents.</li>
+<li><strong>The <code>cmark</code> package</strong>
+(<code>FromOPML</code>, <code>ToOPML</code>,
+<code>ErrUnrepresentable</code>, <code>ErrNotOutline</code>). The
+<code>opml</code> package itself still imports only the standard
+library; <code>cmark</code> is the one that needs goldmark and
+yaml.v3.</li>
+<li><strong>Encodings.</strong> <code>Parse</code>,
+<code>ReadFile</code> and <code>Unmarshal</code> read ISO-8859-1,
+US-ASCII and windows-1252 documents (standard library only). Dave
+Winer’s <code>toc.opml</code>, which declares ISO-8859-1, could not be
+read before.</li>
+<li><strong><code>Flatten()</code> and <code>Includes()</code></strong>
+for reading a table of contents: the page outlines in document order,
+and the addresses of the include outlines.</li>
+<li><strong><code>MarshalIndent</code> and
+<code>WriteFileIndent</code></strong> write the XML declaration, two
+spaces per level and a final newline.</li>
+<li><strong><code>Head.Generator</code></strong> reads and writes the
+<code>&lt;generator&gt;</code> element, so a head like Dave Winer’s
+round trips.</li>
+</ul>
+<h3 id="removed">Removed</h3>
+<ul>
+<li><strong>The TypeScript port</strong> (<code>opml.ts</code>,
+<code>opml_test.ts</code>, <code>deno.json</code>,
+<code>deno.lock</code>). It had drifted from the Go package and is not
+being developed.</li>
+</ul>
+<h3 id="requirements">Requirements</h3>
+<ul>
+<li><code>github.com/yuin/goldmark</code> v1.8.7 and
+<code>gopkg.in/yaml.v3</code> v3.0.1, imported by the <code>cmark</code>
+package and the two new programs only.</li>
+</ul>
+<h2 id="v0.0.11-2026-11-18">v0.0.11 — 2026-11-18</h2>
+<h3 id="fixed">Fixed</h3>
+<ul>
+<li><code>Walk()</code> visited only the first child at each level and
+did not stop when the callback returned false at depth.</li>
+<li>The <code>Outline.Language</code> tag typo, so the
+<code>language</code> attribute is read and written.</li>
+<li><code>opmlcat</code> and <code>opml2urls</code> no longer empty an
+input file named by mistake; <code>opmlsort</code> exits non-zero on a
+missing input.</li>
+<li><code>-help</code>, <code>-license</code> and <code>-version</code>
+output in <code>opml2json</code> and <code>opmlsort</code>.</li>
+</ul>
+<h3 id="changed-1">Changed</h3>
+<ul>
+<li>The programs moved into <code>internal/cli</code> with documented
+exit codes (2, 65, 66, 73, 74, 77) and an EXIT STATUS section in each
+help page.</li>
+<li>Added <code>-h</code>, <code>-l</code> and <code>-v</code>; new
+<code>-nl</code>, <code>-input</code> and <code>-output</code>
+options.</li>
+<li>Dropped the unused <code>caltechlibrary/cli</code> requirement.</li>
+</ul>
+<h2 id="v0.0.10-2025-10-01">v0.0.10 — 2025-10-01</h2>
+<h3 id="changed-2">Changed</h3>
+<ul>
+<li>Normalized the license to AGPL &gt;= 3.</li>
+<li>Updated the codemeta status to inactive (it is stable).</li>
+</ul>
+</section>
+<footer>
+<p>opml. This page is also published as <a href="CHANGES.md">Markdown</a>.</p>
+</footer>
+</body>
+</html>

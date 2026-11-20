@@ -3,6 +3,7 @@
 <head>
     <title>opml</title>
     <link rel="stylesheet" href="/css/site.css">
+    <link rel="alternate" type="text/markdown" href="index.md">
 </head>
 <body>
 <a href="#main-content" class="visually-hidden">skip to main content</a>
@@ -30,38 +31,37 @@ and can list the pages of a table of contents with
 <code>Flatten()</code> and <code>Includes()</code>. The
 <code>cmark</code> package converts an outline to a CommonMark list and
 back.</p>
-<p>It includes command line programs that demonstrate it:</p>
-<dl>
-<dt><em>opmlsort</em></dt>
-<dd>
-sorts an OPML outline by text attribute values
-</dd>
-<dt><em>opmlcat</em></dt>
-<dd>
-Concatenates one or more OPML outlines
-</dd>
-<dt><em>opml2json</em></dt>
-<dd>
-Converts an OPML file into a JSON document
-</dd>
-<dt><em>opml2urls</em></dt>
-<dd>
-Lists the feed URLs of an OPML file, or the pages of a table of
-contents, or writes newsboat’s url file
-</dd>
-<dt><em>urls2opml</em></dt>
-<dd>
-Converts a list of urls into OPML XML
-</dd>
-<dt><em>opml2cmark</em></dt>
-<dd>
-Writes an OPML outline as a CommonMark list, to edit in a text editor
-</dd>
-<dt><em>cmark2opml</em></dt>
-<dd>
-Reads that Markdown list back into OPML
-</dd>
-</dl>
+<p>It includes command line programs that demonstrate it (each has a
+manual page; the <a href="user-manual.html">user manual</a> lists
+them):</p>
+<ul>
+<li><a href="opmlsort.1.html">opmlsort</a>: sorts an OPML outline by
+text attribute values</li>
+<li><a href="opmlcat.1.html">opmlcat</a>: concatenates one or more OPML
+outlines</li>
+<li><a href="opml2json.1.html">opml2json</a>: converts an OPML file into
+a JSON document</li>
+<li><a href="opml2urls.1.html">opml2urls</a>: lists the feed URLs of an
+OPML file, or the pages of a table of contents, or writes newsboat’s url
+file</li>
+<li><a href="urls2opml.1.html">urls2opml</a>: converts a list of urls
+into OPML XML</li>
+<li><a href="opml2cmark.1.html">opml2cmark</a>: writes an OPML outline
+as a CommonMark list, to edit in a text editor</li>
+<li><a href="cmark2opml.1.html">cmark2opml</a>: reads that Markdown list
+back into OPML</li>
+</ul>
+<p>See <a href="INSTALL.html">INSTALL</a> to install them and <a
+href="CHANGES.html">CHANGES</a> for what changed in each release.</p>
+<h2 id="markdown-web">Markdown web</h2>
+<p>This documentation is also published as Markdown, for <a
+href="https://github.com/scripting/bonBon/">BonBon</a> and <a
+href="https://github.com/rsdoiel/cmarkbrowser">cmarkbrowser</a>. The
+site’s address returns the HTML pages, because the host does not look at
+what a browser asks for, so open the Markdown home page directly: <a
+href="https://rsdoiel.github.io/opml/index.md"
+class="uri">https://rsdoiel.github.io/opml/index.md</a>. Its table of
+contents is <code>/.well-known/toc.opml</code> in the same folder.</p>
 <h2 id="copying">Copying</h2>
 <p>The opml package is copyright (c) 2021 by R. S. Doiel and <a
 href="https://github.com/rsdoiel/opml/releases/latest">released</a>
@@ -73,7 +73,7 @@ LICENSE).</p>
 </ul>
 </section>
 <footer>
-<p>opml</p>
+<p>opml. This page is also published as <a href="index.md">Markdown</a>.</p>
 </footer>
 </body>
 </html>

@@ -16,12 +16,17 @@ title: "OPML, a Go package and cli"
 The author wants BonBon support on all their documentation sites, applied when each site is next updated (kb dev-process, and the cmarkbrowser site is the pattern). For opml:
 
 + [x] Man page sources start with YAML front matter, not a pandoc `%` title block (header and footer now in the conventional `.TH` places); `internal/cli/helptext_test.go` checks it
-+ [ ] `website.mak`: `PAGE_ORDER` and a check that every published page is listed; `index.md` from `README.md`; `.nojekyll`; `.well-known/toc.opml` from a `toc.bash` (cmarkbrowser's)
-+ [ ] `page.tmpl`: `<link rel="alternate" type="text/markdown">` and a line saying the page is also Markdown
-+ [ ] Markdown sources link to `.md` pages, not `.html` (`user-manual.md` links `.1.html`); `links-to-html.lua` turns them into `.html` for the HTML build
-+ [ ] Pages that are not plain CommonMark: `README.md` uses a definition list for the programs (make it bullets); `NOTES.md` has JSON front matter and is not a site page (leave it unpublished); check the raw `<...>` in `about.md` and `CHANGES.md`
-+ [ ] A site test, as cmarkbrowser's `site_test.go`: every page is in the order, pages link as `.md`, the toc lists them
-+ [ ] Put the `index.md` address near the top of the README: `https://rsdoiel.github.io/opml/` answers HTML (GitHub Pages ignores `Accept`), so BonBon opens the site at `.../opml/index.md` or through an `include` in the blog's root `toc.opml`
++ [x] `website.mak` has `PAGE_ORDER` (a check stops the build when a published page is missing), `index.md` from `README.md`, `.nojekyll`, and `.well-known/toc.opml` from `toc.bash` (cmarkbrowser's, which now also takes a page's title from its YAML `title:`, so a man page is not "NAME")
++ [x] `page.tmpl` has `<link rel="alternate" type="text/markdown">` and a line saying the page is also Markdown
++ [x] Markdown sources link to `.md` pages; `links-to-html.lua` is cmarkbrowser's (relative links only, `README.md` becomes `index.html`; the old one rewrote external `.md` URLs)
++ [x] Non-CommonMark pages fixed: the README program list is bullets, `NOTES.md` has YAML front matter, `INSTALL*.md` have YAML titles, and `about.md` has no raw tag (`codemeta.json` release notes put `<ownerId>` in backticks)
++ [x] `site_test.go`: page order, `.md` links, page starts, toc order and titles, the committed toc (without its date line), `index.md`, `.nojekyll`, the HTML alternate link, and the link filter
++ [x] The `index.md` address is near the top of the README ("Markdown web" section)
++ [x] Checked in cmarkbrowser: `]` and `[` walk the toc from `index.md`
++ [ ] Publish: `publish.bash` merges `main` into `gh-pages`; after that, check `https://rsdoiel.github.io/opml/index.md` and the `.well-known/toc.opml` answer as `text/markdown` and XML
++ [ ] The blog's root `toc.opml` needs an `include` for `https://rsdoiel.github.io/opml/.well-known/toc.opml` for BonBon to find this site from the host root (antennaApp's side)
++ [ ] Bring cmarkbrowser's `toc.bash` level with this one (YAML title first)
++ [ ] Whether this lands in v0.0.12 or v0.0.13: the man page `.TH` header and footer changed places, and CHANGES.md needs an entry either way
 
 ## From the antennaApp table-of-contents work (2026-11-19)
 

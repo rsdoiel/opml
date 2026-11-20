@@ -1,6 +1,6 @@
-{
-    "title": "OPML, a Go package and cli"
-}
+---
+title: OPML, a Go package and cli
+---
 
 # misc notes
 

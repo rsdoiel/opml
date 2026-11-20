@@ -3,6 +3,7 @@
 <head>
     <title>opml</title>
     <link rel="stylesheet" href="/css/site.css">
+    <link rel="alternate" type="text/markdown" href="about.md">
 </head>
 <body>
 <a href="#main-content" class="visually-hidden">skip to main content</a>
@@ -34,8 +35,8 @@ for a document with no xmlUrl or htmlUrl; -includes) and exits 0, not
 70, when there is nothing to list</li>
 <li>WriteFile returns its errors and no longer panics on a nil Body</li>
 <li>CHANGED: Head.OwnerID is read and written as ownerId (a spec-correct
-<ownerId> was dropped before), and opml2json writes ownerId and
-dateModified (were OwnerId and the typo dataModified)</li>
+<code>&lt;ownerId&gt;</code> was dropped before), and opml2json writes
+ownerId and dateModified (were OwnerId and the typo dataModified)</li>
 <li>removed the TypeScript port (opml.ts)</li>
 <li>now requires github.com/yuin/goldmark and gopkg.in/yaml.v3, imported
 by the cmark package and the two new programs only</li>
@@ -76,7 +77,7 @@ Tracker</a></li>
 </ul>
 </section>
 <footer>
-<p>opml</p>
+<p>opml. This page is also published as <a href="about.md">Markdown</a>.</p>
 </footer>
 </body>
 </html>

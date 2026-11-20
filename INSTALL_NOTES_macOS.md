@@ -1,3 +1,6 @@
+---
+title: Installing an unsigned executable on macOS
+---
 
 Installing an unsigned executable on macOS can be a bit tricky due to macOS's security features designed to protect users from potentially harmful software. Here's a general guide on how to do it:
 

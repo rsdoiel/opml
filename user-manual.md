@@ -5,12 +5,12 @@ title: opml user manual
 user manual
 ===========
 
-- [opmlcat](opmlcat.1.html)
-- [opmlsort](opmlsort.1.html)
-- [cmark2opml](cmark2opml.1.html)
-- [opml2cmark](opml2cmark.1.html)
-- [opml2json](opml2json.1.html)
-- [opml2urls](opml2urls.1.html)
-- [urls2opml](urls2opml.1.html)
+- [opmlcat](opmlcat.1.md)
+- [opmlsort](opmlsort.1.md)
+- [cmark2opml](cmark2opml.1.md)
+- [opml2cmark](opml2cmark.1.md)
+- [opml2json](opml2json.1.md)
+- [opml2urls](opml2urls.1.md)
+- [urls2opml](urls2opml.1.md)
 
 

@@ -1,3 +1,6 @@
+---
+title: Installing an unsigned executable on Windows
+---
 
 Installing an unsigned executable on Windows can also pose security risks, as Windows has built-in mechanisms to protect users from potentially harmful software. Here's a general guide on how to do it:
 
