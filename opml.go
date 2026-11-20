@@ -55,7 +55,7 @@ type Head struct {
 	XMLName         xml.Name    `json:"-"`
 	Title           string      `xml:"title,omitempty" json:"title,omitempty"`
 	Created         string      `xml:"dateCreated,omitempty" json:"dateCreated,omitempty"`   // RFC 882 date and time
-	Modified        string      `xml:"dateModified,omitempty" json:"dataModified,omitempty"` // RFC 882 date and time
+	Modified        string      `xml:"dateModified,omitempty" json:"dateModified,omitempty"` // RFC 882 date and time
 	OwnerName       string      `xml:"ownerName,omitempty" json:"ownerName,omitempty"`
 	OwnerEmail      string      `xml:"ownerEmail,omitempty" json:"ownerEmail,omitempty"`
 	OwnerID         string      `xml:"ownerId,omitempty" json:"ownerId,omitempty"`               // url

@@ -338,3 +338,21 @@ func TestOwnerIDUsesTheSpecName(t *testing.T) {
 		t.Errorf("JSON key is not ownerId: %s", j)
 	}
 }
+
+func TestModifiedJSONKeyIsDateModified(t *testing.T) {
+	src := `<opml version="2.0"><head><dateCreated>Fri, 20 Nov 2026 14:06:24 GMT</dateCreated><dateModified>Sat, 21 Nov 2026 09:00:00 GMT</dateModified></head><body><outline text="x"/></body></opml>`
+	o, err := Parse([]byte(src))
+	if err != nil {
+		t.Fatal(err)
+	}
+	j, err := json.Marshal(o)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(j), `"dateModified":"Sat, 21 Nov 2026 09:00:00 GMT"`) {
+		t.Errorf("JSON lacks dateModified: %s", j)
+	}
+	if strings.Contains(string(j), "dataModified") {
+		t.Errorf("JSON still has the dataModified typo: %s", j)
+	}
+}

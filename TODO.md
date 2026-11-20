@@ -24,7 +24,6 @@
 
 Found by running the module against Dave Winer's published `toc.opml` files while writing antennaApp DR-0013 (see also the `opml` project in the knowledge base). `Walk` and the `langauge` tag were found on the released v0.0.10 and are already fixed in v0.0.11 (see Completed); these are what is still open in the current source.
 
-+ [ ] `Head.Modified` has the JSON tag `dataModified` (should be `dateModified`; this changes `opml2json` output, so note it in the release notes)
 + [ ] Comments say "RFC 882" where they mean RFC 822 (`Head.Created`, `Head.Modified`, `Outline.Created`)
 + [ ] `opml2urls` was written when URL lists were flat and does not suit an outline of pages (found 2026-11-19 trying it on antennaApp's `toc.opml`, which it lists as empty)
     + it prints only the `xmlUrl` and `htmlUrl` attributes; a table of contents uses `url` on its entries. Add a `-url` option for the `url` attribute, and print `url` when a document has no `xmlUrl` or `htmlUrl`
@@ -44,6 +43,7 @@ Found by running the module against Dave Winer's published `toc.opml` files whil
 
 ## Completed
 
++ [x] `Head.Modified` JSON key is `dateModified` (was the typo `dataModified`). Release note: `opml2json` output changes; anything reading `dataModified` must read `dateModified` (2026-11-20)
 + [x] `Head.OwnerID` reads and writes `ownerId` (XML and JSON), as the spec says; before, a spec-correct `<ownerId>` was silently dropped on read. Release note: `opml2json` now writes `ownerId`, and a file written by an earlier version with `<OwnerId>` is no longer read (2026-11-20)
 + [x] `MarshalIndent` and `(*OPML).WriteFileIndent` write a declaration, two-space indent and a final newline; `Marshal`, `String` and `WriteFile` keep the compact form; `WriteFile` returns the marshal error, uses `os`, and no longer panics on a nil `Body` (2026-11-20)
 + [x] `(*OPML).Flatten()` and `(*OPML).Includes()` for reading a table of contents (toc.go); on Dave Winer's `toc.opml`: 3,553 page entries, no includes (2026-11-20)
