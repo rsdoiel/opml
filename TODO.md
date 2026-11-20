@@ -24,9 +24,6 @@
 
 Found by running the module against Dave Winer's published `toc.opml` files while writing antennaApp DR-0013 (see also the `opml` project in the knowledge base). `Walk` and the `langauge` tag were found on the released v0.0.10 and are already fixed in v0.0.11 (see Completed); these are what is still open in the current source.
 
-+ [ ] `Marshal`, `String` and `WriteFile` write no XML declaration and no indentation, so a file is a single line
-    + add an indented form that starts with `<?xml version="1.0" encoding="UTF-8"?>` (keep today's output available; the order is deterministic, which callers rely on)
-    + `WriteFile` ignores the marshal error and uses the deprecated `ioutil`: return the error and use `os`
 + [ ] `Head.OwnerID` is written as `OwnerId`; the OPML spec says `ownerId`
 + [ ] `Head.Modified` has the JSON tag `dataModified` (should be `dateModified`; this changes `opml2json` output, so note it in the release notes)
 + [ ] Comments say "RFC 882" where they mean RFC 822 (`Head.Created`, `Head.Modified`, `Outline.Created`)
@@ -48,6 +45,7 @@ Found by running the module against Dave Winer's published `toc.opml` files whil
 
 ## Completed
 
++ [x] `MarshalIndent` and `(*OPML).WriteFileIndent` write a declaration, two-space indent and a final newline; `Marshal`, `String` and `WriteFile` keep the compact form; `WriteFile` returns the marshal error, uses `os`, and no longer panics on a nil `Body` (2026-11-20)
 + [x] `(*OPML).Flatten()` and `(*OPML).Includes()` for reading a table of contents (toc.go); on Dave Winer's `toc.opml`: 3,553 page entries, no includes (2026-11-20)
 + [x] Read ISO-8859-1, US-ASCII and windows-1252 documents in `Parse`, `ReadFile` and `Unmarshal` (stdlib `charset.go`, no new dependency); Dave Winer's `toc.opml` now parses (2026-11-20)
 + [x] Fix `Walk` visiting only the first child at each level, and stopping early from a nested outline (2026-11-18)

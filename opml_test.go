@@ -22,6 +22,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"reflect"
 	"sort"
 	"strings"
 	"testing"
@@ -44,7 +45,7 @@ func TestNewAndString(t *testing.T) {
 	}
 	o.Body.Outline = []*Outline{}
 
-	expected := `<opml version="2.0"><head></head><body></body></opml>` 
+	expected := `<opml version="2.0"><head></head><body></body></opml>`
 	s := o.String()
 	if strings.Compare(expected, s) != 0 {
 		t.Errorf("expected %q, got %q", expected, s)
@@ -227,5 +228,84 @@ func TestLanguageAttribute(t *testing.T) {
 	}
 	if !strings.Contains(string(out), `language="en"`) {
 		t.Errorf("marshalled output lacks language attribute: %s", out)
+	}
+}
+
+func TestMarshalIndent(t *testing.T) {
+	o, err := Parse([]byte(tocSrc))
+	if err != nil {
+		t.Fatal(err)
+	}
+	out, err := MarshalIndent(o)
+	if err != nil {
+		t.Fatal(err)
+	}
+	s := string(out)
+	if !strings.HasPrefix(s, `<?xml version="1.0" encoding="UTF-8"?>`+"\n") {
+		t.Errorf("no XML declaration first: %.80q", s)
+	}
+	if !strings.HasSuffix(s, "\n") {
+		t.Errorf("no trailing newline")
+	}
+	if !strings.Contains(s, "\n  <body>\n    <outline") {
+		t.Errorf("not indented two spaces per level: %s", s)
+	}
+	back, err := Parse(out)
+	if err != nil {
+		t.Fatalf("indented output does not parse: %v", err)
+	}
+	if got, want := len(back.Flatten()), len(o.Flatten()); got != want {
+		t.Errorf("round trip: %d pages, want %d", got, want)
+	}
+	if got, want := back.Includes(), o.Includes(); !reflect.DeepEqual(got, want) {
+		t.Errorf("round trip includes %v, want %v", got, want)
+	}
+}
+
+func TestMarshalAndStringStayCompact(t *testing.T) {
+	o, _ := Parse([]byte(tocSrc))
+	out, err := Marshal(o)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(out), "<?xml") || strings.Contains(string(out), "\n") {
+		t.Errorf("Marshal output changed: %.100q", out)
+	}
+	if o.String() != string(out) {
+		t.Error("String and Marshal disagree")
+	}
+}
+
+func TestWriteFileReturnsTheError(t *testing.T) {
+	o := New()
+	if err := o.WriteFile(path.Join(t.TempDir(), "no", "such", "dir", "x.opml"), 0o664); err == nil {
+		t.Error("WriteFile into a missing directory returned nil")
+	}
+	if err := o.WriteFileIndent(path.Join(t.TempDir(), "no", "dir", "x.opml"), 0o664); err == nil {
+		t.Error("WriteFileIndent into a missing directory returned nil")
+	}
+}
+
+func TestWriteFileWithNilBody(t *testing.T) {
+	o := &OPML{Version: "2.0"}
+	fname := path.Join(t.TempDir(), "x.opml")
+	if err := o.WriteFile(fname, 0o664); err != nil {
+		t.Errorf("WriteFile with nil Body: %v", err)
+	}
+}
+
+func TestWriteFileIndent(t *testing.T) {
+	o, _ := Parse([]byte(tocSrc))
+	fname := path.Join(t.TempDir(), "toc.opml")
+	if err := o.WriteFileIndent(fname, 0o664); err != nil {
+		t.Fatal(err)
+	}
+	src, err := os.ReadFile(fname)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want, _ := MarshalIndent(o)
+	if !bytes.Equal(src, want) {
+		t.Errorf("file differs from MarshalIndent:\n%s", src)
 	}
 }

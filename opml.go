@@ -21,7 +21,6 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"sort"
 	"strings"
@@ -359,25 +358,91 @@ func ReadFile(fname string) (*OPML, error) {
 
 // ReadFile reads an OPML file and populates the OPML object appropriately
 func (o *OPML) ReadFile(s string) error {
-	src, err := ioutil.ReadFile(s)
+	src, err := os.ReadFile(s)
 	if err != nil {
 		return err
 	}
 	return unmarshal(src, o)
 }
 
-// WriteFile writes the contents of a OPML struct to a file
+/** WriteFile writes an OPML structure to a file in the compact form
+ * (no XML declaration, no indentation), the same bytes as String.
+ *
+ * Parameters:
+ *   s (string) — the file name
+ *   perm (os.FileMode) — the permissions for a new file
+ *
+ * Returns:
+ *   error — a marshal or write error
+ *
+ * Example:
+ *   err := o.WriteFile("feeds.opml", 0664)
+ */
 func (o *OPML) WriteFile(s string, perm os.FileMode) error {
-	if len(o.Body.Outline) == 0 {
+	b, err := marshal(o)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(s, b, perm)
+}
+
+/** WriteFileIndent writes an OPML structure to a file in the readable
+ * form of MarshalIndent: an XML declaration, two spaces per level and a
+ * final newline.
+ *
+ * Parameters:
+ *   s (string) — the file name
+ *   perm (os.FileMode) — the permissions for a new file
+ *
+ * Returns:
+ *   error — a marshal or write error
+ *
+ * Example:
+ *   err := o.WriteFileIndent(".well-known/toc.opml", 0664)
+ */
+func (o *OPML) WriteFileIndent(s string, perm os.FileMode) error {
+	b, err := MarshalIndent(o)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(s, b, perm)
+}
+
+// marshal is the compact form, with an empty body written as an element.
+func marshal(o *OPML) ([]byte, error) {
+	if o != nil && o.Body != nil && len(o.Body.Outline) == 0 {
 		o.Body.Outline = []*Outline{}
 	}
-	b, _ := xml.Marshal(o)
-	return ioutil.WriteFile(s, b, perm)
+	return xml.Marshal(o)
 }
 
 // Marshal takes an *OPML struct and returns a byte array of source and error
 func Marshal(o *OPML) ([]byte, error) {
 	return xml.Marshal(o)
+}
+
+/** MarshalIndent returns an OPML document ready to be a file: the
+ * declaration `<?xml version="1.0" encoding="UTF-8"?>`, two spaces per
+ * level, one element per line and a final newline. Marshal and String keep
+ * the compact form. Element and attribute order is the same in both.
+ *
+ * Parameters:
+ *   o (*OPML) — the document
+ *
+ * Returns:
+ *   []byte — the XML source
+ *   error — a marshal error
+ *
+ * Example:
+ *   src, err := opml.MarshalIndent(o)
+ */
+func MarshalIndent(o *OPML) ([]byte, error) {
+	body, err := xml.MarshalIndent(o, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+	out := append([]byte(xml.Header), body...)
+	return append(out, '\n'), nil
 }
 
 // Unmarshal takes an OPML XML representation and populates an OPML struct
