@@ -37,6 +37,11 @@ Found by running the module against Dave Winer's published `toc.opml` files whil
 + [ ] Helpers for reading a table of contents (antennaApp, cmarkbrowser's previous and next from `/.well-known/toc.opml`):
     + `Flatten()`: the outlines that have a `url` and are not `type="include"`, in document order
     + `Includes()`: the addresses of the `include` outlines
++ [ ] `opml2urls` was written when URL lists were flat and does not suit an outline of pages (found 2026-11-19 trying it on antennaApp's `toc.opml`, which it lists as empty)
+    + it prints only the `xmlUrl` and `htmlUrl` attributes; a table of contents uses `url` on its entries. Add a `-url` option for the `url` attribute, and print `url` when a document has no `xmlUrl` or `htmlUrl`
+    + decide what to do with `type="include"` outlines (their `url` is another outline, not a page): list them apart, or only with an option
+    + depth: it should walk nested outlines in document order (the `Walk` fix in v0.0.11 is needed)
+    + the installed `~/bin/opml2urls` is 0.0.10 (2026-11-16), from before the fix that makes it honour a file argument (2026-11-17): it ignores the file name and waits on standard input. Re-install after the next release
 + [ ] `Head` cannot hold a `generator` child element, which Dave's `toc.opml` has: decide whether to keep unknown child elements or leave them out
 + [ ] When the above are done, release v0.0.12; antennaApp pins v0.0.10 and should move to v0.0.11 now for the `Walk` fix
 
