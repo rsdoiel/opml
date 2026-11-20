@@ -30,9 +30,6 @@ Found by running the module against Dave Winer's published `toc.opml` files whil
 + [ ] `Head.OwnerID` is written as `OwnerId`; the OPML spec says `ownerId`
 + [ ] `Head.Modified` has the JSON tag `dataModified` (should be `dateModified`; this changes `opml2json` output, so note it in the release notes)
 + [ ] Comments say "RFC 882" where they mean RFC 822 (`Head.Created`, `Head.Modified`, `Outline.Created`)
-+ [ ] Helpers for reading a table of contents (antennaApp, cmarkbrowser's previous and next from `/.well-known/toc.opml`):
-    + `Flatten()`: the outlines that have a `url` and are not `type="include"`, in document order
-    + `Includes()`: the addresses of the `include` outlines
 + [ ] `opml2urls` was written when URL lists were flat and does not suit an outline of pages (found 2026-11-19 trying it on antennaApp's `toc.opml`, which it lists as empty)
     + it prints only the `xmlUrl` and `htmlUrl` attributes; a table of contents uses `url` on its entries. Add a `-url` option for the `url` attribute, and print `url` when a document has no `xmlUrl` or `htmlUrl`
     + decide what to do with `type="include"` outlines (their `url` is another outline, not a page): list them apart, or only with an option
@@ -51,6 +48,7 @@ Found by running the module against Dave Winer's published `toc.opml` files whil
 
 ## Completed
 
++ [x] `(*OPML).Flatten()` and `(*OPML).Includes()` for reading a table of contents (toc.go); on Dave Winer's `toc.opml`: 3,553 page entries, no includes (2026-11-20)
 + [x] Read ISO-8859-1, US-ASCII and windows-1252 documents in `Parse`, `ReadFile` and `Unmarshal` (stdlib `charset.go`, no new dependency); Dave Winer's `toc.opml` now parses (2026-11-20)
 + [x] Fix `Walk` visiting only the first child at each level, and stopping early from a nested outline (2026-11-18)
 + [x] Fix the `Outline.Language` struct tag typo (`langauge`), so the `language` attribute is read and written (2026-11-18)
