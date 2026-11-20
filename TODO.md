@@ -20,6 +20,26 @@
     + See http://scripting.com/fatpages/about.html, http://scripting.com/fatpages/faq.html and http://scripting.com/fatpages/outline.html
     + fttb is a "fatpages" document, it is a Base 64 encoded document like is done with email.
 
+## From the antennaApp table-of-contents work (2026-11-19)
+
+Found by running the module against Dave Winer's published `toc.opml` files while writing antennaApp DR-0013 (see also the `opml` project in the knowledge base). `Walk` and the `langauge` tag were found on the released v0.0.10 and are already fixed in v0.0.11 (see Completed); these are what is still open in the current source.
+
++ [ ] `Parse`, `ReadFile` and `Unmarshal` fail on any document that declares an encoding other than UTF-8: `xml: encoding "ISO-8859-1" declared but Decoder.CharsetReader is nil`. Dave Winer's table of contents (https://dave.writersweb.org/scripting/.well-known/toc.opml, 456 KB, 3,562 outlines) declares ISO-8859-1, so the module cannot read the one real `toc.opml` found so far.
+    + decode with `xml.NewDecoder` and a `CharsetReader`
+    + ISO-8859-1 and US-ASCII need only a byte-to-rune reader; windows-1252 needs a table (`golang.org/x/text/encoding/charmap`)
+    + add a small ISO-8859-1 file to `testdata`, with a test, before the fix
++ [ ] `Marshal`, `String` and `WriteFile` write no XML declaration and no indentation, so a file is a single line
+    + add an indented form that starts with `<?xml version="1.0" encoding="UTF-8"?>` (keep today's output available; the order is deterministic, which callers rely on)
+    + `WriteFile` ignores the marshal error and uses the deprecated `ioutil`: return the error and use `os`
++ [ ] `Head.OwnerID` is written as `OwnerId`; the OPML spec says `ownerId`
++ [ ] `Head.Modified` has the JSON tag `dataModified` (should be `dateModified`; this changes `opml2json` output, so note it in the release notes)
++ [ ] Comments say "RFC 882" where they mean RFC 822 (`Head.Created`, `Head.Modified`, `Outline.Created`)
++ [ ] Helpers for reading a table of contents (antennaApp, cmarkbrowser's previous and next from `/.well-known/toc.opml`):
+    + `Flatten()`: the outlines that have a `url` and are not `type="include"`, in document order
+    + `Includes()`: the addresses of the `include` outlines
++ [ ] `Head` cannot hold a `generator` child element, which Dave's `toc.opml` has: decide whether to keep unknown child elements or leave them out
++ [ ] When the above are done, release v0.0.12; antennaApp pins v0.0.10 and should move to v0.0.11 now for the `Walk` fix
+
 ## Someday, maybe
 
 + opmlviewer - a cli/terminal based opml viewer
