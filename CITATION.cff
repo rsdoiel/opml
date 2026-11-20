@@ -18,8 +18,8 @@ contacts:
     email: rsdoiel@gmail.com
 
 repository-code: "https://github.com/rsdoiel/opml"
-version: 0.0.11
-date-released: 2026-11-18
+version: 0.0.12
+date-released: 2026-11-20
 
 license-url: "https://www.gnu.org/licenses/agpl-3.0.txt"
 keywords:
@@ -27,4 +27,6 @@ keywords:
   - opml
   - text markup
   - list markup
+  - markdown
+  - commonmark
 

@@ -19,20 +19,26 @@
 </nav>
 <section id="main-content">
 <h1 id="about-this-software">About this software</h1>
-<h2 id="opml-0.0.11">opml 0.0.11</h2>
+<h2 id="opml-0.0.12">opml 0.0.12</h2>
 <ul>
-<li>fixed Walk(), which visited only the first child at each level and
-did not stop when the callback returned false at depth</li>
-<li>fixed the Outline.Language tag typo so the language attribute is
-read and written</li>
-<li>the programs moved into internal/cli with documented exit codes (2,
-65, 66, 73, 74, 77) and an EXIT STATUS section in each help page</li>
-<li>added -h, -l and -v; new -nl, -input and -output options</li>
-<li>opmlcat and opml2urls no longer empty an input file named by
-mistake; opmlsort exits non-zero on a missing input</li>
-<li>fixed -help, -license and -version output in opml2json and
-opmlsort</li>
-<li>dropped the unused caltechlibrary/cli requirement</li>
+<li>new opml2cmark and cmark2opml write an OPML outline as a CommonMark
+list and read it back, to edit in a text editor; new cmark package (opml
+DR-0001)</li>
+<li>Parse, ReadFile and Unmarshal read ISO-8859-1, US-ASCII and
+windows-1252 documents; Dave Winer’s toc.opml could not be read
+before</li>
+<li>new Flatten() and Includes() for reading a table of contents; new
+MarshalIndent and WriteFileIndent; new Head.Generator</li>
+<li>opml2urls lists the pages of a table of contents (-url, on by itself
+for a document with no xmlUrl or htmlUrl; -includes) and exits 0, not
+70, when there is nothing to list</li>
+<li>WriteFile returns its errors and no longer panics on a nil Body</li>
+<li>CHANGED: Head.OwnerID is read and written as ownerId (a spec-correct
+<ownerId> was dropped before), and opml2json writes ownerId and
+dateModified (were OwnerId and the typo dataModified)</li>
+<li>removed the TypeScript port (opml.ts)</li>
+<li>now requires github.com/yuin/goldmark and gopkg.in/yaml.v3, imported
+by the cmark package and the two new programs only</li>
 </ul>
 <h2 id="authors">Authors</h2>
 <ul>
@@ -59,6 +65,8 @@ Tracker</a></li>
 <h2 id="software-requirements">Software Requirements</h2>
 <ul>
 <li>Go &gt;= 1.27.3</li>
+<li>github.com/yuin/goldmark &gt;= 1.8.7</li>
+<li>gopkg.in/yaml.v3 &gt;= 3.0.1</li>
 </ul>
 <h2 id="software-suggestions">Software Suggestions</h2>
 <ul>

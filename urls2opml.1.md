@@ -1,6 +1,6 @@
-%urls2opml(1) user manual | version 0.0.11 a083b9b
+%urls2opml(1) user manual | version 0.0.12 c15bc0e
 % R. S. Doiel
-% 2026-11-18
+% 2026-11-20
 
 # NAME
 

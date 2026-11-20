@@ -19,13 +19,21 @@
 </nav>
 <section id="main-content">
 <h1 id="name">NAME</h1>
-<p>opml2urls — list the feed URLs of an OPML document</p>
+<p>opml2urls — list the feed URLs, or the page URLs, of an OPML
+document</p>
 <h1 id="synopsis">SYNOPSIS</h1>
 <p>opml2urls <a href="#options">OPTIONS</a> [INPUT_FILENAME
 [OUTPUT_FILENAME]]</p>
 <h1 id="description">DESCRIPTION</h1>
 <p>opml2urls reads an OPML document and writes the URLs of the outlines
-that have an xmlUrl attribute, one per line.</p>
+that have an xmlUrl attribute, one per line. Outlines are walked in
+document order, at any depth.</p>
+<p>A table of contents (for example .well-known/toc.opml) names pages
+with the url attribute and has no feed URLs. When a document has no
+xmlUrl or htmlUrl attribute at all, opml2urls writes the url attributes,
+as if -url were given. An outline with type=“include” has a url that is
+another outline, not a page, so it is left out unless -includes is
+given.</p>
 <h1 id="options">OPTIONS</h1>
 <dl>
 <dt>-h, -help</dt>
@@ -64,6 +72,15 @@ write the xmlUrl attribute (the default; -xmlurl=false turns it off)
 <dd>
 write the htmlUrl attribute (the default is not to)
 </dd>
+<dt>-url</dt>
+<dd>
+write the url attribute (the default only for a document with no xmlUrl
+or htmlUrl attribute)
+</dd>
+<dt>-includes</dt>
+<dd>
+also write the url of outlines with type=“include”
+</dd>
 <dt>-text-as-comment</dt>
 <dd>
 write the text attribute as a comment line starting with # (the default;
@@ -80,7 +97,8 @@ argument.</p>
 <dl>
 <dt>0</dt>
 <dd>
-success
+success, including a document that has nothing to list (nothing is
+written)
 </dd>
 <dt>2</dt>
 <dd>

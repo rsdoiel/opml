@@ -1,11 +1,11 @@
 #!/bin/sh
-# generated with CMTools 0.0.11 a083b9b
+# generated with CMTools 0.0.12 c15bc0e
 
 #
 # Set the package name and version to install
 #
 PACKAGE="opml"
-VERSION="0.0.11"
+VERSION="0.0.12"
 GIT_GROUP="rsdoiel"
 RELEASE="https://github.com/$GIT_GROUP/$PACKAGE/releases/tag/v$VERSION"
 if [ "$PKG_VERSION" != "" ]; then

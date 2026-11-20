@@ -14,7 +14,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: https://github.com/rsdoiel/opml
-version: 0.0.11
+version: 0.0.12
 license_url: https://www.gnu.org/licenses/agpl-3.0.txt
 
 programming_language:
@@ -25,22 +25,25 @@ keywords:
   - opml
   - text markup
   - list markup
+  - markdown
+  - commonmark
 
-date_released: 2026-11-18
+date_released: 2026-11-20
 ---
 
 About this software
 ===================
 
-## opml 0.0.11
+## opml 0.0.12
 
-- fixed Walk(), which visited only the first child at each level and did not stop when the callback returned false at depth
-- fixed the Outline.Language tag typo so the language attribute is read and written
-- the programs moved into internal/cli with documented exit codes (2, 65, 66, 73, 74, 77) and an EXIT STATUS section in each help page
-- added -h, -l and -v; new -nl, -input and -output options
-- opmlcat and opml2urls no longer empty an input file named by mistake; opmlsort exits non-zero on a missing input
-- fixed -help, -license and -version output in opml2json and opmlsort
-- dropped the unused caltechlibrary/cli requirement
+- new opml2cmark and cmark2opml write an OPML outline as a CommonMark list and read it back, to edit in a text editor; new cmark package (opml DR-0001)
+- Parse, ReadFile and Unmarshal read ISO-8859-1, US-ASCII and windows-1252 documents; Dave Winer's toc.opml could not be read before
+- new Flatten() and Includes() for reading a table of contents; new MarshalIndent and WriteFileIndent; new Head.Generator
+- opml2urls lists the pages of a table of contents (-url, on by itself for a document with no xmlUrl or htmlUrl; -includes) and exits 0, not 70, when there is nothing to list
+- WriteFile returns its errors and no longer panics on a nil Body
+- CHANGED: Head.OwnerID is read and written as ownerId (a spec-correct <ownerId> was dropped before), and opml2json writes ownerId and dateModified (were OwnerId and the typo dataModified)
+- removed the TypeScript port (opml.ts)
+- now requires github.com/yuin/goldmark and gopkg.in/yaml.v3, imported by the cmark package and the two new programs only
 
 ## Authors
 
@@ -70,6 +73,8 @@ A library for working with OPML XML files and example command line programs.
 ## Software Requirements
 
 - Go >= 1.27.3
+- github.com/yuin/goldmark >= 1.8.7
+- gopkg.in/yaml.v3 >= 3.0.1
 
 
 ## Software Suggestions

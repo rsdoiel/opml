@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>opml</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<a href="#main-content" class="visually-hidden">skip to main content</a>
+<nav>
+<ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="INSTALL.html">Install</a></li>
+    <li><a href="user-manual.html">User Manual</a></li>
+    <li><a href="NOTES.html">Notes</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="https://github.com/rsdoiel/opml/blob/main/LICENSE">License</a></li>
+    <li><a href="https://github.com/rsdoiel/opml">Code Repository</a></li>
+</ul>
+</nav>
+<section id="main-content">
+<h1 id="name">NAME</h1>
+<p>opml2cmark — write an OPML document as a CommonMark list</p>
+<h1 id="synopsis">SYNOPSIS</h1>
+<p>opml2cmark <a href="#options">OPTIONS</a> [INPUT_FILENAME
+[OUTPUT_FILENAME]]</p>
+<h1 id="description">DESCRIPTION</h1>
+<p>opml2cmark reads an OPML document and writes it as Markdown, so the
+outline can be edited in any text editor. The result is read back with
+cmark2opml.</p>
+<p>The head fields (title, dates, owner, generator and so on) are YAML
+front matter. Each outline is one list item and its sub-outlines are a
+nested list, in the order of the document; nothing is sorted. An outline
+that has a URL is written as a link: the text is the link text, and the
+address is the xmlUrl attribute for a type of rss or atom, the url
+attribute otherwise. Every other attribute is written after the item as
+a block of key=“value” pairs in braces:</p>
+<pre><code>- Pages
+  - [Home](https://example.org/index.html)
+- [BBC News](http://feeds.example/bbc.xml) {type=&quot;rss&quot; title=&quot;BBC News&quot; htmlUrl=&quot;http://www.example/bbc&quot;}</code></pre>
+<p>A document that is not OPML 2.0 has an opmlVersion key in its front
+matter. A document with no head fields and no outlines gives no
+output.</p>
+<p>Some text cannot be written on one list line: a newline or tab, or
+white space at the start or end of the text. opml2cmark stops with an
+error that names the outline, such as outline 2.1, and writes
+nothing.</p>
+<h1 id="options">OPTIONS</h1>
+<dl>
+<dt>-h, -help</dt>
+<dd>
+display this help page
+</dd>
+<dt>-l, -license</dt>
+<dd>
+display the license
+</dd>
+<dt>-v, -version</dt>
+<dd>
+display the version
+</dd>
+<dt>-i, -input FILENAME</dt>
+<dd>
+read from FILENAME; the default, and -, is standard input
+</dd>
+<dt>-o, -output FILENAME</dt>
+<dd>
+write to FILENAME; the default, and -, is standard output
+</dd>
+<dt>-nl, -newline</dt>
+<dd>
+add a trailing newline (the default is none; the output already ends in
+one)
+</dd>
+<dt>-quiet</dt>
+<dd>
+suppress error messages; the exit status still says what happened
+</dd>
+</dl>
+<p>The input and output may also be given as the first and second
+argument.</p>
+<h1 id="exit-status">EXIT STATUS</h1>
+<dl>
+<dt>0</dt>
+<dd>
+success, including a document with nothing to write
+</dd>
+<dt>2</dt>
+<dd>
+bad command line: an unknown option, a surplus argument
+</dd>
+<dt>65</dt>
+<dd>
+the input is not valid OPML, or has text a list item cannot hold
+</dd>
+<dt>66</dt>
+<dd>
+an input file does not exist
+</dd>
+<dt>73</dt>
+<dd>
+the output file cannot be created
+</dd>
+<dt>74</dt>
+<dd>
+reading or writing failed part way
+</dd>
+<dt>77</dt>
+<dd>
+the operating system refused access to a file
+</dd>
+</dl>
+<h1 id="examples">EXAMPLES</h1>
+<pre><code>opml2cmark subscriptions.opml subscriptions.md</code></pre>
+<p>Edit the list, then convert it back:</p>
+<pre><code>cmark2opml subscriptions.md subscriptions.opml</code></pre>
+</section>
+<footer>
+<p>opml</p>
+</footer>
+</body>
+</html>
