@@ -24,10 +24,6 @@
 
 Found by running the module against Dave Winer's published `toc.opml` files while writing antennaApp DR-0013 (see also the `opml` project in the knowledge base). `Walk` and the `langauge` tag were found on the released v0.0.10 and are already fixed in v0.0.11 (see Completed); these are what is still open in the current source.
 
-+ [ ] `Parse`, `ReadFile` and `Unmarshal` fail on any document that declares an encoding other than UTF-8: `xml: encoding "ISO-8859-1" declared but Decoder.CharsetReader is nil`. Dave Winer's table of contents (https://dave.writersweb.org/scripting/.well-known/toc.opml, 456 KB, 3,562 outlines) declares ISO-8859-1, so the module cannot read the one real `toc.opml` found so far.
-    + decode with `xml.NewDecoder` and a `CharsetReader`
-    + ISO-8859-1 and US-ASCII need only a byte-to-rune reader; windows-1252 needs a table (`golang.org/x/text/encoding/charmap`)
-    + add a small ISO-8859-1 file to `testdata`, with a test, before the fix
 + [ ] `Marshal`, `String` and `WriteFile` write no XML declaration and no indentation, so a file is a single line
     + add an indented form that starts with `<?xml version="1.0" encoding="UTF-8"?>` (keep today's output available; the order is deterministic, which callers rely on)
     + `WriteFile` ignores the marshal error and uses the deprecated `ioutil`: return the error and use `os`
@@ -55,6 +51,7 @@ Found by running the module against Dave Winer's published `toc.opml` files whil
 
 ## Completed
 
++ [x] Read ISO-8859-1, US-ASCII and windows-1252 documents in `Parse`, `ReadFile` and `Unmarshal` (stdlib `charset.go`, no new dependency); Dave Winer's `toc.opml` now parses (2026-11-20)
 + [x] Fix `Walk` visiting only the first child at each level, and stopping early from a nested outline (2026-11-18)
 + [x] Fix the `Outline.Language` struct tag typo (`langauge`), so the `language` attribute is read and written (2026-11-18)
 + [x] Add opml2json 

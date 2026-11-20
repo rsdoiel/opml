@@ -346,7 +346,7 @@ func (o *OPML) SortTypes() {
 // Parse reads a []byte and returns a OMPL object and error
 func Parse(src []byte) (*OPML, error) {
 	o := New()
-	err := xml.Unmarshal(src, &o)
+	err := unmarshal(src, o)
 	return o, err
 }
 
@@ -363,7 +363,7 @@ func (o *OPML) ReadFile(s string) error {
 	if err != nil {
 		return err
 	}
-	return xml.Unmarshal(src, &o)
+	return unmarshal(src, o)
 }
 
 // WriteFile writes the contents of a OPML struct to a file
@@ -382,7 +382,7 @@ func Marshal(o *OPML) ([]byte, error) {
 
 // Unmarshal takes an OPML XML representation and populates an OPML struct
 func Unmarshal(src []byte, o *OPML) error {
-	return xml.Unmarshal(src, &o)
+	return unmarshal(src, o)
 }
 
 func walk(ol *Outline, fn func(*Outline) bool) bool {
